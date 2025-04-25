@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>云养智旅 - 购物车</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="components.css">
+    <style>
+        /* 购物车页特有样式 */
+        .cart-header {
+            background-color: white;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            position: sticky;
+            top: 22px;
+            z-index: 99;
+            border-bottom: 1px solid rgba(94, 100, 114, 0.1);
+        }
+        
+        .back-icon {
+            margin-right: 15px;
+            color: var(--color-dark);
+            font-size: 18px;
+        }
+        
+        .header-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--color-dark);
+            flex: 1;
+            text-align: center;
+            margin-right: 30px;
+        }
+        
+        .cart-container {
+            background-color: #f5f5f5;
+            min-height: calc(100vh - 180px);
+        }
+        
+        .cart-item {
+            background-color: white;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            position: relative;
+        }
+        
+        .item-checkbox {
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .custom-checkbox {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+        }
+        
+        .custom-checkbox.checked {
+            background-color: var(--color-primary);
+            border-color: var(--color-primary);
+        }
+        
+        .item-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            margin-right: 15px;
+            object-fit: cover;
+        }
+        
+        .item-info {
+            flex: 1;
+        }
+        
+        .item-name {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--color-dark);
+            margin-bottom: 5px;
+            display: -webkit-box;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .item-specs {
+            font-size: 12px;
+            color: #777;
+            margin-bottom: 8px;
+            padding: 3px 8px;
+            background-color: #f5f5f5;
+            border-radius: 10px;
+            display: inline-block;
+        }
+        
+        .item-price-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .item-price {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--color-primary);
+        }
+        
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            border: 1px solid #eee;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+        
+        .quantity-btn {
+            width: 28px;
+            height: 28px;
+            background-color: #f8f8f8;
+            color: var(--color-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        .quantity-input {
+            width: 40px;
+            height: 28px;
+            border: none;
+            text-align: center;
+            font-size: 14px;
+            color: var(--color-dark);
+            background-color: white;
+        }
+        
+        .item-actions {
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            font-size: 18px;
+            color: #ccc;
+        }
+        
+        .cart-section-title {
+            padding: 15px;
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--color-dark);
+            display: flex;
+            align-items: center;
+        }
+        
+        .cart-section-title i {
+            margin-right: 8px;
+            color: var(--color-primary);
+        }
+        
+        .cart-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: white;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 -3px 10px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+        }
+        
+        .select-all {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            color: var(--color-dark);
+            margin-right: 15px;
+        }
+        
+        .select-all .custom-checkbox {
+            margin-right: 5px;
+        }
+        
+        .cart-total {
+            flex: 1;
+            text-align: right;
+            padding-right: 15px;
+        }
+        
+        .total-price {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--color-primary);
+            margin-bottom: 3px;
+        }
+        
+        .price-details {
+            font-size: 12px;
+            color: #999;
+        }
+        
+        .checkout-btn {
+            width: 120px;
+            height: 40px;
+            background-color: var(--color-primary);
+            color: white;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        
+        .empty-cart {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 15px;
+        }
+        
+        .empty-cart-icon {
+            font-size: 60px;
+            color: #ccc;
+            margin-bottom: 20px;
+        }
+        
+        .empty-cart-text {
+            font-size: 16px;
+            color: #999;
+            margin-bottom: 30px;
+        }
+        
+        .go-shopping-btn {
+            background-color: var(--color-primary);
+            color: white;
+            padding: 10px 25px;
+            border-radius: 20px;
+            font-size: 15px;
+            font-weight: 500;
+        }
+        
+        .promotion-bar {
+            background-color: #FFF2F0;
+            color: var(--color-primary);
+            padding: 10px 15px;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .promotion-bar i {
+            margin-right: 5px;
+        }
+        
+        .cart-recommendations {
+            background-color: white;
+            padding: 15px;
+            margin-top: 15px;
+        }
+        
+        .recommendations-title {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--color-dark);
+            margin-bottom: 15px;
+        }
+        
+        .recommendations-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+        
+        .recommendation-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .recommendation-image {
+            width: 100%;
+            aspect-ratio: 1;
+            border-radius: 8px;
+            object-fit: cover;
+            margin-bottom: 5px;
+        }
+        
+        .recommendation-name {
+            font-size: 12px;
+            color: var(--color-dark);
+            text-align: center;
+            margin-bottom: 5px;
+            height: 36px;
+            overflow: hidden;
+            display: -webkit-box;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+        
+        .recommendation-price {
+            font-size: 13px;
+            color: var(--color-primary);
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <!-- iOS 状态栏 -->
+    <div class="ios-status-bar">
+        <span class="time">20:15</span>
+        <div class="icons">
+            <i class="fas fa-signal"></i>
+            <i class="fas fa-wifi"></i>
+            <i class="fas fa-battery-full"></i>
+        </div>
+    </div>
+    
+    <!-- 页面头部 -->
+    <div class="cart-header">
+        <a href="shopping.html" class="back-icon">
+            <i class="fas fa-arrow-left"></i>
+        </a>
+        <h1 class="header-title">购物车</h1>
+    </div>
+    
+    <div class="cart-container">
+        <!-- 满减促销信息 -->
+        <div class="promotion-bar">
+            <i class="fas fa-tags"></i>
+            <span>全场满199元立减30元，满299元立减50元</span>
+        </div>
+        
+        <!-- 购物车项目 -->
+        <div class="cart-section-title">
+            <i class="fas fa-shopping-bag"></i>
+            <span>瑶山好物 (3件商品)</span>
+        </div>
+        
+        <!-- 商品1 -->
+        <div class="cart-item">
+            <div class="item-checkbox">
+                <div class="custom-checkbox checked">
+                    <i class="fas fa-check"></i>
+                </div>
+            </div>
+            <img src="https://pic.52112.com/180529/JPG-180529_298/hCSyEZ4ptM_small.jpg" alt="鸡蛋" class="item-image">
+            <div class="item-info">
+                <h3 class="item-name">鸡蛋</h3>
+                <span class="item-specs">500g</span>
+                <div class="item-price-section">
+                    <div class="item-price">¥12</div>
+                    <div class="quantity-control">
+                        <div class="quantity-btn">-</div>
+                        <input type="text" value="1" class="quantity-input">
+                        <div class="quantity-btn">+</div>
+                    </div>
+                </div>
+            </div>
+            <div class="item-actions">
+                <i class="fas fa-trash-alt"></i>
+            </div>
+        </div>
+        
+        <!-- 商品2 -->
+        <div class="cart-item">
+            <div class="item-checkbox">
+                <div class="custom-checkbox checked">
+                    <i class="fas fa-check"></i>
+                </div>
+            </div>
+            <img src="https://file.cnkang.com/cnkfile1/M00/0A/01/ooYBAFcqrNSAZyqqAAOXFHCVQsE56.jpeg" alt="香芋" class="item-image">
+            <div class="item-info">
+                <h3 class="item-name">香芋</h3>
+                <span class="item-specs">500g</span>
+                <div class="item-price-section">
+                    <div class="item-price">¥12</div>
+                    <div class="quantity-control">
+                        <div class="quantity-btn">-</div>
+                        <input type="text" value="2" class="quantity-input">
+                        <div class="quantity-btn">+</div>
+                    </div>
+                </div>
+            </div>
+            <div class="item-actions">
+                <i class="fas fa-trash-alt"></i>
+            </div>
+        </div>
+        
+        <!-- 商品3 -->
+        <div class="cart-item">
+            <div class="item-checkbox">
+                <div class="custom-checkbox checked">
+                    <i class="fas fa-check"></i>
+                </div>
+            </div>
+            <img src="https://lingnancostume.gdut.edu.cn/__local/9/2B/47/2121F888A69E6932BE26DF9029E_B6C725FA_128671.jpg" alt="瑶绣" class="item-image">
+            <div class="item-info">
+                <h3 class="item-name">瑶绣</h3>
+                <span class="item-specs">单个装</span>
+                <div class="item-price-section">
+                    <div class="item-price">¥68</div>
+                    <div class="quantity-control">
+                        <div class="quantity-btn">-</div>
+                        <input type="text" value="1" class="quantity-input">
+                        <div class="quantity-btn">+</div>
+                    </div>
+                </div>
+            </div>
+            <div class="item-actions">
+                <i class="fas fa-trash-alt"></i>
+            </div>
+        </div>
+        
+        <!-- 猜你喜欢 -->
+        <div class="cart-recommendations">
+            <h3 class="recommendations-title">猜你喜欢</h3>
+            <div class="recommendations-grid">
+                <div class="recommendation-item">
+                    <img src="https://img95.699pic.com/photo/60026/3944.jpg_wh860.jpg" alt="瑶山野生香菇" class="recommendation-image">
+                    <h4 class="recommendation-name">瑶山野生香菇</h4>
+                    <div class="recommendation-price">¥78</div>
+                </div>
+                <div class="recommendation-item">
+                    <img src="https://pic3.zhimg.com/v2-a582c6ef03ee0473ff546458328c18b6_720w.jpg?source=172ae18b" alt="瑶山古法山茶油" class="recommendation-image">
+                    <h4 class="recommendation-name">瑶山古法山茶油</h4>
+                    <div class="recommendation-price">¥188</div>
+                </div>
+                <div class="recommendation-item">
+                    <img src="https://img95.699pic.com/photo/50168/8039.jpg_wh860.jpg" alt="瑶山有机稻米" class="recommendation-image">
+                    <h4 class="recommendation-name">瑶山有机稻米</h4>
+                    <div class="recommendation-price">¥128</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 底部结算栏 -->
+    <div class="cart-footer">
+        <div class="select-all">
+            <div class="custom-checkbox checked">
+                <i class="fas fa-check"></i>
+            </div>
+            <span>全选</span>
+        </div>
+        <div class="cart-total">
+            <div class="total-price">¥92</div>
+            <div class="price-details">总计: ¥92 · 已优惠: ¥3</div>
+        </div>
+        <button class="checkout-btn">结算(4)</button>
+    </div>
+
+    <!-- 空购物车状态 (默认隐藏) -->
+    <div class="empty-cart" style="display: none;">
+        <div class="empty-cart-icon">
+            <i class="fas fa-shopping-cart"></i>
+        </div>
+        <p class="empty-cart-text">购物车还是空的，去挑选心仪的商品吧~</p>
+        <a href="shopping.html" class="go-shopping-btn">去购物</a>
+    </div>
+</body>
+</html> 

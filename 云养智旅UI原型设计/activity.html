@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>云养智旅 - 活动</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="components.css">
+    <style>
+        /* 活动页特有样式 */
+        .activity-header {
+            background-color: var(--color-primary);
+            color: white;
+            padding: 20px 15px;
+            border-radius: 0 0 20px 20px;
+            margin: -40px 0 15px;
+        }
+        
+        .activity-header-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .activity-header-subtitle {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .activity-tabs {
+            display: flex;
+            overflow-x: auto;
+            background-color: white;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(94, 100, 114, 0.1);
+        }
+        
+        .activity-tab {
+            padding: 15px 20px;
+            font-size: 14px;
+            font-weight: 500;
+            white-space: nowrap;
+            color: var(--color-dark);
+            position: relative;
+        }
+        
+        .activity-tab.active {
+            color: var(--color-primary);
+        }
+        
+        .activity-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 20%;
+            width: 60%;
+            height: 3px;
+            background-color: var(--color-primary);
+            border-radius: 10px;
+        }
+        
+        .activity-card {
+            background-color: white;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: 0 3px 10px rgba(94, 100, 114, 0.1);
+            position: relative;
+        }
+        
+        .activity-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+        
+        .activity-content {
+            padding: 15px;
+        }
+        
+        .activity-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--color-dark);
+        }
+        
+        .activity-meta {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .activity-date {
+            font-size: 13px;
+            color: #777;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .activity-date i, .activity-location i {
+            margin-right: 5px;
+            color: var(--color-primary);
+        }
+        
+        .activity-location {
+            font-size: 13px;
+            color: #777;
+            display: flex;
+            align-items: center;
+        }
+        
+        .activity-description {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+        
+        .activity-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .activity-price {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--color-primary);
+        }
+        
+        .activity-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: var(--color-primary);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .festival-countdown {
+            background-color: var(--color-highlight);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .countdown-info {
+            flex: 1;
+        }
+        
+        .countdown-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 5px;
+        }
+        
+        .countdown-date {
+            font-size: 13px;
+            color: white;
+            opacity: 0.9;
+        }
+        
+        .countdown-timer {
+            display: flex;
+            align-items: center;
+        }
+        
+        .countdown-unit {
+            width: 40px;
+            height: 40px;
+            background-color: white;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-left: 5px;
+        }
+        
+        .countdown-number {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--color-dark);
+        }
+        
+        .countdown-label {
+            font-size: 10px;
+            color: #777;
+        }
+        
+        .activity-tags {
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+        
+        .activity-tag {
+            font-size: 12px;
+            margin-right: 8px;
+            background-color: rgba(174, 217, 224, 0.2);
+            color: var(--color-highlight);
+            padding: 3px 10px;
+            border-radius: 15px;
+        }
+    </style>
+</head>
+<body>
+    <!-- iOS 状态栏 -->
+    <div class="ios-status-bar">
+        <span class="time">20:15</span>
+        <div class="icons">
+            <i class="fas fa-signal"></i>
+            <i class="fas fa-wifi"></i>
+            <i class="fas fa-battery-full"></i>
+        </div>
+    </div>
+    
+    <div class="page-container">
+        <!-- 活动页头部 -->
+        <div class="activity-header">
+            <h1 class="activity-header-title">活动中心</h1>
+            <p class="activity-header-subtitle">探索瑶山风情，体验非遗文化</p>
+        </div>
+        
+        <div class="content">
+            <!-- 节日倒计时 -->
+            <div class="festival-countdown">
+                <div class="countdown-info">
+                    <h3 class="countdown-title">瑶族盘王节</h3>
+                    <p class="countdown-date">2025年10月28日</p>
+                </div>
+                <div class="countdown-timer">
+                    <div class="countdown-unit">
+                        <span class="countdown-number">15</span>
+                        <span class="countdown-label">天</span>
+                    </div>
+                    <div class="countdown-unit">
+                        <span class="countdown-number">20</span>
+                        <span class="countdown-label">时</span>
+                    </div>
+                    <div class="countdown-unit">
+                        <span class="countdown-number">45</span>
+                        <span class="countdown-label">分</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 活动标签筛选 -->
+            <div class="activity-tabs">
+                <div class="activity-tab active">全部活动</div>
+                <div class="activity-tab">瑶族文化</div>
+                <div class="activity-tab">农事体验</div>
+                <div class="activity-tab">非遗传承</div>
+                <div class="activity-tab">田园采摘</div>
+            </div>
+            
+            <!-- 活动列表 -->
+            <div class="activity-list">
+                <!-- 活动1 -->
+                <div class="activity-card">
+                    <div class="activity-badge">热门</div>
+                    <img src="https://cdn.pixabay.com/photo/2016/11/01/10/16/dancers-1787812_1280.jpg" class="activity-image" alt="瑶族长鼓舞表演">
+                    <div class="activity-content">
+                        <h3 class="activity-title">瑶族长鼓舞表演</h3>
+                        <div class="activity-meta">
+                            <div class="activity-date">
+                                <i class="far fa-calendar-alt"></i>
+                                <span>2025-05-01 ~ 2025-05-07</span>
+                            </div>
+                            <div class="activity-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>瑶山文化广场</span>
+                            </div>
+                        </div>
+                        <p class="activity-description">欣赏国家级非物质文化遗产瑶族长鼓舞，感受瑶族人民欢快奔放的民族精神。</p>
+                        <div class="activity-tags">
+                            <span class="activity-tag">非遗文化</span>
+                            <span class="activity-tag">瑶族舞蹈</span>
+                        </div>
+                        <div class="activity-footer">
+                            <div class="activity-price">¥98</div>
+                            <button class="btn">立即报名</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 活动2 -->
+                <div class="activity-card">
+                    <img src="https://images.unsplash.com/photo-1531971589569-0d9370cbe1e5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80" class="activity-image" alt="瑶山采茶体验">
+                    <div class="activity-content">
+                        <h3 class="activity-title">瑶山采茶体验</h3>
+                        <div class="activity-meta">
+                            <div class="activity-date">
+                                <i class="far fa-calendar-alt"></i>
+                                <span>2025-04-25 ~ 2025-05-10</span>
+                            </div>
+                            <div class="activity-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>瑶山生态茶园</span>
+                            </div>
+                        </div>
+                        <p class="activity-description">亲手采摘高山有机茶，学习传统制茶工艺，体验茶农生活，品尝新鲜茶汤。</p>
+                        <div class="activity-tags">
+                            <span class="activity-tag">农事体验</span>
+                            <span class="activity-tag">茶文化</span>
+                        </div>
+                        <div class="activity-footer">
+                            <div class="activity-price">¥128</div>
+                            <button class="btn">立即报名</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 活动3 -->
+                <div class="activity-card">
+                    <div class="activity-badge">限时</div>
+                    <img src="https://images.unsplash.com/photo-1515339760107-1952b7a08454?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80" class="activity-image" alt="瑶族民俗文化节">
+                    <div class="activity-content">
+                        <h3 class="activity-title">瑶族民俗文化节</h3>
+                        <div class="activity-meta">
+                            <div class="activity-date">
+                                <i class="far fa-calendar-alt"></i>
+                                <span>2025-06-01 ~ 2025-06-07</span>
+                            </div>
+                            <div class="activity-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>瑶山民族村</span>
+                            </div>
+                        </div>
+                        <p class="activity-description">参与瑶族盘王节庆典，体验瑶族传统婚礼，品尝瑶族美食，欣赏民族歌舞表演。</p>
+                        <div class="activity-tags">
+                            <span class="activity-tag">民俗文化</span>
+                            <span class="activity-tag">瑶族节日</span>
+                        </div>
+                        <div class="activity-footer">
+                            <div class="activity-price">¥258</div>
+                            <button class="btn">立即报名</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 底部导航栏 -->
+        <div class="bottom-nav">
+            <a href="home.html" class="nav-item">
+                <i class="fas fa-home"></i>
+                <span>首页</span>
+            </a>
+            <a href="shopping.html" class="nav-item">
+                <i class="fas fa-shopping-bag"></i>
+                <span>购物</span>
+            </a>
+            <a href="cloud-farm.html" class="nav-item">
+                <i class="fas fa-leaf"></i>
+                <span>云养</span>
+            </a>
+            <a href="activity.html" class="nav-item active">
+                <i class="fas fa-calendar-alt"></i>
+                <span>活动</span>
+            </a>
+            <a href="profile.html" class="nav-item">
+                <i class="fas fa-user"></i>
+                <span>我的</span>
+            </a>
+        </div>
+    </div>
+</body>
+</html> 

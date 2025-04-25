@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>云养智旅 - 区块链溯源</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="components.css">
+    <style>
+        /* 区块链溯源页面特有样式 */
+        .trace-header {
+            background-color: var(--color-dark);
+            color: white;
+            padding: 20px 15px;
+            border-radius: 0 0 20px 20px;
+            margin: -40px 0 15px;
+        }
+        
+        .trace-title {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .trace-subtitle {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .qr-section {
+            background-color: white;
+            padding: 20px;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(94, 100, 114, 0.1);
+        }
+        
+        .qr-code {
+            width: 180px;
+            height: 180px;
+            margin-bottom: 15px;
+            border: 1px solid #eee;
+            padding: 10px;
+            border-radius: 10px;
+        }
+        
+        .qr-tip {
+            font-size: 13px;
+            color: #777;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        
+        .product-info {
+            width: 100%;
+            background-color: var(--color-secondary);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+        
+        .product-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .product-image {
+            width: 60px;
+            height: 60px;
+            border-radius: 10px;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+        
+        .product-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--color-dark);
+            margin-bottom: 3px;
+        }
+        
+        .product-id {
+            font-size: 12px;
+            color: #777;
+        }
+        
+        .verify-badge {
+            display: inline-flex;
+            align-items: center;
+            background-color: var(--color-accent);
+            color: var(--color-dark);
+            padding: 3px 8px;
+            border-radius: 15px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+        
+        .verify-badge i {
+            margin-right: 4px;
+            font-size: 10px;
+        }
+        
+        .blockchain-info {
+            margin-top: 5px;
+        }
+        
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+        
+        .info-label {
+            color: #777;
+        }
+        
+        .info-value {
+            font-weight: 600;
+            color: var(--color-dark);
+        }
+        
+        .hash-value {
+            font-family: monospace;
+            font-size: 11px;
+            color: var(--color-dark);
+            background-color: #f5f5f5;
+            padding: 5px 8px;
+            border-radius: 5px;
+            margin-top: 5px;
+            word-break: break-all;
+        }
+        
+        .timeline-section {
+            margin-top: 25px;
+        }
+        
+        .timeline-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .timeline-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--color-dark);
+        }
+        
+        .timeline-filter {
+            font-size: 13px;
+            color: var(--color-highlight);
+        }
+        
+        .timeline {
+            position: relative;
+            margin-left: 15px;
+        }
+        
+        .timeline-line {
+            position: absolute;
+            left: 7px;
+            top: 0;
+            height: 100%;
+            width: 2px;
+            background-color: #ddd;
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding-left: 30px;
+            padding-bottom: 20px;
+        }
+        
+        .timeline-dot {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 16px;
+            height: 16px;
+            background-color: var(--color-accent);
+            border-radius: 50%;
+            z-index: 1;
+        }
+        
+        .timeline-item.verified .timeline-dot {
+            background-color: var(--color-primary);
+        }
+        
+        .timeline-date {
+            font-size: 12px;
+            color: #777;
+            margin-bottom: 5px;
+        }
+        
+        .timeline-event {
+            background-color: white;
+            padding: 12px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .event-title {
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 5px;
+            color: var(--color-dark);
+            display: flex;
+            align-items: center;
+        }
+        
+        .event-desc {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.4;
+        }
+        
+        .event-data {
+            margin-top: 8px;
+            background-color: #f9f9f9;
+            padding: 8px;
+            border-radius: 8px;
+            font-size: 12px;
+        }
+        
+        .data-row {
+            display: flex;
+            margin-bottom: 5px;
+        }
+        
+        .data-label {
+            width: 80px;
+            color: #777;
+        }
+        
+        .data-value {
+            flex: 1;
+            font-weight: 500;
+            color: var(--color-dark);
+        }
+        
+        .certificate-section {
+            margin-top: 25px;
+        }
+        
+        .certificate-card {
+            background: linear-gradient(135deg, var(--color-accent), var(--color-highlight));
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(106, 153, 78, 0.3);
+        }
+        
+        .cert-icon {
+            position: absolute;
+            right: -15px;
+            bottom: -15px;
+            font-size: 100px;
+            opacity: 0.1;
+            color: white;
+        }
+        
+        .cert-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 5px;
+            z-index: 1;
+            position: relative;
+        }
+        
+        .cert-desc {
+            font-size: 13px;
+            color: white;
+            opacity: 0.9;
+            margin-bottom: 15px;
+            z-index: 1;
+            position: relative;
+        }
+        
+        .cert-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: white;
+            z-index: 1;
+            position: relative;
+        }
+        
+        .cert-issuer {
+            display: flex;
+            align-items: center;
+        }
+        
+        .cert-issuer-logo {
+            width: 20px;
+            height: 20px;
+            background-color: white;
+            border-radius: 50%;
+            margin-right: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .cert-issuer-logo i {
+            color: var(--color-highlight);
+            font-size: 12px;
+        }
+        
+        .scan-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--color-primary);
+            color: white;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+        
+        .scan-button i {
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+    <!-- iOS 状态栏 -->
+    <div class="ios-status-bar">
+        <span class="time">20:15</span>
+        <div class="icons">
+            <i class="fas fa-signal"></i>
+            <i class="fas fa-wifi"></i>
+            <i class="fas fa-battery-full"></i>
+        </div>
+    </div>
+    
+    <div class="page-container">
+        <!-- 区块链溯源头部 -->
+        <div class="trace-header">
+            <h1 class="trace-title">区块链溯源</h1>
+            <p class="trace-subtitle">透明可信的全生命周期记录</p>
+        </div>
+        
+        <div class="content">
+            <!-- 二维码溯源 -->
+            <div class="qr-section">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://blockchain.farm.com/trace/A5831" alt="溯源二维码" class="qr-code">
+                <p class="qr-tip">扫描二维码查看区块链上的完整溯源信息</p>
+                
+                <div class="product-info">
+                    <div class="product-header">
+                        <img src="https://i0.wp.com/images-prod.healthline.com/hlcmsresource/images/AN_images/why-are-chickens-raised-commercially-1296x728.jpg?w=1155&h=1528" alt="瑶山散养鸡" class="product-image">
+                        <div>
+                            <h3 class="product-name">瑶山散养鸡 <span class="verify-badge"><i class="fas fa-check-circle"></i> 已认证</span></h3>
+                            <p class="product-id">溯源ID: YSCK-A5831-2025</p>
+                        </div>
+                    </div>
+                    
+                    <div class="blockchain-info">
+                        <div class="info-row">
+                            <span class="info-label">区块高度</span>
+                            <span class="info-value">2,356,782</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">上链时间</span>
+                            <span class="info-value">2025-03-15 14:32:15</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">数据哈希值</span>
+                        </div>
+                        <div class="hash-value">
+                            0xf7c8d9e1b3a5c7f9e1d3b5a7c9e1d3b5a7c9e1d3b5a7c9
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="scan-button w-full mt-3">
+                    <i class="fas fa-qrcode"></i>
+                    扫描其他产品
+                </button>
+            </div>
+            
+            <!-- 溯源时间轴 -->
+            <div class="timeline-section">
+                <div class="timeline-header">
+                    <h2 class="timeline-title">全生命周期追溯</h2>
+                    <span class="timeline-filter">
+                        <i class="fas fa-filter"></i> 筛选
+                    </span>
+                </div>
+                
+                <div class="timeline">
+                    <div class="timeline-line"></div>
+                    
+                    <!-- 时间轴事件1 -->
+                    <div class="timeline-item verified">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-date">2025-03-15 08:30:25</div>
+                        <div class="timeline-event">
+                            <div class="event-title">
+                                完成出栏检测
+                                <span class="verify-badge ml-2"><i class="fas fa-check-circle"></i> 已认证</span>
+                            </div>
+                            <p class="event-desc">由瑶山生态养殖基地认证兽医完成健康检测，各项指标达标。</p>
+                            <div class="event-data">
+                                <div class="data-row">
+                                    <div class="data-label">体重</div>
+                                    <div class="data-value">2.3 kg</div>
+                                </div>
+                                <div class="data-row">
+                                    <div class="data-label">健康评分</div>
+                                    <div class="data-value">96/100</div>
+                                </div>
+                                <div class="data-row">
+                                    <div class="data-label">检测人</div>
+                                    <div class="data-value">李医师（证号: YS20250315）</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 时间轴事件2 -->
+                    <div class="timeline-item verified">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-date">2025-02-26 10:15:42</div>
+                        <div class="timeline-event">
+                            <div class="event-title">
+                                完成疫苗接种
+                                <span class="verify-badge ml-2"><i class="fas fa-check-circle"></i> 已认证</span>
+                            </div>
+                            <p class="event-desc">完成第三次疫苗接种，增强免疫力。</p>
+                            <div class="event-data">
+                                <div class="data-row">
+                                    <div class="data-label">疫苗名称</div>
+                                    <div class="data-value">家禽流感预防疫苗</div>
+                                </div>
+                                <div class="data-row">
+                                    <div class="data-label">批次号</div>
+                                    <div class="data-value">FLU20250226-07</div>
+                                </div>
+                                <div class="data-row">
+                                    <div class="data-label">接种人</div>
+                                    <div class="data-value">王兽医（证号: YS20210532）</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 时间轴事件3 -->
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-date">2025-01-10 16:22:08</div>
+                        <div class="timeline-event">
+                            <div class="event-title">
+                                饲料更换记录
+                            </div>
+                            <p class="event-desc">根据生长阶段需求，更换为有机谷物混合饲料。</p>
+                            <div class="event-data">
+                                <div class="data-row">
+                                    <div class="data-label">饲料名称</div>
+                                    <div class="data-value">有机谷物混合饲料</div>
+                                </div>
+                                <div class="data-row">
+                                    <div class="data-label">供应商</div>
+                                    <div class="data-value">瑶山有机农场</div>
+                                </div>
+                                <div class="data-row">
+                                    <div class="data-label">成分</div>
+                                    <div class="data-value">有机玉米、小麦、大豆（无抗生素）</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 时间轴事件4 -->
+                    <div class="timeline-item verified">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-date">2024-12-05 09:48:36</div>
+                        <div class="timeline-event">
+                            <div class="event-title">
+                                孵化记录
+                                <span class="verify-badge ml-2"><i class="fas fa-check-circle"></i> 已认证</span>
+                            </div>
+                            <p class="event-desc">家禽育雏中心成功孵化，纳入养殖计划。</p>
+                            <div class="event-data">
+                                <div class="data-row">
+                                    <div class="data-label">品种</div>
+                                    <div class="data-value">瑶山本地黑羽鸡</div>
+                                </div>
+                                <div class="data-row">
+                                    <div class="data-label">批次号</div>
+                                    <div class="data-value">YS-CHK-2024-12-1257</div>
+                                </div>
+                                <div class="data-row">
+                                    <div class="data-label">孵化中心</div>
+                                    <div class="data-value">瑶山生态家禽孵化中心</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 认证证书 -->
+            <div class="certificate-section">
+                <h2 class="section-title">认证证书</h2>
+                
+                <div class="certificate-card">
+                    <div class="cert-icon">
+                        <i class="fas fa-certificate"></i>
+                    </div>
+                    <h3 class="cert-title">有机养殖认证</h3>
+                    <p class="cert-desc">该产品全程采用有机饲料喂养，不使用抗生素及激素。</p>
+                    <div class="cert-meta">
+                        <div class="cert-issuer">
+                            <div class="cert-issuer-logo">
+                                <i class="fas fa-leaf"></i>
+                            </div>
+                            <span>中国有机认证中心</span>
+                        </div>
+                        <span>有效期至：2026-03-15</span>
+                    </div>
+                </div>
+                
+                <div class="certificate-card" style="background: linear-gradient(135deg, var(--color-primary), var(--color-highlight));">
+                    <div class="cert-icon">
+                        <i class="fas fa-award"></i>
+                    </div>
+                    <h3 class="cert-title">绿色食品认证</h3>
+                    <p class="cert-desc">符合绿色食品标准，无污染，健康安全。</p>
+                    <div class="cert-meta">
+                        <div class="cert-issuer">
+                            <div class="cert-issuer-logo">
+                                <i class="fas fa-seedling"></i>
+                            </div>
+                            <span>中国绿色食品发展中心</span>
+                        </div>
+                        <span>证书编号：GF85623</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 底部导航栏 -->
+        <div class="bottom-nav">
+            <a href="home.html" class="nav-item">
+                <i class="fas fa-home"></i>
+                <span>首页</span>
+            </a>
+            <a href="shopping.html" class="nav-item">
+                <i class="fas fa-shopping-bag"></i>
+                <span>购物</span>
+            </a>
+            <a href="cloud-farm.html" class="nav-item">
+                <i class="fas fa-leaf"></i>
+                <span>云养</span>
+            </a>
+            <a href="activity.html" class="nav-item">
+                <i class="fas fa-calendar-alt"></i>
+                <span>活动</span>
+            </a>
+            <a href="profile.html" class="nav-item">
+                <i class="fas fa-user"></i>
+                <span>我的</span>
+            </a>
+        </div>
+    </div>
+</body>
+</html> 
