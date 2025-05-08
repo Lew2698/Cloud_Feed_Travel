@@ -220,6 +220,13 @@
             color: #777;
             margin-bottom: 20px;
         }
+		.sticky-top {
+			position: sticky;
+		    top: 0;
+			z-index: 100;
+			background-color: white;
+			margin-top: -41px; /* 根据实际情况调整这个数值，以达到和绿色部分接触的效果 */
+		}
     </style>
 </head>
 <body>
@@ -235,7 +242,7 @@
     
     <div class="page-container">
         <!-- 返回按钮和标题 -->
-        <div class="px-4 py-3 flex items-center bg-white sticky top-0 z-50 border-b">
+        <div class="px-4 py-3 flex items-center bg-white sticky-top z-50 border-b">
             <a href="cloud-farm.html" class="mr-4">
                 <i class="fas fa-arrow-left text-lg" style="color: var(--color-dark);"></i>
             </a>
@@ -283,7 +290,7 @@
                         <span>实时直播中</span>
                     </div>
                 </div>
-                <img src="https://cdn.britannica.com/17/205017-050-0B93BC8F/Chickens-yard-farm.jpg" alt="监控视频" class="video-feed">
+                <img src="https://img95.699pic.com/photo/40247/3545.jpg_wh860.jpg" alt="监控视频" class="video-feed">
                 <div class="video-controls">
                     <div class="video-control">
                         <i class="fas fa-image"></i>
@@ -297,7 +304,7 @@
                 </div>
             </div>
             
-            <div class="timestamp">最后更新: 2023-10-16 15:45:30</div>
+            <div class="timestamp">最后更新: 2025-04-26 15:45:30</div>
             
             <!-- 环境信息 -->
             <div class="info-card">

@@ -190,6 +190,13 @@
             background-color: #ffebee;
             color: #c62828;
         }
+		.sticky-top {
+		            position: sticky;
+		            top: 0;
+		            z-index: 100;
+		            background-color: white;
+		            margin-top: -41px; /* 根据实际情况调整这个数值，以达到和绿色部分接触的效果 */
+	   }
     </style>
 </head>
 <body>
@@ -205,7 +212,7 @@
     
     <div class="page-container">
         <!-- 返回按钮和标题 -->
-        <div class="px-4 py-3 flex items-center bg-white sticky top-0 z-50 border-b">
+        <div class="px-4 py-3 flex items-center bg-white sticky-top z-50 border-b">
             <a href="cloud-farm.html" class="mr-4">
                 <i class="fas fa-arrow-left text-lg" style="color: var(--color-dark);"></i>
             </a>
@@ -216,7 +223,7 @@
             <!-- 数据摘要 -->
             <div class="data-stats">
                 <div class="stat-card">
-                    <div class="stat-value">8只/块</div>
+                    <div class="stat-value">8只</div>
                     <div class="stat-label">总认领数量</div>
                 </div>
                 <div class="stat-card" style="background: linear-gradient(135deg, var(--color-primary), var(--color-highlight));">
@@ -450,4 +457,4 @@
         });
     </script>
 </body>
-</html> 
+</html>
