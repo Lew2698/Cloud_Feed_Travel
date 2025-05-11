@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>云养智旅 - 云养</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="components.css">
+    <style>
+        /* 云养页面特有样式 */
+        .farm-scene {
+            position: relative;
+            width: 100%;
+            height: 220px;
+            background: url('https://img.freepik.com/free-vector/farm-landscape-with-farm-fields-mountains_107791-10294.jpg?w=1380&t=st=1716192000~exp=1716192600~hmac=7dbc9f84c9bed50f80a0b13c26bbb855f4cfcb10c9e3a2ca9b3da7c42f19b0ef') no-repeat;
+            background-size: cover;
+            background-position: center bottom;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+        
+        .farm-entity {
+            position: absolute;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        .farm-entity:hover {
+            transform: scale(1.1);
+        }
+        
+        .farm-entity img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        .chicken {
+            width: 50px;
+            height: 50px;
+            bottom: 30px;
+            left: 60px;
+        }
+        
+        .pig {
+            width: 55px;
+            height: 55px;
+            bottom: 25px;
+            left: 130px;
+        }
+        
+        .crop {
+            width: 40px;
+            height: 60px;
+            bottom: 15px;
+            right: 70px;
+        }
+        
+        .tree {
+            width: 70px;
+            height: 90px;
+            bottom: 15px;
+            right: 130px;
+        }
+        
+        .farm-modules {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .farm-module {
+            background-color: white;
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: 0 4px 10px rgba(94, 100, 114, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            transition: all 0.3s ease;
+            height: 120px;
+        }
+        
+        .farm-module:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(94, 100, 114, 0.15);
+        }
+        
+        .module-icon {
+            font-size: 28px;
+            margin-bottom: 10px;
+            color: var(--color-highlight);
+        }
+        
+        .module-title {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--color-dark);
+        }
+        
+        .energy-bar {
+            background-color: white;
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: 0 4px 10px rgba(94, 100, 114, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        .energy-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: 5px;
+        }
+        
+        .energy-progress {
+            width: 100%;
+            height: 10px;
+            background-color: #eee;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+        
+        .energy-fill {
+            height: 100%;
+            background-color: var(--color-accent);
+            width: 70%;
+            border-radius: 10px;
+        }
+        
+        .badge {
+            display: inline-block;
+            background-color: var(--color-primary);
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: 10px;
+            margin-left: 5px;
+        }
+        
+        .animation-bounce {
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .farm-footer {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px;
+            background-color: white;
+            border-radius: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .farm-stats {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .stats-value {
+            font-weight: 700;
+            color: var(--color-dark);
+            font-size: 18px;
+        }
+        
+        .stats-label {
+            font-size: 12px;
+            color: #777;
+        }
+        
+        .notification-dot {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background-color: var(--color-primary);
+            border-radius: 50%;
+            top: 10px;
+            right: 10px;
+        }
+		.welcome-header {
+		    background-color: var(--color-accent);
+		    padding: 15px;
+		    margin: -40px 0 15px;
+		    border-radius: 0 0 15px 15px;
+		}
+		
+		.welcome-text {
+		    font-weight: 600;
+		    font-size: 18px;
+		    color: var(--color-dark);
+		    margin-bottom: 5px;
+		}
+		
+		.subtitle {
+		    font-size: 14px;
+		    color: var(--color-dark);
+		    opacity: 0.8;
+		}
+    </style>
+</head>
+<body>
+    <!-- iOS 状态栏 -->
+    <div class="ios-status-bar">
+        <span class="time">20:15</span>
+        <div class="icons">
+            <i class="fas fa-signal"></i>
+            <i class="fas fa-wifi"></i>
+            <i class="fas fa-battery-full"></i>
+        </div>
+    </div>
+    
+    <div class="page-container">
+        <!-- 标题栏 -->
+        <div class="welcome-header">
+            <p class="welcome-text">云养空间</p>
+            <p class="subtitle">你的每一次点击，都在参与真实养殖</p>
+        </div>
+        
+        <div class="content">
+            <!-- 能量值和进度 -->
+            <div class="energy-bar">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <div class="flex items-center">
+                            <span class="energy-value">258</span>
+                            <span class="badge">+25</span>
+                        </div>
+                        <p class="text-sm text-gray-500">今日云养能量</p>
+                    </div>
+                    <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-seedling text-lg" style="color: var(--color-highlight);"></i>
+                    </div>
+                </div>
+                <div class="energy-progress">
+                    <div class="energy-fill"></div>
+                </div>
+                <p class="text-xs text-right mt-1 text-gray-500">距离下一级: 72能量</p>
+            </div>
+            
+            <!-- 游戏化农场场景
+            <div class="farm-scene">
+                <div class="farm-entity chicken">
+                    <div class="notification-dot animation-bounce"></div>
+                    <img src="https://img95.699pic.com/photo/40247/3545.jpg_wh860.jpg" alt="小鸡">
+                </div>
+                <div class="farm-entity pig">
+                    <img src="https://www.freeiconspng.com/uploads/pig-png-images-animal-7.png" alt="小猪">
+                </div>
+                <div class="farm-entity crop">
+                    <img src="https://www.freeiconspng.com/uploads/corn-png-23.png" alt="玉米">
+                </div>
+                <div class="farm-entity tree">
+                    <img src="https://www.freeiconspng.com/uploads/tree-png-23.png" alt="果树">
+                </div>
+            </div> -->
+            
+            <!-- 农场数据 -->
+            <div class="farm-footer">
+                <div class="farm-stats">
+                    <span class="stats-value">8</span>
+                    <span class="stats-label">已认领</span>
+                </div>
+                <div class="farm-stats">
+                    <span class="stats-value">3</span>
+                    <span class="stats-label">待收获</span>
+                </div>
+                <div class="farm-stats">
+                    <span class="stats-value">12kg</span>
+                    <span class="stats-label">总收益</span>
+                </div>
+                <div class="farm-stats">
+                    <span class="stats-value">35天</span>
+                    <span class="stats-label">平均周期</span>
+                </div>
+            </div>
+            
+            <!-- 四个功能模块 -->
+            <div class="farm-modules">
+                <a href="cloud-farm-new.html" class="farm-module">
+                    <i class="fas fa-plus-circle module-icon" style="color: var(--color-primary);"></i>
+                    <span class="module-title">认领新家禽农作物</span>
+                </a>
+                <a href="cloud-farm-my.html" class="farm-module">
+                    <i class="fas fa-list-alt module-icon" style="color: var(--color-highlight);"></i>
+                    <span class="module-title">查看我的认领</span>
+                </a>
+                <a href="cloud-farm-monitor.html" class="farm-module">
+                    <i class="fas fa-video module-icon" style="color: var(--color-accent);"></i>
+                    <span class="module-title">实时养殖监控</span>
+                </a>
+                <a href="cloud-farm-data.html" class="farm-module">
+                    <i class="fas fa-chart-line module-icon" style="color: var(--color-dark);"></i>
+                    <span class="module-title">生长数据分析</span>
+                </a>
+            </div>
+            
+            <!-- 农场记录 -->
+            <div class="section-title">最近动态</div>
+            <div class="card">
+                <div class="list-item">
+                    <i class="fas fa-egg mr-3" style="color: var(--color-primary);"></i>
+                    <div class="flex-1">
+                        <div class="font-semibold">您的散养鸡下蛋了</div>
+                        <div class="text-xs text-gray-500">今天 09:24</div>
+                    </div>
+                    <i class="fas fa-angle-right text-gray-400"></i>
+                </div>
+                <div class="list-item">
+                    <i class="fas fa-seedling mr-3" style="color: var(--color-accent);"></i>
+                    <div class="flex-1">
+                        <div class="font-semibold">有机水稻进入抽穗期</div>
+                        <div class="text-xs text-gray-500">昨天 15:30</div>
+                    </div>
+                    <i class="fas fa-angle-right text-gray-400"></i>
+                </div>
+                <div class="list-item">
+                    <i class="fas fa-apple-alt mr-3" style="color: var(--color-highlight);"></i>
+                    <div class="flex-1">
+                        <div class="font-semibold">果树开始挂果</div>
+                        <div class="text-xs text-gray-500">前天 12:15</div>
+                    </div>
+                    <i class="fas fa-angle-right text-gray-400"></i>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 底部导航栏 -->
+        <div class="bottom-nav">
+            <a href="home.html" class="nav-item">
+                <i class="fas fa-home"></i>
+                <span>首页</span>
+            </a>
+            <a href="shopping.html" class="nav-item">
+                <i class="fas fa-shopping-bag"></i>
+                <span>购物</span>
+            </a>
+            <a href="cloud-farm.html" class="nav-item active">
+                <i class="fas fa-leaf"></i>
+                <span>云养</span>
+            </a>
+            <a href="activity.html" class="nav-item">
+                <i class="fas fa-calendar-alt"></i>
+                <span>活动</span>
+            </a>
+            <a href="profile.html" class="nav-item">
+                <i class="fas fa-user"></i>
+                <span>我的</span>
+            </a>
+        </div>
+    </div>
+</body>
+</html>

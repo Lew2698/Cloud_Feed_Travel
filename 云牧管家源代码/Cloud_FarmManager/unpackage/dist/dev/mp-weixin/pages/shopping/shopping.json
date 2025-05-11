@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "购物",
+  "usingComponents": {
+    "tab-bar": "../../components/TabBar"
+  }
+}

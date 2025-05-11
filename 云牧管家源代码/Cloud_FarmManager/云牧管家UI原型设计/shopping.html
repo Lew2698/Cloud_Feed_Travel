@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>云养智旅 - 购物</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="components.css">
+    <style>
+        /* 购物页特有样式 */
+        .category-tabs {
+            display: flex;
+            overflow-x: auto;
+            border-bottom: 1px solid rgba(94, 100, 114, 0.1);
+            margin-bottom: 15px;
+            padding: 0 5px;
+        }
+
+        .category-tab {
+            padding: 12px 15px;
+            margin: 0 5px;
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--color-dark);
+            white-space: nowrap;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .category-tab.active {
+            color: var(--color-primary);
+            border-bottom-color: var(--color-primary);
+        }
+        
+        .product-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            padding-bottom: 20px;
+        }
+        
+        .product-item {
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(94, 100, 114, 0.08);
+            transition: all 0.3s ease;
+        }
+        
+        .product-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(94, 100, 114, 0.1);
+        }
+        
+        .product-item-image {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+        }
+        
+        .product-item-details {
+            padding: 12px;
+        }
+        
+        .product-item-name {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            line-height: 1.3;
+            color: var(--color-dark);
+            height: 36px;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+        
+        .product-item-price {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: 5px;
+        }
+        
+        .product-item-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: #999;
+        }
+        
+        .product-item-rating {
+            display: flex;
+            align-items: center;
+            margin-right: 30px;
+        }
+        
+        .product-item-rating i {
+            color: #FFD700;
+            margin-right: 2px;
+            font-size: 11px;
+        }
+        
+        .filter-bar {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding: 5px 0;
+        }
+        
+        .filter-option {
+            display: flex;
+            align-items: center;
+            font-size: 13px;
+            color: var(--color-dark);
+        }
+        
+        .filter-option i {
+            margin-left: 3px;
+            font-size: 12px;
+        }
+        
+        .featured-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: var(--color-primary);
+            color: white;
+            font-size: 10px;
+            padding: 3px 8px;
+            border-radius: 10px;
+        }
+        
+        .add-to-cart {
+            width: 28px;
+            height: 28px;
+            background-color: var(--color-primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            box-shadow: 0 2px 5px rgba(255, 166, 158, 0.3);
+        }
+        
+        .shop-header {
+            background-color: var(--color-accent);
+            padding: 15px;
+            margin: -40px 0 15px;
+            border-radius: 0 0 15px 15px;
+        }
+        
+        .shop-title {
+            font-weight: 600;
+            font-size: 18px;
+            color: var(--color-dark);
+            margin-bottom: 5px;
+        }
+        
+        .shop-slogan {
+            font-size: 14px;
+            color: var(--color-dark);
+            opacity: 0.8;
+        }
+        
+        .cart-fab {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background-color: var(--color-primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 3px 10px rgba(255, 166, 158, 0.4);
+            z-index: 10;
+        }
+        
+        .cart-fab .badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: var(--color-dark);
+            color: white;
+            font-size: 10px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .product-wrapper {
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+    <!-- iOS 状态栏 -->
+    <div class="ios-status-bar">
+        <span class="time">20:15</span>
+        <div class="icons">
+            <i class="fas fa-signal"></i>
+            <i class="fas fa-wifi"></i>
+            <i class="fas fa-battery-full"></i>
+        </div>
+    </div>
+    
+    <div class="page-container">
+        <!-- 商城标题栏 -->
+        <div class="shop-header">
+            <h1 class="shop-title">瑶山好物</h1>
+            <p class="shop-slogan">源自山野，健康自然</p>
+        </div>
+        
+        <div class="content">
+            <!-- 搜索栏 -->
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="搜索农产品、特产...">
+            </div>
+            
+            <!-- 分类标签 -->
+            <div class="category-tabs">
+                <div class="category-tab active">全部</div>
+                <div class="category-tab">农产品</div>
+                <div class="category-tab">瑶族特产</div>
+                <div class="category-tab">手工艺品</div>
+                <div class="category-tab">礼品套装</div>
+                <div class="category-tab">茶饮</div>
+            </div>
+            
+            <!-- 筛选栏 -->
+            <div class="filter-bar">
+                <div class="filter-option">
+                    <span>综合排序</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="filter-option">
+                    <span>销量优先</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="filter-option">
+                    <span>筛选</span>
+                    <i class="fas fa-filter"></i>
+                </div>
+            </div>
+            
+            <!-- 商品列表 -->
+            <div class="product-grid">
+                <!-- 商品1 -->
+                <div class="product-wrapper">
+                    <div class="product-item">
+                        <img src="https://pic.52112.com/180529/JPG-180529_298/hCSyEZ4ptM_small.jpg" class="product-item-image" alt="鸡蛋">
+                        <div class="product-item-details">
+                            <h3 class="product-item-name">瑶族野生鸡蛋 500g</h3>
+                            <p class="product-item-price">¥12</p>
+                            <div class="product-item-meta">
+                                <span>销量 586</span>
+                                <div class="product-item-rating">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.9</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="featured-badge">热销</div>
+                    <div class="add-to-cart">
+                        <i class="fas fa-plus"></i>
+                    </div>
+                </div>
+                
+                <!-- 商品2 -->
+                <div class="product-wrapper">
+                    <div class="product-item">
+                        <img src="https://file.cnkang.com/cnkfile1/M00/0A/01/ooYBAFcqrNSAZyqqAAOXFHCVQsE56.jpeg" class="product-item-image" alt="香芋">
+                        <div class="product-item-details">
+                            <h3 class="product-item-name">香芋 250g</h3>
+                            <p class="product-item-price">¥6</p>
+                            <div class="product-item-meta">
+                                <span>销量 412</span>
+                                <div class="product-item-rating">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.8</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="add-to-cart">
+                        <i class="fas fa-plus"></i>
+                    </div>
+                </div>
+                
+                <!-- 商品3 -->
+                <div class="product-wrapper">
+                    <div class="product-item">
+                        <img src="https://lingnancostume.gdut.edu.cn/__local/9/2B/47/2121F888A69E6932BE26DF9029E_B6C725FA_128671.jpg" class="product-item-image" alt="瑶绣">
+                        <div class="product-item-details">
+                            <h3 class="product-item-name">瑶绣 </h3>
+                            <p class="product-item-price">¥68</p>
+                            <div class="product-item-meta">
+                                <span>销量 356</span>
+                                <div class="product-item-rating">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.7</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="add-to-cart">
+                        <i class="fas fa-plus"></i>
+                    </div>
+                </div>
+                
+                <!-- 商品4 -->
+                <div class="product-wrapper">
+                    <div class="product-item">
+                        <img src="https://img95.699pic.com/photo/50170/8624.jpg_wh300.jpg!/fh/300/quality/90" class="product-item-image" alt="马蹄">
+                        <div class="product-item-details">
+                            <h3 class="product-item-name">马蹄 500g</h3>
+                            <p class="product-item-price">¥12</p>
+                            <div class="product-item-meta">
+                                <span>销量 289</span>
+                                <div class="product-item-rating">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.9</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="featured-badge">有机</div>
+                    <div class="add-to-cart">
+                        <i class="fas fa-plus"></i>
+                    </div>
+                </div>
+                
+                <!-- 商品5 -->
+                <div class="product-wrapper">
+                    <div class="product-item">
+                        <img src="https://cbu01.alicdn.com/img/ibank/2017/933/555/4250555339_919020146.jpg" class="product-item-image" alt="刺绣手帕">
+                        <div class="product-item-details">
+                            <h3 class="product-item-name">瑶族传统刺绣手帕</h3>
+                            <p class="product-item-price">¥58</p>
+                            <div class="product-item-meta">
+                                <span>销量 203</span>
+                                <div class="product-item-rating">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.6</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="featured-badge">手工</div>
+                    <div class="add-to-cart">
+                        <i class="fas fa-plus"></i>
+                    </div>
+                </div>
+                
+                <!-- 商品6 -->
+                <div class="product-wrapper">
+                    <div class="product-item">
+                        <img src="https://img95.699pic.com/photo/60026/3944.jpg_wh860.jpg" class="product-item-image" alt="干香菇">
+                        <div class="product-item-details">
+                            <h3 class="product-item-name">瑶山野生香菇 200g</h3>
+                            <p class="product-item-price">¥78</p>
+                            <div class="product-item-meta">
+                                <span>销量 178</span>
+                                <div class="product-item-rating">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.8</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="add-to-cart">
+                        <i class="fas fa-plus"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 购物车浮动按钮 -->
+        <div class="cart-fab">
+            <i class="fas fa-shopping-cart"></i>
+            <div class="badge">3</div>
+        </div>
+        
+        <!-- 底部导航栏 -->
+        <div class="bottom-nav">
+            <a href="home.html" class="nav-item">
+                <i class="fas fa-home"></i>
+                <span>首页</span>
+            </a>
+            <a href="shopping.html" class="nav-item active">
+                <i class="fas fa-shopping-bag"></i>
+                <span>购物</span>
+            </a>
+            <a href="cloud-farm.html" class="nav-item">
+                <i class="fas fa-leaf"></i>
+                <span>云养</span>
+            </a>
+            <a href="activity.html" class="nav-item">
+                <i class="fas fa-calendar-alt"></i>
+                <span>活动</span>
+            </a>
+            <a href="profile.html" class="nav-item">
+                <i class="fas fa-user"></i>
+                <span>我的</span>
+            </a>
+        </div>
+    </div>
+</body>
+</html> 

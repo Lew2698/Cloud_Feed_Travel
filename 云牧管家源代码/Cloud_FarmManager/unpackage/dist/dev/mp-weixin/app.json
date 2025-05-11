@@ -1,0 +1,13 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/shopping/shopping"
+  ],
+  "window": {
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "云养智旅",
+    "navigationBarBackgroundColor": "#386641",
+    "backgroundColor": "#f2e8cf"
+  },
+  "usingComponents": {}
+}

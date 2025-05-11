@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>云养智旅 - 认领新农作物/家禽</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="components.css">
+    <style>
+        /* 认领页面特有样式 */
+        .claim-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .claim-tab {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .claim-tab.active {
+            background-color: var(--color-highlight);
+            color: white;
+            font-weight: 600;
+        }
+        
+        .product-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .product-item {
+            background-color: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(94, 100, 114, 0.1);
+            position: relative;
+        }
+        
+        .product-image {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+        }
+        
+        .product-info {
+            padding: 10px;
+        }
+        
+        .product-name {
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 5px;
+            color: var(--color-dark);
+        }
+        
+        .product-desc {
+            font-size: 12px;
+            color: #777;
+            margin-bottom: 5px;
+        }
+        
+        .product-price {
+            font-weight: 700;
+            color: var(--color-primary);
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        
+        .product-btn {
+            background-color: var(--color-highlight);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 6px 12px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .product-btn:hover {
+            background-color: var(--color-dark);
+        }
+        
+        .popular-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: var(--color-primary);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 600;
+        }
+        
+        .filtered-section {
+            margin-bottom: 20px;
+        }
+        
+        .filter-chips {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+        
+        .filter-chip {
+            background-color: white;
+            border-radius: 20px;
+            padding: 8px 15px;
+            font-size: 12px;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-chip.active {
+            background-color: var(--color-dark);
+            color: white;
+        }
+		.sticky-top {
+			position: sticky;
+			top: 0;
+			z-index: 100;
+			background-color: white;
+			margin-top: -41px; /* 根据实际情况调整这个数值，以达到和绿色部分接触的效果 */
+		}
+    </style>
+</head>
+<body>
+    <!-- iOS 状态栏 -->
+    <div class="ios-status-bar">
+        <span class="time">20:15</span>
+        <div class="icons">
+            <i class="fas fa-signal"></i>
+            <i class="fas fa-wifi"></i>
+            <i class="fas fa-battery-full"></i>
+        </div>
+    </div>
+    
+    <div class="page-container">
+        <!-- 返回按钮和标题 -->
+        <div class="px-4 py-3 flex items-center bg-white sticky-top z-50 border-b">
+            <a href="cloud-farm.html" class="mr-4">
+                <i class="fas fa-arrow-left text-lg" style="color: var(--color-dark);"></i>
+            </a>
+            <h1 class="text-xl font-semibold" style="color: var(--color-dark);">认领新的家禽/农作物</h1>
+        </div>
+        
+        <div class="content">
+            <!-- 标签切换 -->
+            <div class="claim-tabs">
+                <div class="claim-tab active">家禽</div>
+                <div class="claim-tab">农作物</div>
+            </div>
+            
+            <!-- 家禽分类筛选 -->
+            <div class="filtered-section">
+                <div class="filter-chips">
+                    <div class="filter-chip active">全部</div>
+                    <div class="filter-chip">散养鸡</div>
+                    <div class="filter-chip">肉鸭</div>
+                    <div class="filter-chip">土鹅</div>
+                    <div class="filter-chip">土猪</div>
+                    <div class="filter-chip">黑山羊</div>
+                </div>
+            </div>
+            
+            <!-- 产品展示网格 -->
+            <div class="product-grid">
+                <!-- 产品1 -->
+                <div class="product-item">
+                    <div class="popular-badge">热门</div>
+                    <img src="https://img95.699pic.com/photo/40247/3545.jpg_wh860.jpg" alt="散养鸡" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name">瑶山散养鸡</h3>
+                        <p class="product-desc">高山散养，纯粮喂食</p>
+                        <p class="product-price">¥188/只</p>
+                        <button class="product-btn">立即认领</button>
+                    </div>
+                </div>
+                
+                <!-- 产品2 -->
+                <div class="product-item">
+                    <img src="https://i04.c.aliimg.com/img/ibank/2014/636/251/1529152636_835789403.jpg" alt="黑猪" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name">瑶山黑猪</h3>
+                        <p class="product-desc">散养山黑猪，肉质鲜美</p>
+                        <p class="product-price">¥1288/只</p>
+                        <button class="product-btn">立即认领</button>
+                    </div>
+                </div>
+                
+                <!-- 产品3 -->
+                <div class="product-item">
+                    <img src="https://pic.52112.com/180207/180207_25/jB0XxdPkTO.jpg" alt="肉鸭" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name">瑶山肉鸭</h3>
+                        <p class="product-desc">水稻田放养，生态健康</p>
+                        <p class="product-price">¥128/只</p>
+                        <button class="product-btn">立即认领</button>
+                    </div>
+                </div>
+                
+                <!-- 产品4 -->
+                <div class="product-item">
+                    <img src="https://img.mp.sohu.com/upload/20170930/23674369667344d4b28456a20e2c41ab_th.jpg" alt="土鹅" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name">瑶山土鹅</h3>
+                        <p class="product-desc">湖边放养，肉质细嫩</p>
+                        <p class="product-price">¥258/只</p>
+                        <button class="product-btn">立即认领</button>
+                    </div>
+                </div>
+                
+                <!-- 产品5 -->
+                <div class="product-item">
+                    <img src="https://img95.699pic.com/photo/50090/6367.jpg_wh300.jpg" alt="黑山羊" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name">瑶山黑山羊</h3>
+                        <p class="product-desc">山地放养，肉质鲜美</p>
+                        <p class="product-price">¥888/只</p>
+                        <button class="product-btn">立即认领</button>
+                    </div>
+                </div>
+                
+                <!-- 产品6 -->
+                <div class="product-item">
+                    <img src="https://n.sinaimg.cn/sinakd20111/65/w1024h641/20220830/12f4-fc24c76b7905f3767d147f7917580a69.jpg" alt="乌骨鸡" class="product-image">
+                    <div class="product-info">
+                        <h3 class="product-name">瑶山黄牛</h3>
+                        <p class="product-desc">药材喂养，滋补养生</p>
+                        <p class="product-price">¥228/只</p>
+                        <button class="product-btn">立即认领</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 认领说明 -->
+            <div class="card">
+                <h3 class="font-semibold mb-2" style="color: var(--color-dark);">认领须知</h3>
+                <ul class="text-sm text-gray-600 list-disc pl-4">
+                    <li class="mb-1">认领后您可以获得该家禽的所有权</li>
+                    <li class="mb-1">我们提供专业养殖服务直至出栏</li>
+                    <li class="mb-1">您可随时通过监控查看养殖情况</li>
+                    <li class="mb-1">出栏后可选择配送到家或自取</li>
+                    <li>认领可获得相应云养能量值</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- 底部导航栏 -->
+        <div class="bottom-nav">
+            <a href="home.html" class="nav-item">
+                <i class="fas fa-home"></i>
+                <span>首页</span>
+            </a>
+            <a href="shopping.html" class="nav-item">
+                <i class="fas fa-shopping-bag"></i>
+                <span>购物</span>
+            </a>
+            <a href="cloud-farm.html" class="nav-item active">
+                <i class="fas fa-leaf"></i>
+                <span>云养</span>
+            </a>
+            <a href="activity.html" class="nav-item">
+                <i class="fas fa-calendar-alt"></i>
+                <span>活动</span>
+            </a>
+            <a href="profile.html" class="nav-item">
+                <i class="fas fa-user"></i>
+                <span>我的</span>
+            </a>
+        </div>
+    </div>
+</body>
+</html> 

@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>云养智旅 - 生长数据</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="components.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* 数据可视化页面特有样式 */
+        .chart-container {
+            background-color: white;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(94, 100, 114, 0.1);
+        }
+        
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .chart-title {
+            font-weight: 600;
+            font-size: 16px;
+            color: var(--color-dark);
+        }
+        
+        .chart-options {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .chart-option {
+            background-color: #f5f5f5;
+            border-radius: 20px;
+            padding: 5px 10px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .chart-option.active {
+            background-color: var(--color-accent);
+            color: var(--color-dark);
+            font-weight: 600;
+        }
+        
+        .data-card {
+            background-color: white;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 10px rgba(94, 100, 114, 0.1);
+        }
+        
+        .data-tab-headers {
+            display: flex;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .data-tab {
+            padding: 10px 15px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+        
+        .data-tab.active {
+            color: var(--color-highlight);
+            border-bottom: 2px solid var(--color-highlight);
+            font-weight: 600;
+        }
+        
+        .data-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #f5f5f5;
+        }
+        
+        .data-item:last-child {
+            border-bottom: none;
+        }
+        
+        .data-label {
+            color: #777;
+            font-size: 14px;
+        }
+        
+        .data-value {
+            font-weight: 600;
+            color: var(--color-dark);
+        }
+        
+        .data-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, var(--color-accent), var(--color-highlight));
+            border-radius: 15px;
+            padding: 15px;
+            color: white;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+        
+        .data-detail {
+            margin-top: 15px;
+        }
+        
+        .detail-row {
+            padding: 8px 0;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+        
+        .detail-label {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .detail-value {
+            font-weight: 600;
+            color: var(--color-dark);
+        }
+        
+        .chart-legend {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 10px;
+            font-size: 12px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+        }
+        
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+        
+        .rate-badge {
+            display: inline-flex;
+            align-items: center;
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-left: 5px;
+        }
+        
+        .rate-badge i {
+            font-size: 10px;
+            margin-right: 2px;
+        }
+        
+        .rate-down {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+		.sticky-top {
+		            position: sticky;
+		            top: 0;
+		            z-index: 100;
+		            background-color: white;
+		            margin-top: -41px; /* 根据实际情况调整这个数值，以达到和绿色部分接触的效果 */
+	   }
+    </style>
+</head>
+<body>
+    <!-- iOS 状态栏 -->
+    <div class="ios-status-bar">
+        <span class="time">20:15</span>
+        <div class="icons">
+            <i class="fas fa-signal"></i>
+            <i class="fas fa-wifi"></i>
+            <i class="fas fa-battery-full"></i>
+        </div>
+    </div>
+    
+    <div class="page-container">
+        <!-- 返回按钮和标题 -->
+        <div class="px-4 py-3 flex items-center bg-white sticky-top z-50 border-b">
+            <a href="cloud-farm.html" class="mr-4">
+                <i class="fas fa-arrow-left text-lg" style="color: var(--color-dark);"></i>
+            </a>
+            <h1 class="text-xl font-semibold" style="color: var(--color-dark);">生长数据分析</h1>
+        </div>
+        
+        <div class="content">
+            <!-- 数据摘要 -->
+            <div class="data-stats">
+                <div class="stat-card">
+                    <div class="stat-value">8只</div>
+                    <div class="stat-label">总认领数量</div>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, var(--color-primary), var(--color-highlight));">
+                    <div class="stat-value">75%</div>
+                    <div class="stat-label">平均生长进度</div>
+                </div>
+            </div>
+            
+            <!-- 数据选择 -->
+            <div class="data-tab-headers mt-5">
+                <div class="data-tab active">瑶山散养鸡 #A5831</div>
+                <div class="data-tab">有机玉米</div>
+            </div>
+            
+            <!-- 生长趋势图 -->
+            <div class="chart-container">
+                <div class="chart-header">
+                    <span class="chart-title">生长趋势</span>
+                    <div class="chart-options">
+                        <div class="chart-option">周</div>
+                        <div class="chart-option active">月</div>
+                        <div class="chart-option">季</div>
+                    </div>
+                </div>
+                <canvas id="growthChart" height="180"></canvas>
+                <div class="chart-legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: var(--color-highlight);"></div>
+                        <span>体重</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: var(--color-accent);"></div>
+                        <span>饲料消耗</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 健康指标图 -->
+            <div class="chart-container">
+                <div class="chart-header">
+                    <span class="chart-title">健康指标</span>
+                    <div class="chart-options">
+                        <div class="chart-option">周</div>
+                        <div class="chart-option active">月</div>
+                        <div class="chart-option">季</div>
+                    </div>
+                </div>
+                <canvas id="healthChart" height="180"></canvas>
+                <div class="chart-legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: var(--color-primary);"></div>
+                        <span>活动指数</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: var(--color-dark);"></div>
+                        <span>健康评分</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 详细数据 -->
+            <div class="data-card">
+                <h3 class="font-semibold mb-3" style="color: var(--color-dark);">详细数据</h3>
+                <div class="data-detail">
+                    <div class="detail-row">
+                        <span class="detail-label">当前体重</span>
+                        <span class="detail-value">1.8kg 
+                            <span class="rate-badge">
+                                <i class="fas fa-arrow-up"></i> 5%
+                            </span>
+                        </span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">预计出栏体重</span>
+                        <span class="detail-value">2.3kg</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">饲料消耗</span>
+                        <span class="detail-value">4.5kg</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">饲料转化率</span>
+                        <span class="detail-value">2.5:1</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">日均增重</span>
+                        <span class="detail-value">28g 
+                            <span class="rate-badge">
+                                <i class="fas fa-arrow-up"></i> 3%
+                            </span>
+                        </span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">健康评分</span>
+                        <span class="detail-value">92/100</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">生长周期</span>
+                        <span class="detail-value">65天/90天</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">预计收益</span>
+                        <span class="detail-value">￥210</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 养殖建议 -->
+            <div class="data-card">
+                <h3 class="font-semibold mb-3" style="color: var(--color-dark);">智能养殖建议</h3>
+                <div class="text-sm text-gray-600">
+                    <p class="mb-2">• 根据当前生长数据，您的瑶山散养鸡生长状况良好，预计按时出栏。</p>
+                    <p class="mb-2">• 已为您的散养鸡安排了12月初的疫苗接种计划，将提升其健康水平。</p>
+                    <p class="mb-2">• 本月气温下降，建议调整饲料配方，增加能量摄入。</p>
+                    <p>• 提高活动区的光照时间，有助于提升鸡只的活动量和生长速度。</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 底部导航栏 -->
+        <div class="bottom-nav">
+            <a href="home.html" class="nav-item">
+                <i class="fas fa-home"></i>
+                <span>首页</span>
+            </a>
+            <a href="shopping.html" class="nav-item">
+                <i class="fas fa-shopping-bag"></i>
+                <span>购物</span>
+            </a>
+            <a href="cloud-farm.html" class="nav-item active">
+                <i class="fas fa-leaf"></i>
+                <span>云养</span>
+            </a>
+            <a href="activity.html" class="nav-item">
+                <i class="fas fa-calendar-alt"></i>
+                <span>活动</span>
+            </a>
+            <a href="profile.html" class="nav-item">
+                <i class="fas fa-user"></i>
+                <span>我的</span>
+            </a>
+        </div>
+    </div>
+    
+    <script>
+        // 设置Chart.js的全局默认值
+        Chart.defaults.font.family = "'PingFang SC', 'Helvetica Neue', Arial, sans-serif";
+        Chart.defaults.font.size = 12;
+        Chart.defaults.color = '#777';
+        
+        // 生长趋势图
+        const growthCtx = document.getElementById('growthChart').getContext('2d');
+        const growthChart = new Chart(growthCtx, {
+            type: 'line',
+            data: {
+                labels: ['7月', '8月', '9月', '10月'],
+                datasets: [
+                    {
+                        label: '体重(kg)',
+                        data: [0.5, 0.9, 1.4, 1.8],
+                        borderColor: '#6a994e',
+                        backgroundColor: 'rgba(106, 153, 78, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    },
+                    {
+                        label: '饲料消耗(kg)',
+                        data: [1.2, 2.4, 3.6, 4.5],
+                        borderColor: '#a7c957',
+                        backgroundColor: 'rgba(167, 201, 87, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+        
+        // 健康指标图
+        const healthCtx = document.getElementById('healthChart').getContext('2d');
+        const healthChart = new Chart(healthCtx, {
+            type: 'line',
+            data: {
+                labels: ['7月', '8月', '9月', '10月'],
+                datasets: [
+                    {
+                        label: '活动指数',
+                        data: [75, 82, 88, 85],
+                        borderColor: '#bc4749',
+                        backgroundColor: 'rgba(188, 71, 73, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    },
+                    {
+                        label: '健康评分',
+                        data: [85, 90, 94, 92],
+                        borderColor: '#386641',
+                        backgroundColor: 'rgba(56, 102, 65, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        min: 50,
+                        max: 100
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

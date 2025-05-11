@@ -1,0 +1,123 @@
+{
+	"pages": [
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "云养智旅"
+			}
+		},
+		{
+			"path": "pages/shopping/shopping",
+			"style": {
+				"navigationBarTitleText": "购物"
+			}
+		},
+		{
+			"path": "pages/farm/farm",
+			"style": {
+				"navigationBarTitleText": "云养空间"
+			}
+		},
+		{
+			"path": "pages/farm/new",
+			"style": {
+				"navigationBarTitleText": "认领新家禽农作物"
+			}
+		},
+		{
+			"path": "pages/farm/my",
+			"style": {
+				"navigationBarTitleText": "我的认领"
+			}
+		},
+		{
+			"path": "pages/farm/monitor",
+			"style": {
+				"navigationBarTitleText": "实时监控"
+			}
+		},
+		{
+			"path": "pages/farm/data",
+			"style": {
+				"navigationBarTitleText": "生长数据分析"
+			}
+		},
+		{
+			"path": "pages/activity/activity",
+			"style": {
+				"navigationBarTitleText": "活动中心",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/profile/profile",
+			"style": {
+				"navigationBarTitleText": "个人中心",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/shopping/detail/detail",
+			"style": {
+				"navigationBarTitleText": "商品详情",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/shopping/cart/cart",
+			"style": {
+				"navigationBarTitleText": "购物车"
+			}
+		},
+		{
+			"path": "pages/shopping/detail/trace",
+			"style": {
+				"navigationBarTitleText": "区块链溯源"
+			}
+		}
+	],
+	"globalStyle": {
+		"navigationBarTextStyle": "white",
+		"navigationBarTitleText": "云养智旅",
+		"navigationBarBackgroundColor": "#386641",
+		"backgroundColor": "#f2e8cf"
+	},
+	"tabBar": {
+		"color": "#7A7E83",
+		"selectedColor": "#bc4749",
+		"backgroundColor": "#ffffff",
+		"list": [
+			{
+				"pagePath": "pages/index/index",
+				"text": "首页",
+				"iconPath": "static/tabbar/home.png",
+				"selectedIconPath": "static/tabbar/home-active.png"
+			},
+			{
+				"pagePath": "pages/shopping/shopping",
+				"text": "购物",
+				"iconPath": "static/tabbar/shopping.png",
+				"selectedIconPath": "static/tabbar/shopping-active.png"
+			},
+			{
+				"pagePath": "pages/farm/farm",
+				"text": "云养",
+				"iconPath": "static/tabbar/farm.png",
+				"selectedIconPath": "static/tabbar/farm-active.png"
+			},
+			{
+				"pagePath": "pages/activity/activity",
+				"text": "活动",
+				"iconPath": "static/tabbar/activity.png",
+				"selectedIconPath": "static/tabbar/activity-active.png"
+			},
+			{
+				"pagePath": "pages/profile/profile",
+				"text": "我的",
+				"iconPath": "static/tabbar/profile.png",
+				"selectedIconPath": "static/tabbar/profile-active.png"
+			}
+		]
+	},
+	"uniIdRouter": {}
+}

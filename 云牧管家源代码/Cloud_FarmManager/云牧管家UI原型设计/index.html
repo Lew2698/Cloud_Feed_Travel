@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>云养智旅</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="components.css">
+    <style>
+        body {
+            background-color: var(--color-secondary);
+            color: var(--color-dark);
+            font-family: 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        .prototype-frame {
+            width: 375px;
+            height: 812px;
+            border-radius: 40px;
+            overflow: hidden;
+            border: 12px solid black;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(56, 102, 65, 0.2);
+        }
+
+        .prototype-wrapper {
+            margin: 30px;
+        }
+
+        .prototype-title {
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--color-dark);
+        }
+
+        .prototype-frames-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px;
+        }
+
+        h1 {
+            color: var(--color-dark);
+            font-weight: 700;
+        }
+    </style>
+</head>
+
+<body class="p-8">
+    <header class="mb-10 text-center">
+        <h1 class="text-4xl mb-4">云养智旅 - UI原型设计</h1>
+        <p class="text-xl mb-6">基于iPhone 15 Pro尺寸的界面设计</p>
+        <div class="flex justify-center space-x-6">
+            <div class="flex items-center">
+                <div class="w-6 h-6 rounded-full mr-2" style="background-color:var(--color-primary);"></div>
+                <span>鲜红色，类似成熟的果实</span>
+            </div>
+            <div class="flex items-center">
+                <div class="w-6 h-6 rounded-full mr-2" style="background-color:var(--color-secondary);"></div>
+                <span>浅米色，类似麦田颜色</span>
+            </div>
+            <div class="flex items-center">
+                <div class="w-6 h-6 rounded-full mr-2" style="background-color:var(--color-accent);"></div>
+                <span>浅绿色，代表生长的植物</span>
+            </div>
+            <div class="flex items-center">
+                <div class="w-6 h-6 rounded-full mr-2" style="background-color:var(--color-highlight);"></div>
+                <span>中绿色，代表茂盛的植被</span>
+            </div>
+            <div class="flex items-center">
+                <div class="w-6 h-6 rounded-full mr-2" style="background-color:var(--color-dark);"></div>
+                <span>深绿色，代表成熟的森林</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="prototype-frames-container">
+        <!-- 首页 -->
+        <div class="prototype-wrapper">
+            <h2 class="prototype-title text-xl">首页</h2>
+            <div class="prototype-frame">
+                <iframe src="home.html" width="100%" height="100%" frameborder="0" scrolling="yes"
+                    style="overflow: hidden;"></iframe>
+            </div>
+        </div>
+
+        <!-- 购物页 -->
+        <div class="prototype-wrapper">
+            <h2 class="prototype-title text-xl">购物</h2>
+            <div class="prototype-frame">
+                <iframe src="shopping.html" width="100%" height="100%" frameborder="0" scrolling="yes"
+                    style="overflow: hidden;"></iframe>
+            </div>
+        </div>
+
+        <!-- 活动页 -->
+        <div class="prototype-wrapper">
+            <h2 class="prototype-title text-xl">活动</h2>
+            <div class="prototype-frame">
+                <iframe src="activity.html" width="100%" height="100%" frameborder="0" scrolling="yes"
+                    style="overflow: hidden;"></iframe>
+            </div>
+        </div>
+
+        <!-- 我的页面 -->
+        <div class="prototype-wrapper">
+            <h2 class="prototype-title text-xl">我的</h2>
+            <div class="prototype-frame">
+                <iframe src="profile.html" width="100%" height="100%" frameborder="0" scrolling="yes"
+                    style="overflow: hidden;"></iframe>
+            </div>
+        </div>
+
+        <!-- 产品详情页 -->
+        <div class="prototype-wrapper">
+            <h2 class="prototype-title text-xl">产品详情</h2>
+            <div class="prototype-frame">
+                <iframe src="product-detail.html" width="100%" height="100%" frameborder="0" scrolling="yes"
+                    style="overflow: hidden;"></iframe>
+            </div>
+        </div>
+
+        <!-- 购物车页面 -->
+        <div class="prototype-wrapper">
+            <h2 class="prototype-title text-xl">购物车</h2>
+            <div class="prototype-frame">
+                <iframe src="cart.html" width="100%" height="100%" frameborder="0" scrolling="yes"
+                    style="overflow: hidden;"></iframe>
+            </div>
+        </div>
+
+        <!-- 云养页面 -->
+        <div class="prototype-wrapper">
+            <h2 class="prototype-title text-xl">云养</h2>
+            <div class="prototype-frame">
+                <iframe src="cloud-farm.html" width="100%" height="100%" frameborder="0" scrolling="yes"
+                    style="overflow: hidden;"></iframe>
+            </div>
+        </div>
+
+        <!-- 认养新的页面 -->
+        <div class="prototype-wrapper">
+            <h2 class="prototype-title text-xl">认养新的</h2>
+            <div class="prototype-frame">
+                <iframe src="cloud-farm-new.html" width="100%" height="100%" frameborder="0" scrolling="yes"
+                    style="overflow: hidden;"></iframe>
+            </div>
+        </div>
+        <!-- 我的认养页面 -->
+        <div class="prototype-wrapper">
+            <h2 class="prototype-title text-xl">我的认养</h2>
+            <div class="prototype-frame">
+                <iframe src="cloud-farm-my.html" width="100%" height="100%" frameborder="0" scrolling="yes"
+                    style="overflow: hidden;"></iframe>
+            </div>
+        </div>
+        <!-- 实时监控页面 -->
+        <div class="prototype-wrapper">
+            <h2 class="prototype-title text-xl">实时监控</h2>
+            <div class="prototype-frame">
+                <iframe src="cloud-farm-monitor.html" width="100%" height="100%" frameborder="0" scrolling="yes"
+                    style="overflow: hidden;"></iframe>
+            </div>
+        </div>
+        <!-- 生长数据页面 -->
+        <div class="prototype-wrapper">
+            <h2 class="prototype-title text-xl">生长数据</h2>
+            <div class="prototype-frame">
+                <iframe src="cloud-farm-data.html" width="100%" height="100%" frameborder="0" scrolling="yes"
+                    style="overflow: hidden;"></iframe>
+            </div>
+        </div>
+        
+        <!-- 区块链溯源页面 -->
+        <div class="prototype-wrapper">
+            <h2 class="prototype-title text-xl">区块链溯源</h2>
+            <div class="prototype-frame">
+                <iframe src="blockchain-trace.html" width="100%" height="100%" frameborder="0" scrolling="yes"
+                    style="overflow: hidden;"></iframe>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
