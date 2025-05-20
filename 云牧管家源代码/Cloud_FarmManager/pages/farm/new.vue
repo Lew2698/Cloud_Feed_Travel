@@ -86,7 +86,7 @@
 						name: '瑶山散养鸡',
 						desc: '高山散养，纯粮喂食',
 						price: '188/只',
-						image: 'https://img95.699pic.com/photo/40247/3545.jpg_wh860.jpg',
+						image: '/static2/3545.jpg_wh860.jpg',
 						type: '散养鸡',
 						isPopular: true
 					},
@@ -95,7 +95,7 @@
 						name: '瑶山黑猪',
 						desc: '散养山黑猪，肉质鲜美',
 						price: '1288/只',
-						image: 'https://i04.c.aliimg.com/img/ibank/2014/636/251/1529152636_835789403.jpg',
+						image: '/static2/1529152636_835789403.jpg',
 						type: '土猪'
 					},
 					{
@@ -103,7 +103,7 @@
 						name: '瑶山肉鸭',
 						desc: '水稻田放养，生态健康',
 						price: '128/只',
-						image: 'https://pic.52112.com/180207/180207_25/jB0XxdPkTO.jpg',
+						image: '/static2/jB0XxdPkTO.jpg',
 						type: '肉鸭'
 					},
 					{
@@ -111,23 +111,23 @@
 						name: '瑶山土鹅',
 						desc: '湖边放养，肉质细嫩',
 						price: '258/只',
-						image: 'https://img.mp.sohu.com/upload/20170930/23674369667344d4b28456a20e2c41ab_th.jpg',
+						image: '/static2/23674369667344d4b28456a20e2c41ab_th.jpg',
 						type: '土鹅'
 					},
 					{
 						id: 'p5',
-						name: '瑶山黑山羊',
+						name: '瑶山山羊',
 						desc: '山地放养，肉质鲜美',
 						price: '888/只',
-						image: 'https://img95.699pic.com/photo/50090/6367.jpg_wh300.jpg',
-						type: '黑山羊'
+						image: '/static2/6367.jpg_wh300.jpg',
+						type: '山羊'
 					},
 					{
 						id: 'p6',
 						name: '瑶山黄牛',
 						desc: '药材喂养，滋补养生',
 						price: '2288/只',
-						image: 'https://n.sinaimg.cn/sinakd20111/65/w1024h641/20220830/12f4-fc24c76b7905f3767d147f7917580a69.jpg',
+						image: '/static2/12f4-fc24c76b7905f3767d147f7917580a69.jpg',
 						type: '其他'
 					}
 				],
@@ -137,7 +137,7 @@
 						name: '有机稻米',
 						desc: '无农药种植，生态健康',
 						price: '158/袋',
-						image: 'https://img.51miz.com/Element/00/88/36/58/7b5bd57e_E883658_2a96e2f4.jpg',
+						image: '/static2/t04154e11dec4b5a97b.jpg',
 						type: '有机大米',
 						isPopular: true
 					},
@@ -146,7 +146,7 @@
 						name: '有机蔬菜',
 						desc: '当季新鲜，绿色种植',
 						price: '188/箱',
-						image: 'https://pic.616pic.com/ys_img/00/07/79/04JrGwXS92.jpg',
+						image: '/static2/t011ed712751467b01c.jpg',
 						type: '时令蔬菜'
 					}
 				]

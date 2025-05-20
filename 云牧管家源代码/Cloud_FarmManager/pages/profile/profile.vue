@@ -3,7 +3,7 @@
 		<!-- 个人信息头部 -->
 		<view class="profile-header">
 			<view class="profile-info">
-				<image src="https://images.unsplash.com/photo-1545167622-3a6ac756afa4?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" class="profile-avatar"></image>
+				<image src="/static2/photo-1545167622-3a6ac756afa4.avif" class="profile-avatar"></image>
 				<view>
 					<text class="profile-name">云养者</text>
 					<text class="profile-id">ID: 1001583</text>
@@ -45,28 +45,28 @@
 			<!-- 订单管理 -->
 			<view class="menu-section">
 				<view class="menu-section-title">订单管理</view>
-				<view class="menu-item" @click="navigateTo('/pages/profile/orders')">
-					<text class="iconfont icon-shopping-bag menu-icon"></text>
-					<text class="menu-label">全部订单</text>
-					<text class="iconfont icon-chevron-right menu-arrow"></text>
+				<view class="menu-item">
+				  <image class="menu-icon" src="/static/icons/profile icon/shopping-bag (2).svg"></image>
+				  <text class="menu-label">全部订单</text>
+				  <text class="iconfont icon-chevron-right menu-arrow"></text>
 				</view>
-				<view class="menu-item" @click="navigateTo('/pages/profile/orders?type=unpaid')">
-					<text class="iconfont icon-credit-card menu-icon"></text>
+				<view class="menu-item">
+					<image class="menu-icon" src="/static/icons/profile icon/credit card-fill.svg"></image>
 					<text class="menu-label">待付款</text>
 					<text class="notification-count">2</text>
 				</view>
-				<view class="menu-item" @click="navigateTo('/pages/profile/orders?type=unshipped')">
-					<text class="iconfont icon-box menu-icon"></text>
+				<view class="menu-item">
+					<image class="menu-icon" src="/static/icons/profile icon/truck.svg"></image>
 					<text class="menu-label">待发货</text>
 					<text class="iconfont icon-chevron-right menu-arrow"></text>
 				</view>
 				<view class="menu-item" @click="navigateTo('/pages/profile/orders?type=unreceived')">
-					<text class="iconfont icon-truck menu-icon"></text>
+					<image class="menu-icon" src="/static/icons/profile icon/history.svg"></image>
 					<text class="menu-label">待收货</text>
 					<text class="notification-count">1</text>
 				</view>
-				<view class="menu-item" @click="navigateTo('/pages/profile/orders?type=unreviewed')">
-					<text class="iconfont icon-comment-alt menu-icon"></text>
+				<view class="menu-item">
+					<image class="menu-icon" src="/static/icons/profile icon/comment-alt.svg"></image>
 					<text class="menu-label">待评价</text>
 					<text class="iconfont icon-chevron-right menu-arrow"></text>
 				</view>
@@ -75,28 +75,28 @@
 			<!-- 我的服务 -->
 			<view class="menu-section">
 				<view class="menu-section-title">我的服务</view>
-				<view class="menu-item" @click="navigateTo('/pages/profile/favorites')">
-					<text class="iconfont icon-heart menu-icon"></text>
+				<view class="menu-item">
+					<image class="menu-icon" src="/static/icons/profile icon/heart-fill.svg"></image>
 					<text class="menu-label">我的收藏</text>
 					<text class="iconfont icon-chevron-right menu-arrow"></text>
 				</view>
-				<view class="menu-item" @click="navigateTo('/pages/profile/address')">
-					<text class="iconfont icon-map-marker-alt menu-icon"></text>
+				<view class="menu-item">
+					<image class="menu-icon" src="/static/icons/profile icon/定位.svg"></image>
 					<text class="menu-label">收货地址</text>
 					<text class="iconfont icon-chevron-right menu-arrow"></text>
 				</view>
-				<view class="menu-item" @click="navigateTo('/pages/profile/history')">
-					<text class="iconfont icon-history menu-icon"></text>
+				<view class="menu-item">
+					<image class="menu-icon" src="/static/icons/profile icon/history.svg"></image>
 					<text class="menu-label">浏览历史</text>
 					<text class="iconfont icon-chevron-right menu-arrow"></text>
 				</view>
-				<view class="menu-item" @click="navigateTo('/pages/farm/my')">
-					<text class="iconfont icon-leaf menu-icon"></text>
+				<view class="menu-item">
+					<image class="menu-icon" src="/static/icons/profile icon/leaf.svg"></image>
 					<text class="menu-label">我的云养</text>
 					<text class="iconfont icon-chevron-right menu-arrow"></text>
 				</view>
-				<view class="menu-item" @click="navigateTo('/pages/profile/coupons')">
-					<text class="iconfont icon-ticket-alt menu-icon"></text>
+				<view class="menu-item">
+					<image class="menu-icon" src="/static/icons/profile icon/ticket-alt.svg"></image>
 					<text class="menu-label">我的卡券</text>
 					<text class="iconfont icon-chevron-right menu-arrow"></text>
 				</view>
@@ -104,18 +104,18 @@
 			
 			<!-- 设置与帮助 -->
 			<view class="menu-section">
-				<view class="menu-item" @click="contactService">
-					<text class="iconfont icon-headset menu-icon"></text>
+				<view class="menu-item">
+					<image class="menu-icon" src="/static/icons/profile icon/headset-fill.svg"></image>
 					<text class="menu-label">在线客服</text>
 					<text class="iconfont icon-chevron-right menu-arrow"></text>
 				</view>
-				<view class="menu-item" @click="navigateTo('/pages/profile/help')">
-					<text class="iconfont icon-question-circle menu-icon"></text>
+				<view class="menu-item">
+					<image class="menu-icon" src="/static/icons/profile icon/question-circle-fill.svg"></image>
 					<text class="menu-label">帮助中心</text>
 					<text class="iconfont icon-chevron-right menu-arrow"></text>
 				</view>
-				<view class="menu-item" @click="navigateTo('/pages/profile/settings')">
-					<text class="iconfont icon-cog menu-icon"></text>
+				<view class="menu-item">
+					<image class="menu-icon" src="/static/icons/profile icon/cog-fill.svg"></image>
 					<text class="menu-label">系统设置</text>
 					<text class="iconfont icon-chevron-right menu-arrow"></text>
 				</view>
@@ -358,11 +358,10 @@
 	}
 	
 	.menu-icon {
-		margin-right: 30rpx;
-		color: $color-primary;
-		font-size: 36rpx;
-		width: 44rpx;
-		text-align: center;
+	  margin-right: 30rpx;
+	  width: 44rpx;  /* 图标宽度 */
+	  height: 44rpx; /* 图标高度 */
+	  object-fit: contain;  /* 保持图标比例 */
 	}
 	
 	.menu-label {

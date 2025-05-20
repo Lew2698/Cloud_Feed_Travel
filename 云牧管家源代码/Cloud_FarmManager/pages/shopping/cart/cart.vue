@@ -3,7 +3,9 @@
 		<!-- 购物车标题栏 -->
 		<view class="cart-header">
 			<navigator open-type="navigateBack" class="back-icon">
-				<text class="iconfont icon-arrow-left"></text>
+				<view class="back-icon">
+					<image src="/static/icons/shopping icon/icon-arrow-left备份.svg" class="icon-svg"></image>
+				</view>
 			</navigator>
 			<text class="header-title">购物车</text>
 		</view>
@@ -11,7 +13,9 @@
 		<view class="cart-container">
 			<!-- 满减促销信息 -->
 			<view class="promotion-bar">
-				<text class="iconfont icon-tags"></text>
+				<view class="back-icon">
+					<image src="/static/tabbar/shopping-bag (2).svg" class="icon-svg"></image>
+				</view>
 				<text>全场满199元立减30元，满299元立减50元</text>
 			</view>
 			
@@ -19,7 +23,9 @@
 			<block v-if="cartItems.length > 0">
 				<!-- 购物车项目标题 -->
 				<view class="cart-section-title">
-					<text class="iconfont icon-shopping-bag"></text>
+					<view class="back-icon">
+						<image src="/static/tabbar/shopping-bag (2).svg" class="icon-svg"></image>
+					</view>
 					<text>瑶山好物 ({{cartItems.length}}件商品)</text>
 				</view>
 				
@@ -27,7 +33,9 @@
 				<view class="cart-item" v-for="(item, index) in cartItems" :key="index">
 					<view class="item-checkbox" @click="toggleItemSelect(index)">
 						<view class="custom-checkbox" :class="{ checked: item.selected }">
-							<text class="iconfont icon-check" v-if="item.selected"></text>
+							<view class="custom-checkbox">
+							  <image src="/static/icons/shopping icon/check.svg" v-if="item.selected"></image>
+							</view>
 						</view>
 					</view>
 					<image :src="item.image" :alt="item.name" class="item-image"></image>
@@ -44,7 +52,7 @@
 						</view>
 					</view>
 					<view class="item-actions">
-						<text class="iconfont icon-trash-alt" @click="removeItem(index)"></text>
+						<image src="/static/icons/shopping icon/icon_trash_alt.svg" class="icon-svg" @click="removeItem(index)"></image>
 					</view>
 				</view>
 				
@@ -73,7 +81,7 @@
 		<view class="cart-footer" v-if="cartItems.length > 0">
 			<view class="select-all" @click="toggleSelectAll">
 				<view class="custom-checkbox" :class="{ checked: isAllSelected }">
-					<text class="iconfont icon-check" v-if="isAllSelected"></text>
+					<image src="/static/icons/shopping icon/check.svg" v-if="isAllSelected"></image>
 				</view>
 				<text>全选</text>
 			</view>
@@ -98,7 +106,7 @@
 						price: 12,
 						quantity: 1,
 						selected: true,
-						image: 'https://pic.52112.com/180529/JPG-180529_298/hCSyEZ4ptM_small.jpg'
+						image: '/static2/hCSyEZ4ptM_small.jpg'
 					},
 					{
 						id: 2,
@@ -107,7 +115,7 @@
 						price: 12,
 						quantity: 2,
 						selected: true,
-						image: 'https://file.cnkang.com/cnkfile1/M00/0A/01/ooYBAFcqrNSAZyqqAAOXFHCVQsE56.jpeg'
+						image: '/static2/ooYBAFcqrNSAZyqqAAOXFHCVQsE56.jpeg'
 					},
 					{
 						id: 3,
@@ -116,7 +124,7 @@
 						price: 68,
 						quantity: 1,
 						selected: true,
-						image: 'https://lingnancostume.gdut.edu.cn/__local/9/2B/47/2121F888A69E6932BE26DF9029E_B6C725FA_128671.jpg'
+						image: '/static2/2121F888A69E6932BE26DF9029E_B6C725FA_128671.jpg'
 					}
 				],
 				recommendItems: [
@@ -124,19 +132,19 @@
 						id: 4,
 						name: '瑶山野生香菇',
 						price: 78,
-						image: 'https://img95.699pic.com/photo/60026/3944.jpg_wh860.jpg'
+						image: '/static2/3944.jpg_wh860.jpg'
 					},
 					{
 						id: 5,
 						name: '瑶山古法山茶油',
 						price: 188,
-						image: 'https://pic3.zhimg.com/v2-a582c6ef03ee0473ff546458328c18b6_720w.jpg?source=172ae18b'
+						image: '/static2/v2-a582c6ef03ee0473ff546458328c18b6_720w.png'
 					},
 					{
 						id: 6,
 						name: '瑶山有机稻米',
 						price: 128,
-						image: 'https://img95.699pic.com/photo/50168/8039.jpg_wh860.jpg'
+						image: '/static2/photo-1515339760107-1952b7a08454.avif'
 					}
 				],
 				discount: 3
@@ -601,5 +609,12 @@
 		border-radius: 40rpx;
 		font-size: 30rpx;
 		font-weight: 500;
+	}
+	.icon-svg {
+	  width: 40rpx;
+	  height: 40rpx;
+	}
+	.back-icon {
+	  margin-left: -10rpx; // 或其他你需要的值
 	}
 </style> 

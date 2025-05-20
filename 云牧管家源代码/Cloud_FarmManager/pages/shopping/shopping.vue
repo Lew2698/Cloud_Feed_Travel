@@ -27,15 +27,15 @@
 			<view class="filter-bar">
 				<view class="filter-option">
 					<text>综合排序</text>
-					<text class="iconfont icon-chevron-down"></text>
+					<image src="/static/icons/shopping icon/chevron-down.svg"></image>
 				</view>
 				<view class="filter-option">
 					<text>销量优先</text>
-					<text class="iconfont icon-chevron-down"></text>
+					<image src="/static/icons/shopping icon/chevron-down.svg"></image>
 				</view>
 				<view class="filter-option">
 					<text>筛选</text>
-					<text class="iconfont icon-filter"></text>
+					<image src="/static/icons/shopping icon/筛选.svg"></image>
 				</view>
 			</view>
 			
@@ -44,14 +44,14 @@
 				<!-- 商品1 -->
 				<view class="product-wrapper" @click="goToProductDetail(1)">
 					<view class="product-item">
-						<image src="/static/images/product1.jpg" class="product-item-image" mode="aspectFill"></image>
+						<image src="/static2/hCSyEZ4ptM_small.jpg" class="product-item-image" mode="aspectFill"></image>
 						<view class="product-item-details">
 							<text class="product-item-name">瑶族野生鸡蛋 500g</text>
 							<text class="product-item-price">¥12</text>
 							<view class="product-item-meta">
 								<text>销量 586</text>
 								<view class="product-item-rating">
-									<text class="iconfont icon-star"></text>
+									<image src="/static/icons/shopping icon/star.svg" class="icon-icon" mode="widthFix" />
 									<text>4.9</text>
 								</view>
 							</view>
@@ -59,63 +59,63 @@
 					</view>
 					<text class="featured-badge">热销</text>
 					<view class="add-to-cart" @click.stop="addToCart(1)">
-						<text class="iconfont icon-plus"></text>
+						<image src="/static/icons/shopping icon/plus.svg" class="icon-icon" mode="widthFix" />
 					</view>
 				</view>
 				
 				<!-- 商品2 -->
 				<view class="product-wrapper" @click="goToProductDetail(2)">
 					<view class="product-item">
-						<image src="/static/images/product2.jpg" class="product-item-image" mode="aspectFill"></image>
+						<image src="/static2/ooYBAFcqrNSAZyqqAAOXFHCVQsE56.jpeg" class="product-item-image" mode="aspectFill"></image>
 						<view class="product-item-details">
 							<text class="product-item-name">香芋 250g</text>
 							<text class="product-item-price">¥6</text>
 							<view class="product-item-meta">
 								<text>销量 412</text>
 								<view class="product-item-rating">
-									<text class="iconfont icon-star"></text>
+									<image src="/static/icons/shopping icon/star.svg" class="icon-icon" mode="widthFix" />
 									<text>4.8</text>
 								</view>
 							</view>
 						</view>
 					</view>
 					<view class="add-to-cart" @click.stop="addToCart(2)">
-						<text class="iconfont icon-plus"></text>
+						<image src="/static/icons/shopping icon/plus.svg" class="icon-icon" mode="widthFix" />
 					</view>
 				</view>
 				
 				<!-- 商品3 -->
 				<view class="product-wrapper" @click="goToProductDetail(3)">
 					<view class="product-item">
-						<image src="/static/images/product3.jpg" class="product-item-image" mode="aspectFill"></image>
+						<image src="/static2/2121F888A69E6932BE26DF9029E_B6C725FA_128671.jpg" class="product-item-image" mode="aspectFill"></image>
 						<view class="product-item-details">
 							<text class="product-item-name">瑶绣</text>
 							<text class="product-item-price">¥68</text>
 							<view class="product-item-meta">
 								<text>销量 356</text>
 								<view class="product-item-rating">
-									<text class="iconfont icon-star"></text>
+									<image src="/static/icons/shopping icon/star.svg" class="icon-icon" mode="widthFix" />
 									<text>4.7</text>
 								</view>
 							</view>
 						</view>
 					</view>
 					<view class="add-to-cart" @click.stop="addToCart(3)">
-						<text class="iconfont icon-plus"></text>
+						<image src="/static/icons/shopping icon/plus.svg" class="icon-icon" mode="widthFix" />
 					</view>
 				</view>
 				
 				<!-- 商品4 -->
 				<view class="product-wrapper" @click="goToProductDetail(4)">
 					<view class="product-item">
-						<image src="/static/images/product4.jpg" class="product-item-image" mode="aspectFill"></image>
+						<image src="/static2/90 (1).jpg" class="product-item-image" mode="aspectFill"></image>
 						<view class="product-item-details">
 							<text class="product-item-name">马蹄 500g</text>
 							<text class="product-item-price">¥12</text>
 							<view class="product-item-meta">
 								<text>销量 289</text>
 								<view class="product-item-rating">
-									<text class="iconfont icon-star"></text>
+									<image src="/static/icons/shopping icon/star.svg" class="icon-icon" mode="widthFix" />
 									<text>4.9</text>
 								</view>
 							</view>
@@ -123,21 +123,21 @@
 					</view>
 					<text class="featured-badge">有机</text>
 					<view class="add-to-cart" @click.stop="addToCart(4)">
-						<text class="iconfont icon-plus"></text>
+						<image src="/static/icons/shopping icon/plus.svg" class="icon-icon" mode="widthFix" />
 					</view>
 				</view>
 				
 				<!-- 商品5 -->
 				<view class="product-wrapper" @click="goToProductDetail(5)">
 					<view class="product-item">
-						<image src="/static/images/product5.jpg" class="product-item-image" mode="aspectFill"></image>
+						<image src="/static2/4250555339_919020146.jpg" class="product-item-image" mode="aspectFill"></image>
 						<view class="product-item-details">
 							<text class="product-item-name">瑶族传统刺绣手帕</text>
 							<text class="product-item-price">¥58</text>
 							<view class="product-item-meta">
 								<text>销量 203</text>
 								<view class="product-item-rating">
-									<text class="iconfont icon-star"></text>
+									<image src="/static/icons/shopping icon/star.svg" class="icon-icon" mode="widthFix" />
 									<text>4.6</text>
 								</view>
 							</view>
@@ -145,28 +145,28 @@
 					</view>
 					<text class="featured-badge">手工</text>
 					<view class="add-to-cart" @click.stop="addToCart(5)">
-						<text class="iconfont icon-plus"></text>
+						<image src="/static/icons/shopping icon/plus.svg" class="icon-icon" mode="widthFix" />
 					</view>
 				</view>
 				
 				<!-- 商品6 -->
 				<view class="product-wrapper" @click="goToProductDetail(6)">
 					<view class="product-item">
-						<image src="/static/images/product6.jpg" class="product-item-image" mode="aspectFill"></image>
+						<image src="/static2/3944.jpg_wh860.jpg" class="product-item-image" mode="aspectFill"></image>
 						<view class="product-item-details">
 							<text class="product-item-name">瑶山野生香菇 200g</text>
 							<text class="product-item-price">¥78</text>
 							<view class="product-item-meta">
 								<text>销量 178</text>
 								<view class="product-item-rating">
-									<text class="iconfont icon-star"></text>
+									<image src="/static/icons/shopping icon/star.svg" class="icon-icon" mode="widthFix" />
 									<text>4.8</text>
 								</view>
 							</view>
 						</view>
 					</view>
 					<view class="add-to-cart" @click.stop="addToCart(6)">
-						<text class="iconfont icon-plus"></text>
+						<image src="/static/icons/shopping icon/plus.svg" class="icon-icon" mode="widthFix" />
 					</view>
 				</view>
 			</view>
@@ -174,7 +174,7 @@
 		
 		<!-- 购物车浮动按钮 -->
 		<view class="cart-fab" @click="goToCart()">
-			<text class="iconfont icon-shopping-cart"></text>
+			<image src="/static/icons/shopping icon/shopping-cart-fill.svg"></image>
 			<text class="badge">3</text>
 		</view>
 		
@@ -317,9 +317,22 @@
 		color: $color-dark;
 	}
 	
+	.filter-option image {
+	  width: 24rpx;
+	  height: 24rpx;
+	  margin-left: 10rpx;
+	  vertical-align: middle;
+	}
+
 	.filter-option .iconfont {
 		margin-left: 6rpx;
 		font-size: 24rpx;
+	}
+	
+	.icon-icon {
+	  width: 32rpx;
+	  height: 32rpx;
+	  display: inline-block;
 	}
 	
 	/* 商品网格 */
@@ -441,6 +454,11 @@
 		font-size: 40rpx;
 	}
 	
+	.cart-fab image {
+		width: 48rpx;
+		height: 48rpx;
+	}
+	
 	.cart-fab .badge {
 		position: absolute;
 		top: -10rpx;
@@ -455,4 +473,4 @@
 		align-items: center;
 		justify-content: center;
 	}
-</style> 
+</style>

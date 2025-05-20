@@ -18,7 +18,7 @@
 						<text class="energy-desc">今日云养能量</text>
 					</view>
 					<view class="energy-icon">
-						<text class="iconfont icon-seedling"></text>
+						<image src="/static/icons/shopping icon/seeding.svg" class="seeding-icon"></image>
 					</view>
 				</view>
 				<view class="energy-progress">
@@ -50,19 +50,19 @@
 			<!-- 四个功能模块 -->
 			<view class="farm-modules">
 				<view class="farm-module" @click="navigateTo('/pages/farm/new')">
-					<text class="iconfont icon-plus-circle module-icon"></text>
+					<image src="/static/icons/cloud-farm icon/fas fa-plus-circle (1).svg" class="icon-icon" mode="widthFix" />
 					<text class="module-title">认领新家禽农作物</text>
 				</view>
 				<view class="farm-module" @click="navigateTo('/pages/farm/my')">
-					<text class="iconfont icon-list-alt module-icon"></text>
+					<image src="/static/icons/cloud-farm icon/ticket-alt.svg" class="icon-icon" mode="widthFix" />
 					<text class="module-title">查看我的认领</text>
 				</view>
 				<view class="farm-module" @click="navigateTo('/pages/farm/monitor')">
-					<text class="iconfont icon-video module-icon"></text>
+					<image src="/static/icons/cloud-farm icon/video-fill.svg" class="icon-icon" mode="widthFix" />
 					<text class="module-title">实时养殖监控</text>
 				</view>
 				<view class="farm-module" @click="navigateTo('/pages/farm/data')">
-					<text class="iconfont icon-chart-line module-icon"></text>
+					<image src="/static/icons/cloud-farm icon/chart-line.svg" class="icon-icon" mode="widthFix" />
 					<text class="module-title">生长数据分析</text>
 				</view>
 			</view>
@@ -71,7 +71,7 @@
 			<text class="section-title">最近动态</text>
 			<view class="card">
 				<view class="list-item">
-					<text class="iconfont icon-egg list-icon"></text>
+					<image src="/static/icons/cloud-farm icon/egg.svg" class="else-icon"></image>
 					<view class="list-content">
 						<text class="list-title">您的散养鸡下蛋了</text>
 						<text class="list-time">今天 09:24</text>
@@ -79,7 +79,7 @@
 					<text class="iconfont icon-angle-right list-arrow"></text>
 				</view>
 				<view class="list-item">
-					<text class="iconfont icon-seedling list-icon"></text>
+					<image src="/static/icons/cloud-farm icon/seeding.svg" style="width: 35rpx; height: 50rpx;" class="else-icon"></image>
 					<view class="list-content">
 						<text class="list-title">有机水稻进入抽穗期</text>
 						<text class="list-time">昨天 15:30</text>
@@ -87,7 +87,7 @@
 					<text class="iconfont icon-angle-right list-arrow"></text>
 				</view>
 				<view class="list-item">
-					<text class="iconfont icon-apple-alt list-icon"></text>
+					<image src="/static/icons/cloud-farm icon/Apple.svg" class="else-icon"></image>
 					<view class="list-content">
 						<text class="list-title">果树开始挂果</text>
 						<text class="list-time">前天 12:15</text>
@@ -355,7 +355,7 @@
 	}
 	
 	.list-content {
-		flex: 1;
+		margin-left: 10rpx;
 	}
 	
 	.list-title {
@@ -387,5 +387,19 @@
 	
 	.items-center {
 		align-items: center;
+	}
+	.icon-icon {
+	  width: 60rpx;
+	  height: 60rpx;
+	  display: inline-block;
+	  transform: translateY(-10rpx);
+	}
+	.seeding-icon{
+		width:50rpx;
+		height:50rpx;
+	}
+	.else-icon{
+		width:30rpx;
+		height:30rpx;
 	}
 </style> 

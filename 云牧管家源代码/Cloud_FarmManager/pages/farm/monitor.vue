@@ -3,7 +3,7 @@
 		<!-- 返回按钮和标题 -->
 		<view class="header">
 			<navigator open-type="navigateBack" class="back-btn">
-				<text class="iconfont icon-arrow-left"></text>
+				<image src="/static/icons/shopping icon/左箭头2.svg" class="arrow-icon"></image>
 			</navigator>
 			<text class="header-title">实时监控</text>
 		</view>
@@ -25,7 +25,7 @@
 					@click="activeItemId = item.id"
 				>
 					<view class="monitor-icon">
-						<text class="iconfont" :class="item.icon"></text>
+						<image :src="item.icon" class="icon-img" mode="widthFix" />
 					</view>
 					<text class="monitor-name">{{item.name}}</text>
 					<text class="monitor-id">{{item.id}}</text>
@@ -95,7 +95,7 @@
 			<text class="section-title">今日饲养记录</text>
 			<view class="card">
 				<view class="list-item" v-for="(item, index) in feedingRecords" :key="index">
-					<text class="iconfont" :class="item.icon"></text>
+					<image :src="item.icon" class="icon-img" mode="widthFix" />
 					<view class="list-content">
 						<text class="list-title">{{item.title}}</text>
 						<text class="list-time">{{item.time}} | {{item.desc}}</text>
@@ -117,32 +117,32 @@
 						id: '#A5831',
 						name: '散养鸡',
 						fullName: '瑶山散养鸡 #A5831',
-						icon: 'icon-kiwi-bird',
-						liveImage: 'https://img95.699pic.com/photo/40247/3545.jpg_wh860.jpg',
+						icon: '/static/icons/monitor icon/kiwi-bird.svg',
+						liveImage: '/static2/3545.jpg_wh860.jpg',
 						type: 'poultry'
 					},
 					{
 						id: '#P3492',
 						name: '黑猪',
 						fullName: '瑶山黑猪 #P3492',
-						icon: 'icon-piggy-bank',
-						liveImage: 'https://i04.c.aliimg.com/img/ibank/2014/636/251/1529152636_835789403.jpg',
+						icon: '/static/icons/monitor icon/piggy-bank.svg',
+						liveImage: '/static2/1529152636_835789403.jpg',
 						type: 'poultry'
 					},
 					{
 						id: '#G1205',
 						name: '土鹅',
 						fullName: '瑶山土鹅 #G1205',
-						icon: 'icon-drumstick-bite',
-						liveImage: 'https://img.mp.sohu.com/upload/20170930/23674369667344d4b28456a20e2c41ab_th.jpg',
+						icon: '/static/icons/monitor icon/Swan.svg',
+						liveImage: '/static2/23674369667344d4b28456a20e2c41ab_th.jpg',
 						type: 'poultry'
 					},
 					{
 						id: '#C1001',
 						name: '有机玉米',
 						fullName: '有机玉米 #C1001',
-						icon: 'icon-seedling',
-						liveImage: 'https://pic9.jiangzi.com/20200720/67a2cfed4e91e1a411bbb1ff591cafdc.jpg',
+						icon: '/static/icons/monitor icon/玉米.svg',
+						liveImage: '/static2/67a2cfed4e91e1a411bbb1ff591cafdc.jpg',
 						type: 'crops'
 					}
 				],
@@ -160,19 +160,19 @@
 				],
 				feedingRecords: [
 					{ 
-						icon: 'icon-utensils',
+						icon: '/static/icons/monitor icon/fas fa-utensils 2.svg',
 						title: '早间投喂',
 						time: '07:30',
 						desc: '有机谷物饲料'
 					},
 					{
-						icon: 'icon-broom',
+						icon: "/static/icons/monitor icon/broom-ball-solid.svg",
 						title: '环境清理',
 						time: '09:15',
 						desc: '养殖区清洁'
 					},
 					{
-						icon: 'icon-utensils',
+						icon: '/static/icons/monitor icon/fas fa-utensils 2.svg',
 						title: '午间投喂',
 						time: '13:00',
 						desc: '蔬菜混合饲料'
@@ -585,6 +585,7 @@
 	
 	.list-content {
 		flex: 1;
+		margin-left: 20rpx;
 	}
 	
 	.list-title {
@@ -616,5 +617,14 @@
 	
 	.iconfont.icon-seedling:before {
 		content: '\f4d8';
+	}
+	.arrow-icon{
+		width:60rpx;
+		height:50rpx;
+		margin-top: 10rpx;
+	}
+	.icon-img {
+		width: 40rpx;
+		height: 40rpx;
 	}
 </style> 

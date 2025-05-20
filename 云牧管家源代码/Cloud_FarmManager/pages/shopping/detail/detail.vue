@@ -3,10 +3,10 @@
 		<!-- 产品图片画廊 -->
 		<view class="gallery-container">
 			<navigator open-type="navigateBack" class="back-button">
-				<text class="iconfont icon-arrow-left"></text>
+				<image src="/static/icons/shopping icon/左箭头.svg" class="icon-svg"></image>
 			</navigator>
 			<view class="share-button" @click="shareProduct">
-				<text class="iconfont icon-share-alt"></text>
+				<image src="/static/icons/shopping icon/share-alt.svg" class="icon-svg"></image>
 			</view>
 			<swiper 
 				class="gallery-swiper" 
@@ -51,14 +51,14 @@
 			
 			<!-- 区块链溯源 -->
 			<view class="blockchain-trace" @click="navigateTo('/pages/shopping/detail/trace')">
-				<view class="blockchain-icon">
-					<text class="iconfont icon-link"></text>
-				</view>
-				<view class="blockchain-info">
-					<text class="blockchain-title">区块链溯源</text>
-					<text class="blockchain-desc">可追溯采集、加工、检验、物流全过程</text>
-				</view>
-				<text class="iconfont icon-chevron-right menu-arrow"></text>
+			  <view class="blockchain-icon">
+				<image class="trace-icon" src="/static/icons/shopping icon/link.svg"></image>
+			  </view>
+			  <view class="blockchain-info">
+				<text class="blockchain-title">区块链溯源</text>
+				<text class="blockchain-desc">可追溯采集、加工、检验、物流全过程</text>
+			  </view>
+			  <image class="trace-icon" src="/static/icons/activity icon/定位.svg"></image>
 			</view>
 			
 			<!-- 养殖户信息 -->
@@ -67,7 +67,7 @@
 				<view>
 					<text class="farm-name">{{product.farmName}}</text>
 					<view class="farm-location">
-						<text class="iconfont icon-map-marker-alt"></text>
+						<image class="trace-icons" src="/static/icons/activity icon/定位.svg"></image>
 						<text>{{product.farmLocation}}</text>
 					</view>
 				</view>
@@ -188,10 +188,10 @@
 					sales: '586',
 					favorableRate: 98,
 					images: [
-						'https://pic.52112.com/180529/JPG-180529_298/hCSyEZ4ptM_small.jpg',
-						'https://cp1.douguo.com/upload/caiku/a/f/8/yuan_af14c2ee4fda89819c3cd58a234b8b68.jpeg',
-						'https://img95.699pic.com/photo/50165/8380.jpg_wh860.jpg',
-						'https://pic.52112.com/180606/JPG-180606_129/UWwPfXP2yh_small.jpg'
+						'/static2/hCSyEZ4ptM_small.jpg',
+						'/static2/UWwPfXP2yh_small.jpg',
+						'/static2/8380.jpg_wh860.jpg',
+						'/static2/yuan_af14c2ee4fda89819c3cd58a234b8b68.jpeg'
 					],
 					description: [
 						'瑶族鸡蛋源自瑶族聚居的青山秀水间，瑶族同胞们在山林间散养当地特色土鸡。土鸡们自由穿梭于林间草地，啄食山间昆虫、草籽，饮用清冽山泉水。这些土鸡在天然生态环境中生长，所产鸡蛋完全遵循自然规律孕育。瑶族鸡蛋无激素、抗生素添加，外壳色泽温润，蛋黄紧实饱满、颜色橙红，富含蛋白质、多种维生素及矿物质等营养物质，以天然本真的品质，传递着瑶族聚居地独特的生态之美与自然馈赠 。',
@@ -199,7 +199,7 @@
 					],
 					farmId: 1,
 					farmName: '瑶山养鸡合作社',
-					farmLogo: 'https://img95.699pic.com/photo/50257/4378.jpg_wh860.jpg',
+					farmLogo: '/static2/4378.jpg_wh860.jpg',
 					farmLocation: '湘西瑶族自治县',
 					specs: [
 						{ label: '品名', value: '瑶山野生鸡蛋' },
@@ -210,8 +210,8 @@
 						{ label: '认证', value: '有机认证、绿色食品认证' }
 					],
 					detailImages: [
-						'https://pic.52112.com/180529/JPG-180529_298/hCSyEZ4ptM_small.jpg',
-						'https://cp1.douguo.com/upload/caiku/a/f/8/yuan_af14c2ee4fda89819c3cd58a234b8b68.jpeg',
+						'/static2/90.jpg',
+						'/static2/215116ec82444d536ffc9db9894bd298.jpg',
 						'https://img95.699pic.com/photo/50165/8380.jpg_wh860.jpg',
 						'https://pic.52112.com/180606/JPG-180606_129/UWwPfXP2yh_small.jpg',
 						'https://img95.699pic.com/photo/60014/8614.jpg_wh300.jpg!/fh/300/quality/90',
@@ -220,7 +220,7 @@
 					comments: [
 						{
 							username: '张*红',
-							avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
+							avatar: '/static2/photo-1494790108377-be9c29b29330.avif',
 							date: '2025-04-15',
 							rating: 5,
 							content: '收到瑶族鸡蛋超惊喜！包装严实又精致，防震设计让每一颗鸡蛋都完好无损。打开包装，就能感受到天然的气息，鸡蛋外壳带着山林间的质朴质感。煮熟后品尝，蛋香浓郁醇厚，口感细腻嫩滑，完全没有腥味。卖家介绍说这是瑶族同胞山林散养土鸡所产，无激素添加，吃得安心又健康，下次还会回购！',
@@ -231,7 +231,7 @@
 						},
 						{
 							username: '王*生',
-							avatar: 'https://images.unsplash.com/photo-1599566150163-29194dcaad36?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80',
+							avatar: '/static2/photo-1599566150163-29194dcaad36.avif',
 							date: '2025-04-10',
 							rating: 5,
 							content: '第二次购买了，家里人都很喜欢。这个瑶山鸡蛋确实和超市里的不一样，有一种特别的香味，质量很好，而且通过App还可以查看鸡蛋的溯源信息，非常安心。'
@@ -834,5 +834,17 @@
 	
 	.iconfont.icon-chevron-right:before {
 		content: '\f054';
+	}
+	.icon-svg {
+	  width: 40rpx;
+	  height: 40rpx;
+	}
+	.trace-icon {
+	  width: 45rpx;
+	  height: 45rpx;
+	}
+	.trace-icons {
+	  width: 30rpx;
+	  height: 30rpx;
 	}
 </style> 

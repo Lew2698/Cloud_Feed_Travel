@@ -3,7 +3,7 @@
 		<!-- 返回按钮和标题 -->
 		<view class="header">
 			<navigator open-type="navigateBack" class="back-btn">
-				<text class="iconfont icon-arrow-left"></text>
+				<image src="/static/icons/shopping icon/左箭头2.svg" class="arrow-icon"></image>
 			</navigator>
 			<text class="header-title">我的认领</text>
 		</view>
@@ -59,7 +59,7 @@
 						</view>
 						<view class="claim-milestone">
 							<view class="milestone-icon">
-								<text class="iconfont icon-check"></text>
+								<image src="/static/icons/cloud-farm icon/ic_tick.svg" class="tick-icon"></image>
 							</view>
 							<view class="milestone-content">
 								<text class="milestone-date">{{item.lastUpdateDate}}</text>
@@ -70,15 +70,15 @@
 						</view>
 						<view class="claim-actions">
 							<button class="action-btn btn-monitor" @click="navigateTo('/pages/farm/monitor')">
-								<text class="iconfont icon-video"></text>
+								<image src="/static/icons/cloud-farm icon/video.svg" class="video-icon"></image>
 								查看监控
 							</button>
 							<button class="action-btn btn-details" @click="navigateTo('/pages/farm/data')" v-if="item.status === 'growing'">
-								<text class="iconfont icon-chart-line"></text>
+								<image src="/static/icons/cloud-farm icon/chart-line.svg" class="video-icon"></image>
 								生长详情
 							</button>
 							<button class="action-btn btn-harvest" @click="harvestProduct(item)" v-else>
-								<text class="iconfont icon-leaf"></text>
+								<image src="/static/icons/cloud-farm icon/leaf2.svg" class="video-icon"></image>
 								立即收获
 							</button>
 						</view>
@@ -120,7 +120,7 @@
 						lastUpdateDate: '2023-05-10',
 						milestoneTitle: '已完成疫苗接种',
 						milestoneDesc: '完成了所有必要疫苗的接种，健康状况良好',
-						image: 'https://seopic.699pic.com/photo/50013/3799.jpg_wh1200.jpg'
+						image: '/static2/3799.jpg_wh1200.jpg'
 					},
 					{
 						id: 'c2',
@@ -135,7 +135,7 @@
 						lastUpdateDate: '2023-05-10',
 						milestoneTitle: '已成熟',
 						milestoneDesc: '玉米已成熟，随时可以收获',
-						image: 'https://pic9.jiangzi.com/20200720/67a2cfed4e91e1a411bbb1ff591cafdc.jpg'
+						image: '/static2/67a2cfed4e91e1a411bbb1ff591cafdc.jpg'
 					},
 					{
 						id: 'c3',
@@ -150,7 +150,7 @@
 						lastUpdateDate: '2023-05-10',
 						milestoneTitle: '进入挂果期',
 						milestoneDesc: '蜜桃已开始挂果，生长状况良好',
-						image: 'https://img95.699pic.com/photo/50164/3397.jpg_wh860.jpg'
+						image: '/static2/3397.jpg_wh860.jpg'
 					}
 				]
 			}
@@ -498,5 +498,20 @@
 		color: #999;
 		margin-bottom: 40rpx;
 		display: block;
+	}
+	.arrow-icon{
+		width:60rpx;
+		height:50rpx;
+		margin-top: 10rpx;
+	}
+	.tick-icon{
+		width:30rpx;
+		height:30rpx;
+	}
+	.video-icon {
+	  width: 25rpx;
+	  height: 25rpx;
+	  margin-right: 10rpx; /* 增加图标与文字间距 */
+	  vertical-align: middle; /* 保持垂直居中 */
 	}
 </style> 

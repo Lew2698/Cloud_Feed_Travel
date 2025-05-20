@@ -15,33 +15,33 @@
 			
 			<!-- 轮播图 -->
 			<view class="hero-banner">
-				<view class="featured-tag">热门</view>
-				<image src="/static/images/banner.jpg" mode="aspectFill"></image>
+				<view class="featured-tag" wx:if="{{true}}">热门</view>
+				<image src="/static2/photo-1523741543316-beb7fc7023d8.avif" alt="生态农场"></image>
 			</view>
 			
 			<!-- 快速功能访问 -->
 			<view class="quick-access">
 				<view class="quick-access-item">
 					<view class="quick-access-icon" style="background-color: var(--accent-color);">
-						<text class="iconfont icon-seedling"></text>
+					   <image src="/static/icons/home icon/seeding.svg" mode="aspectFit" style="width: 100rpx; height: 80rpx;"></image>
 					</view>
 					<text class="quick-access-label">我的认养</text>
 				</view>
 				<view class="quick-access-item">
-					<view class="quick-access-icon" style="background-color: var(--dark-color);">
-						<text class="iconfont icon-link"></text>
+					<view class="quick-access-icon" style="background-color: var(--accent-color);">
+					   <image src="/static/icons/home icon/link.svg" mode="aspectFit" style="width: 80rpx; height: 60rpx;"></image>
 					</view>
 					<text class="quick-access-label">区块链追溯</text>
 				</view>
 				<view class="quick-access-item">
-					<view class="quick-access-icon" style="background-color: var(--primary-color);">
-						<text class="iconfont icon-video"></text>
+					<view class="quick-access-icon" style="background-color: var(--accent-color);">
+					   <image src="/static/icons/home icon/video.svg" mode="aspectFit" style="width: 80rpx; height: 60rpx;"></image>
 					</view>
 					<text class="quick-access-label">实时监控</text>
 				</view>
 				<view class="quick-access-item">
-					<view class="quick-access-icon" style="background-color: var(--highlight-color);">
-						<text class="iconfont icon-chart-line"></text>
+					<view class="quick-access-icon" style="background-color: var(--accent-color);">
+					   <image src="/static/icons/home icon/chart-line.svg" mode="aspectFit" style="width: 80rpx; height: 60rpx;"></image>
 					</view>
 					<text class="quick-access-label">生长数据</text>
 				</view>
@@ -52,14 +52,14 @@
 				<text class="section-title">瑶族特色文化</text>
 				<view class="feature-cards">
 					<view class="feature-card">
-						<image src="/static/images/feature1.jpg" class="feature-image" mode="aspectFill"></image>
+						<image src="/static2/photo-1533900298318-6b8da08a523e.avif" class="feature-image" mode="aspectFill"></image>
 						<view class="feature-info">
 							<text class="feature-title">瑶族服饰展</text>
 							<text class="feature-desc">探索千年瑶族传统服饰文化</text>
 						</view>
 					</view>
 					<view class="feature-card">
-						<image src="/static/images/feature2.jpg" class="feature-image" mode="aspectFill"></image>
+						<image src="/static2/R-C.jpg" class="feature-image" mode="aspectFill"></image>
 						<view class="feature-info">
 							<text class="feature-title">瑶族山寨游</text>
 							<text class="feature-desc">体验原汁原味的瑶族生活</text>
@@ -72,24 +72,24 @@
 			<view class="product-recommendations">
 				<text class="section-title">热门农产品</text>
 				<view class="product-card">
-					<image src="/static/images/product1.jpg" class="product-image" mode="aspectFill"></image>
+					<image src="/static2/photo-1457296898342-cdd24585d095.avif" class="product-image" mode="aspectFill"></image>
 					<view class="product-details">
 						<text class="product-name">有机水果礼盒</text>
 						<text class="product-price">¥188</text>
 						<view class="product-meta">
 							<text>已售 342</text>
-							<text>4.9 <text class="iconfont icon-star"></text></text>
+							<text>4.8 <image src="/static/icons/shopping icon/star.svg" class="star-icon"></image></text>
 						</view>
 					</view>
 				</view>
 				<view class="product-card">
-					<image src="/static/images/product2.jpg" class="product-image" mode="aspectFill"></image>
+					<image src="/static2/hCSyEZ4ptM_small.jpg" class="product-image" mode="aspectFill"></image>
 					<view class="product-details">
 						<text class="product-name">瑶族野生鸡蛋</text>
 						<text class="product-price">¥128</text>
 						<view class="product-meta">
 							<text>已售 215</text>
-							<text>4.8 <text class="iconfont icon-star"></text></text>
+							<text>4.8 <image src="/static/icons/shopping icon/star.svg" class="star-icon"></image></text>
 						</view>
 					</view>
 				</view>
@@ -209,7 +209,7 @@
 	.quick-access {
 		display: flex;
 		justify-content: space-between;
-		margin: 40rpx 0;
+		margin: 70rpx 0;
 	}
 	
 	.quick-access-item {
@@ -328,7 +328,10 @@
 		font-size: 24rpx;
 		color: #777;
 	}
-	
+	.star-icon{
+		width:30rpx;
+		height:30rpx;
+	}
 	/* 颜色变量 */
 	page {
 		--primary-color: #{$color-primary}; /* 鲜红色 */

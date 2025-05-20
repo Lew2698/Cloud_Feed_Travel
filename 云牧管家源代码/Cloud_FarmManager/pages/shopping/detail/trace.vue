@@ -9,17 +9,17 @@
 		<view class="content">
 			<!-- 二维码溯源 -->
 			<view class="qr-section">
-				<image src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://blockchain.farm.com/trace/A5831" class="qr-code"></image>
+				<image src="/static/images/二维码.svg" class="qr-code"></image>
 				<text class="qr-tip">扫描二维码查看区块链上的完整溯源信息</text>
 				
 				<view class="product-info">
 					<view class="product-header">
-						<image src="https://img95.699pic.com/photo/40247/3545.jpg_wh860.jpg" class="product-image"></image>
+						<image src="/static2/3545.jpg_wh860.jpg" class="product-image"></image>
 						<view>
 							<view class="product-name">
 								瑶山散养鸡 
 								<view class="verify-badge">
-									<text class="iconfont icon-check-circle"></text>
+									<image src="/static/icons/shopping icon/check-circle.svg" class="check-code"></image>
 									<text>已认证</text>
 								</view>
 							</view>
@@ -46,7 +46,7 @@
 				</view>
 				
 				<view class="scan-button" @click="scanOtherProduct">
-					<text class="iconfont icon-qrcode"></text>
+					<image src="/static/icons/shopping icon/icon_qrcode.svg" class="check-code"></image>
 					<text>扫描其他产品</text>
 				</view>
 			</view>
@@ -56,7 +56,7 @@
 				<view class="timeline-header">
 					<text class="timeline-title">全生命周期追溯</text>
 					<view class="timeline-filter" @click="showFilterOptions">
-						<text class="iconfont icon-filter"></text>
+						<image src="/static/icons/shopping icon/筛选.svg" class="check-code"></image>
 						<text>筛选</text>
 					</view>
 				</view>
@@ -77,7 +77,7 @@
 							<view class="event-title">
 								{{event.title}}
 								<view class="verify-badge" v-if="event.verified">
-									<text class="iconfont icon-check-circle"></text>
+									<image src="/static/icons/shopping icon/check-circle.svg" class="check-code"></image>
 									<text>已认证</text>
 								</view>
 							</view>
@@ -104,7 +104,7 @@
 					<view class="cert-meta">
 						<view class="cert-issuer">
 							<view class="cert-issuer-logo">
-								<text class="iconfont icon-leaf"></text>
+								<image src="/static/icons/shopping icon/leaf.svg" class="check-code"></image>
 							</view>
 							<text>中国有机认证中心</text>
 						</view>
@@ -119,7 +119,7 @@
 					<view class="cert-meta">
 						<view class="cert-issuer">
 							<view class="cert-issuer-logo">
-								<text class="iconfont icon-seedling"></text>
+								<image src="/static/icons/shopping icon/seeding.svg" class="check-code"></image>
 							</view>
 							<text>中国绿色食品发展中心</text>
 						</view>
@@ -622,5 +622,9 @@
 		content: '\f4d8';
 		color: $color-highlight;
 		font-size: 24rpx;
+	}
+	.check-code{
+		width:30rpx;
+		height:30rpx;
 	}
 </style> 
