@@ -4,6 +4,16 @@ const common_vendor = require("./common/vendor.js");
 if (!Math) {
   "./pages/index/index.js";
   "./pages/shopping/shopping.js";
+  "./pages/farm/farm.js";
+  "./pages/farm/new.js";
+  "./pages/farm/my.js";
+  "./pages/farm/monitor.js";
+  "./pages/farm/data.js";
+  "./pages/activity/activity.js";
+  "./pages/profile/profile.js";
+  "./pages/shopping/detail/detail.js";
+  "./pages/shopping/cart/cart.js";
+  "./pages/shopping/detail/trace.js";
 }
 const _sfc_main = {
   onLaunch: function() {

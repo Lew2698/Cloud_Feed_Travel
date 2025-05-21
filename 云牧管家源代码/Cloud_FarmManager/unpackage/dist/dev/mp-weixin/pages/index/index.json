@@ -1,6 +1,4 @@
 {
   "navigationBarTitleText": "云养智旅",
-  "usingComponents": {
-    "tab-bar": "../../components/TabBar"
-  }
+  "usingComponents": {}
 }

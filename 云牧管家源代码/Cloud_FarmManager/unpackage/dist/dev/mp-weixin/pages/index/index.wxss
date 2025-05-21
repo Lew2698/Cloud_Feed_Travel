@@ -65,8 +65,8 @@ page {
 }
 /* 页面容器 */
 .page-container {
-  padding-bottom: 100rpx;
-  /* 为底部导航栏留出空间 */
+  padding-bottom: 50px;
+  /* 为原生tabBar留出空间 */
   width: 100%;
   box-sizing: border-box;
 }
@@ -134,7 +134,7 @@ page {
 .quick-access {
   display: flex;
   justify-content: space-between;
-  margin: 40rpx 0;
+  margin: 70rpx 0;
 }
 .quick-access-item {
   display: flex;
@@ -234,6 +234,10 @@ page {
   justify-content: space-between;
   font-size: 24rpx;
   color: #777;
+}
+.star-icon {
+  width: 30rpx;
+  height: 30rpx;
 }
 /* 颜色变量 */
 page {

@@ -1,13 +1,61 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/shopping/shopping"
+    "pages/shopping/shopping",
+    "pages/farm/farm",
+    "pages/farm/game",
+    "pages/farm/new",
+    "pages/farm/my",
+    "pages/farm/monitor",
+    "pages/farm/data",
+    "pages/activity/activity",
+    "pages/profile/profile",
+    "pages/shopping/detail/detail",
+    "pages/shopping/cart/cart",
+    "pages/shopping/detail/trace"
   ],
   "window": {
     "navigationBarTextStyle": "white",
     "navigationBarTitleText": "云养智旅",
     "navigationBarBackgroundColor": "#386641",
     "backgroundColor": "#f2e8cf"
+  },
+  "tabBar": {
+    "color": "#7A7E83",
+    "selectedColor": "#bc4749",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "/static/tabbar/home.png",
+        "selectedIconPath": "/static/tabbar/home（2）.png"
+      },
+      {
+        "pagePath": "pages/shopping/shopping",
+        "text": "购物",
+        "iconPath": "/static/tabbar/shopping-bag (1).png",
+        "selectedIconPath": "/static/tabbar/shopping-bag (2).png"
+      },
+      {
+        "pagePath": "pages/farm/farm",
+        "text": "云养",
+        "iconPath": "/static/tabbar/leaf.png",
+        "selectedIconPath": "/static/tabbar/leaf(2).png"
+      },
+      {
+        "pagePath": "pages/activity/activity",
+        "text": "活动",
+        "iconPath": "/static/tabbar/calendar-fill.png",
+        "selectedIconPath": "/static/tabbar/calendar-fill(2).png"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的",
+        "iconPath": "/static/tabbar/user.png",
+        "selectedIconPath": "/static/tabbar/user（2）.png"
+      }
+    ]
   },
   "usingComponents": {}
 }

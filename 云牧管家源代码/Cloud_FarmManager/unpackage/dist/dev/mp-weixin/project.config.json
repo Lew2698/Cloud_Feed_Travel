@@ -18,8 +18,8 @@
     }
   },
   "compileType": "miniprogram",
-  "libVersion": "3.8.1",
-  "appid": "wxdef18d275599a36d",
+  "libVersion": "",
+  "appid": "touristappid",
   "projectname": "Cloud_FarmManager",
   "condition": {},
   "editorSetting": {

@@ -65,8 +65,8 @@ page {
 }
 /* 页面容器 */
 .page-container {
-  padding-bottom: 100rpx;
-  /* 为底部导航栏留出空间 */
+  padding-bottom: 50px;
+  /* 为原生tabBar留出空间 */
   width: 100%;
   box-sizing: border-box;
 }
@@ -145,9 +145,20 @@ page {
   font-size: 26rpx;
   color: #386641;
 }
+.filter-option image {
+  width: 24rpx;
+  height: 24rpx;
+  margin-left: 10rpx;
+  vertical-align: middle;
+}
 .filter-option .iconfont {
   margin-left: 6rpx;
   font-size: 24rpx;
+}
+.icon-icon {
+  width: 32rpx;
+  height: 32rpx;
+  display: inline-block;
 }
 /* 商品网格 */
 .product-grid {
@@ -254,6 +265,10 @@ page {
   box-shadow: 0 3px 10px rgba(255, 166, 158, 0.4);
   z-index: 10;
   font-size: 40rpx;
+}
+.cart-fab image {
+  width: 48rpx;
+  height: 48rpx;
 }
 .cart-fab .badge {
   position: absolute;
