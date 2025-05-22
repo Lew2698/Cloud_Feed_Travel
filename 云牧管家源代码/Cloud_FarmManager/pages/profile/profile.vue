@@ -3,7 +3,7 @@
 		<!-- 个人信息头部 -->
 		<view class="profile-header">
 			<view class="profile-info">
-				<image src="/static2/photo-1545167622-3a6ac756afa4.avif" class="profile-avatar"></image>
+				<image src="/static/static2/photo-1545167622-3a6ac756afa4.avif" class="profile-avatar"></image>
 				<view>
 					<text class="profile-name">云养者</text>
 					<text class="profile-id">ID: 1001583</text>

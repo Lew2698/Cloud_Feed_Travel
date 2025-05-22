@@ -14,7 +14,7 @@
 				
 				<view class="product-info">
 					<view class="product-header">
-						<image src="/static2/3545.jpg_wh860.jpg" class="product-image"></image>
+						<image src="/static/static2/3545.jpg_wh860.jpg" class="product-image"></image>
 						<view>
 							<view class="product-name">
 								瑶山散养鸡 

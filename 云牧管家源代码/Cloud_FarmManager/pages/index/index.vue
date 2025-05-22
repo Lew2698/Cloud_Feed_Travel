@@ -16,7 +16,7 @@
 			<!-- 轮播图 -->
 			<view class="hero-banner">
 				<view class="featured-tag" wx:if="{{true}}">热门</view>
-				<image src="/static2/photo-1523741543316-beb7fc7023d8.avif" alt="生态农场"></image>
+				<image src="/static/static2/photo-1523741543316-beb7fc7023d8.avif" alt="生态农场"></image>
 			</view>
 			
 			<!-- 快速功能访问 -->
@@ -52,14 +52,14 @@
 				<text class="section-title">瑶族特色文化</text>
 				<view class="feature-cards">
 					<view class="feature-card">
-						<image src="/static2/photo-1533900298318-6b8da08a523e.avif" class="feature-image" mode="aspectFill"></image>
+						<image src="/static/static2/photo-1533900298318-6b8da08a523e.avif" class="feature-image" mode="aspectFill"></image>
 						<view class="feature-info">
 							<text class="feature-title">瑶族服饰展</text>
 							<text class="feature-desc">探索千年瑶族传统服饰文化</text>
 						</view>
 					</view>
 					<view class="feature-card">
-						<image src="/static2/R-C.jpg" class="feature-image" mode="aspectFill"></image>
+						<image src="/static/static2/R-C.jpg" class="feature-image" mode="aspectFill"></image>
 						<view class="feature-info">
 							<text class="feature-title">瑶族山寨游</text>
 							<text class="feature-desc">体验原汁原味的瑶族生活</text>
@@ -72,7 +72,7 @@
 			<view class="product-recommendations">
 				<text class="section-title">热门农产品</text>
 				<view class="product-card">
-					<image src="/static2/photo-1457296898342-cdd24585d095.avif" class="product-image" mode="aspectFill"></image>
+					<image src="/static/static2/photo-1457296898342-cdd24585d095.avif" class="product-image" mode="aspectFill"></image>
 					<view class="product-details">
 						<text class="product-name">有机水果礼盒</text>
 						<text class="product-price">¥188</text>
@@ -83,7 +83,7 @@
 					</view>
 				</view>
 				<view class="product-card">
-					<image src="/static2/hCSyEZ4ptM_small.jpg" class="product-image" mode="aspectFill"></image>
+					<image src="/static/static2/hCSyEZ4ptM_small.jpg" class="product-image" mode="aspectFill"></image>
 					<view class="product-details">
 						<text class="product-name">瑶族野生鸡蛋</text>
 						<text class="product-price">¥128</text>

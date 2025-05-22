@@ -96,7 +96,7 @@
 						location: '瑶山文化广场',
 						description: '欣赏国家级非物质文化遗产瑶族长鼓舞，感受瑶族人民欢快奔放的民族精神。',
 						price: '98',
-						image: '/static2/dancers-1787812_1280.jpg',
+						image: '/static/static2/dancers-1787812_1280.jpg',
 						badge: '热门',
 						tags: ['非遗文化', '瑶族舞蹈'],
 						category: '瑶族文化'
@@ -108,7 +108,7 @@
 						location: '瑶山生态茶园',
 						description: '亲手采摘高山有机茶，学习传统制茶工艺，体验茶农生活，品尝新鲜茶汤。',
 						price: '128',
-						image: '/static2/photo-1531971589569-0d9370cbe1e5.avif',
+						image: '/static/static2/photo-1531971589569-0d9370cbe1e5.avif',
 						tags: ['农事体验', '茶文化'],
 						category: '农事体验'
 					},
@@ -119,7 +119,7 @@
 						location: '瑶山民族村',
 						description: '参与瑶族盘王节庆典，体验瑶族传统婚礼，品尝瑶族美食，欣赏民族歌舞表演。',
 						price: '258',
-						image: '/static2/photo-1515339760107-1952b7a08454.avif',
+						image: '/static/static2/photo-1515339760107-1952b7a08454.avif',
 						badge: '限时',
 						tags: ['民俗文化', '瑶族节日'],
 						category: '瑶族文化'

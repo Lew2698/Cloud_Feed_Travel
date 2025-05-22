@@ -106,7 +106,7 @@
 						price: 12,
 						quantity: 1,
 						selected: true,
-						image: '/static2/hCSyEZ4ptM_small.jpg'
+						image: '/static/static2/hCSyEZ4ptM_small.jpg'
 					},
 					{
 						id: 2,
@@ -115,7 +115,7 @@
 						price: 12,
 						quantity: 2,
 						selected: true,
-						image: '/static2/ooYBAFcqrNSAZyqqAAOXFHCVQsE56.jpeg'
+						image: '/static/static2/ooYBAFcqrNSAZyqqAAOXFHCVQsE56.jpeg'
 					},
 					{
 						id: 3,
@@ -124,7 +124,7 @@
 						price: 68,
 						quantity: 1,
 						selected: true,
-						image: '/static2/2121F888A69E6932BE26DF9029E_B6C725FA_128671.jpg'
+						image: '/static/static2/2121F888A69E6932BE26DF9029E_B6C725FA_128671.jpg'
 					}
 				],
 				recommendItems: [
@@ -132,19 +132,19 @@
 						id: 4,
 						name: '瑶山野生香菇',
 						price: 78,
-						image: '/static2/3944.jpg_wh860.jpg'
+						image: '/static/static2/3944.jpg_wh860.jpg'
 					},
 					{
 						id: 5,
 						name: '瑶山古法山茶油',
 						price: 188,
-						image: '/static2/v2-a582c6ef03ee0473ff546458328c18b6_720w.png'
+						image: '/static/static2/v2-a582c6ef03ee0473ff546458328c18b6_720w.png'
 					},
 					{
 						id: 6,
 						name: '瑶山有机稻米',
 						price: 128,
-						image: '/static2/photo-1515339760107-1952b7a08454.avif'
+						image: '/static/static2/photo-1515339760107-1952b7a08454.avif'
 					}
 				],
 				discount: 3

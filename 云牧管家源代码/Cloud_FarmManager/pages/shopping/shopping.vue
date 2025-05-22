@@ -44,7 +44,7 @@
 				<!-- 商品1 -->
 				<view class="product-wrapper" @click="goToProductDetail(1)">
 					<view class="product-item">
-						<image src="/static2/hCSyEZ4ptM_small.jpg" class="product-item-image" mode="aspectFill"></image>
+						<image src="/static/static2/hCSyEZ4ptM_small.jpg" class="product-item-image" mode="aspectFill"></image>
 						<view class="product-item-details">
 							<text class="product-item-name">瑶族野生鸡蛋 500g</text>
 							<text class="product-item-price">¥12</text>
@@ -66,7 +66,7 @@
 				<!-- 商品2 -->
 				<view class="product-wrapper" @click="goToProductDetail(2)">
 					<view class="product-item">
-						<image src="/static2/ooYBAFcqrNSAZyqqAAOXFHCVQsE56.jpeg" class="product-item-image" mode="aspectFill"></image>
+						<image src="/static/static2/ooYBAFcqrNSAZyqqAAOXFHCVQsE56.jpeg" class="product-item-image" mode="aspectFill"></image>
 						<view class="product-item-details">
 							<text class="product-item-name">香芋 250g</text>
 							<text class="product-item-price">¥6</text>
@@ -87,7 +87,7 @@
 				<!-- 商品3 -->
 				<view class="product-wrapper" @click="goToProductDetail(3)">
 					<view class="product-item">
-						<image src="/static2/2121F888A69E6932BE26DF9029E_B6C725FA_128671.jpg" class="product-item-image" mode="aspectFill"></image>
+						<image src="/static/static2/2121F888A69E6932BE26DF9029E_B6C725FA_128671.jpg" class="product-item-image" mode="aspectFill"></image>
 						<view class="product-item-details">
 							<text class="product-item-name">瑶绣</text>
 							<text class="product-item-price">¥68</text>
@@ -108,7 +108,7 @@
 				<!-- 商品4 -->
 				<view class="product-wrapper" @click="goToProductDetail(4)">
 					<view class="product-item">
-						<image src="/static2/90 (1).jpg" class="product-item-image" mode="aspectFill"></image>
+						<image src="/static/static2/90 (1).jpg" class="product-item-image" mode="aspectFill"></image>
 						<view class="product-item-details">
 							<text class="product-item-name">马蹄 500g</text>
 							<text class="product-item-price">¥12</text>
@@ -130,7 +130,7 @@
 				<!-- 商品5 -->
 				<view class="product-wrapper" @click="goToProductDetail(5)">
 					<view class="product-item">
-						<image src="/static2/4250555339_919020146.jpg" class="product-item-image" mode="aspectFill"></image>
+						<image src="/static/static2/4250555339_919020146.jpg" class="product-item-image" mode="aspectFill"></image>
 						<view class="product-item-details">
 							<text class="product-item-name">瑶族传统刺绣手帕</text>
 							<text class="product-item-price">¥58</text>
@@ -152,7 +152,7 @@
 				<!-- 商品6 -->
 				<view class="product-wrapper" @click="goToProductDetail(6)">
 					<view class="product-item">
-						<image src="/static2/3944.jpg_wh860.jpg" class="product-item-image" mode="aspectFill"></image>
+						<image src="/static/static2/3944.jpg_wh860.jpg" class="product-item-image" mode="aspectFill"></image>
 						<view class="product-item-details">
 							<text class="product-item-name">瑶山野生香菇 200g</text>
 							<text class="product-item-price">¥78</text>

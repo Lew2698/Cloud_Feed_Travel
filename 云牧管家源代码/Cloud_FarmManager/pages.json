@@ -26,6 +26,13 @@
 			}
 		},
 		{
+			"path": "pages/farm/game2",
+			"style": {
+				"navigationBarTitleText": "云养游戏",
+				"navigationStyle": "custom"
+			}
+		},
+		{
 			"path": "pages/farm/new",
 			"style": {
 				"navigationBarTitleText": "认领新家禽农作物"

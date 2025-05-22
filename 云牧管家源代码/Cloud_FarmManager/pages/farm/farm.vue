@@ -107,9 +107,9 @@
 						<image src="/static/icons/cloud-farm icon/seeding.svg" class="game-mode-icon"></image>
 					</view> <text class="game-mode-name">农场</text> <text class="game-mode-desc">管理农作物</text>
 				</view>
-				<view class="game-mode-option" @click="showRanchComingSoon">
+				<view class="game-mode-option" @click="navigateTo('/pages/farm/game2')">
 					<view class="game-mode-icon-container">
-						<image src="/static/icons/cloud-farm icon/horse.svg" class="game-mode-icon"></image>
+						<image src="/static/icons/monitor icon/kiwi-bird.svg" class="game-mode-icon"></image>
 					</view> <text class="game-mode-name">牧场</text> <text class="game-mode-desc">照顾家禽家畜</text>
 				</view>
 			</view>

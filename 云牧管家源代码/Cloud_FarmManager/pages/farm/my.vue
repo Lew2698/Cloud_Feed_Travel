@@ -120,7 +120,7 @@
 						lastUpdateDate: '2023-05-10',
 						milestoneTitle: '已完成疫苗接种',
 						milestoneDesc: '完成了所有必要疫苗的接种，健康状况良好',
-						image: '/static2/3799.jpg_wh1200.jpg'
+						image: '/static/static2/3799.jpg_wh1200.jpg'
 					},
 					{
 						id: 'c2',
@@ -135,7 +135,7 @@
 						lastUpdateDate: '2023-05-10',
 						milestoneTitle: '已成熟',
 						milestoneDesc: '玉米已成熟，随时可以收获',
-						image: '/static2/67a2cfed4e91e1a411bbb1ff591cafdc.jpg'
+						image: '/static/static2/67a2cfed4e91e1a411bbb1ff591cafdc.jpg'
 					},
 					{
 						id: 'c3',
@@ -150,7 +150,7 @@
 						lastUpdateDate: '2023-05-10',
 						milestoneTitle: '进入挂果期',
 						milestoneDesc: '蜜桃已开始挂果，生长状况良好',
-						image: '/static2/3397.jpg_wh860.jpg'
+						image: '/static/static2/3397.jpg_wh860.jpg'
 					}
 				]
 			}
