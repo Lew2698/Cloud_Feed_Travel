@@ -3,6 +3,7 @@
         <!-- 游戏背景场景 -->
         <view class="game-bg">
             <!-- 农田地块 -->
+            <image src="/static/game/ranch/ac01d661ded8b6d9ce46fbb3b65683d.jpg" class="bg-img"></image>
             <view v-for="(plot, index) in farmPlots" :key="index" class="farm-plot"
                 :class="{ 'has-crop': plot.status !== 'empty' }"
                 :style="{ top: plot.position.top, left: plot.position.left }" @click="handlePlotClick(index)">
@@ -87,7 +88,7 @@ export default {
             farmPlots: [
                 {
                     id: 'plot1',
-                    position: { top: '45%', left: '20%' },
+                    position: { top: '45%', left: '16%' },
                     status: 'child',
                     cropType: 'chicken',
                     cropImage: '/static/game/ranch/028-hen.svg',
@@ -99,7 +100,7 @@ export default {
                 },
                 {
                     id: 'plot2',
-                    position: { top: '45%', left: '42%' },
+                    position: { top: '45%', left: '40%' },
                     status: 'ready',
                     cropType: 'horse',
                     cropImage: '/static/game/ranch/007-horse.svg',
@@ -111,7 +112,7 @@ export default {
                 },
                 {
                     id: 'plot3',
-                    position: { top: '55%', left: '20%' },
+                    position: { top: '57%', left: '16%' },
                     status: 'child',
                     cropType: 'pig',
                     cropImage: '/static/game/ranch/035-pig.svg',
@@ -123,7 +124,7 @@ export default {
                 },
                 {
                     id: 'plot4',
-                    position: { top: '55%', left: '42%' },
+                    position: { top: '57%', left: '40%' },
                     status: 'adult',
                     cropType: 'cow',
                     cropImage: '/static/game/ranch/056-cow.svg',
@@ -135,7 +136,7 @@ export default {
                 },
                 {
                     id: 'plot5',
-                    position: { top: '65%', left: '20%' },
+                    position: { top: '69%', left: '16%' },
                     status: 'ready',
                     cropType: 'chicken',
                     cropImage: '/static/game/ranch/028-hen.svg',
@@ -147,7 +148,7 @@ export default {
                 },
                 {
                     id: 'plot6',
-                    position: { top: '65%', left: '42%' },
+                    position: { top: '69%', left: '40%' },
                     status: 'empty',
                     cropType: '',
                     cropImage: '',
@@ -158,7 +159,7 @@ export default {
                 },
 				{
                     id: 'plot7',
-                    position: { top: '45%', left: '65%' },
+                    position: { top: '45%', left: '66%' },
                     status: 'empty',
                     cropType: '',
                     cropImage: '',
@@ -169,7 +170,7 @@ export default {
                 },
 				{
                     id: 'plot8',
-                    position: { top: '55%', left: '65%' },
+                    position: { top: '57%', left: '66%' },
                     status: 'empty',
                     cropType: '',
                     cropImage: '',
@@ -180,7 +181,7 @@ export default {
                 },
 				{
                     id: 'plot9',
-                    position: { top: '65%', left: '65%' },
+                    position: { top: '69%', left: '66%' },
                     status: 'empty',
                     cropType: '',
                     cropImage: '',
@@ -432,15 +433,18 @@ page {
 /* 游戏背景 */
 .game-bg {
     position: absolute;
-    width: 150%;
-    height: 150%;
-    top: -25%;
-    left: -25%;
-    background: url('/static/game/ranch/ac01d661ded8b6d9ce46fbb3b65683d.jpg') no-repeat;
+    width: 100%;
+    height: 100%;
     background-size: cover;
     background-position: center;
 }
-
+.bg-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background-size: cover;
+    background-position: center;
+}
 /* 顶部控制栏 */
 .game-header {
     position: absolute;

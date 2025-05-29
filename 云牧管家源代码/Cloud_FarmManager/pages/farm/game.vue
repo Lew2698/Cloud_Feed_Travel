@@ -3,9 +3,11 @@
         <!-- 游戏背景场景 -->
         <view class="game-bg">
             <!-- 农田地块 -->
+            <image src="/static/game/farm/nongchang.png" class="bg-img"></image>
             <view v-for="(plot, index) in farmPlots" :key="index" class="farm-plot"
                 :class="{ 'has-crop': plot.status !== 'empty' }"
-                :style="{ top: plot.position.top, left: plot.position.left }" @click="handlePlotClick(index)">
+                :style="{ top: plot.position.top, left: plot.position.left, right: plot.position.right }"
+                @click="handlePlotClick(index)">
                 <image src="/static/game/farm/nongtian.png" class="plot-bg"></image>
 
                 <!-- 根据地块状态显示不同内容 -->
@@ -88,7 +90,7 @@ export default {
             farmPlots: [
                 {
                     id: 'plot1',
-                    position: { top: '35%', left: '30%' },
+                    position: { top: '38%', left: '24%' },
                     status: 'empty',
                     cropType: '',
                     cropImage: '',
@@ -100,7 +102,7 @@ export default {
                 },
                 {
                     id: 'plot2',
-                    position: { top: '35%', left: '50%' },
+                    position: { top: '38%', right: '24%' },
                     status: 'empty',
                     cropType: '',
                     cropImage: '',
@@ -112,7 +114,7 @@ export default {
                 },
                 {
                     id: 'plot3',
-                    position: { top: '45%', left: '30%' },
+                    position: { top: '50%', left: '24%' },
                     status: 'growing',
                     cropType: 'tomato',
                     cropImage: '/static/game/farm/faya.png',
@@ -124,7 +126,7 @@ export default {
                 },
                 {
                     id: 'plot4',
-                    position: { top: '45%', left: '50%' },
+                    position: { top: '50%', right: '24%' },
                     status: 'ready',
                     cropType: 'tomato',
                     cropImage: '/static/game/farm/a-032-tomato.png',
@@ -136,7 +138,7 @@ export default {
                 },
                 {
                     id: 'plot5',
-                    position: { top: '55%', left: '30%' },
+                    position: { top: '62%', left: '24%' },
                     status: 'seed',
                     cropType: 'wheat',
                     cropImage: '/static/game/farm/zhongzi.png',
@@ -148,7 +150,7 @@ export default {
                 },
                 {
                     id: 'plot6',
-                    position: { top: '55%', left: '50%' },
+                    position: { top: '62%', right: '24%' },
                     status: 'growing',
                     cropType: 'wheat',
                     cropImage: '/static/game/farm/faya.png',
@@ -160,7 +162,7 @@ export default {
                 },
                 {
                     id: 'plot7',
-                    position: { top: '65%', left: '30%' },
+                    position: { top: '74%', left: '24%' },
                     status: 'ready',
                     cropType: 'corn',
                     cropImage: '/static/game/farm/a-016-corn.png',
@@ -172,7 +174,7 @@ export default {
                 },
                 {
                     id: 'plot8',
-                    position: { top: '65%', left: '50%' },
+                    position: { top: '74%', right: '24%' },
                     status: 'empty',
                     cropType: '',
                     cropImage: '',
@@ -419,13 +421,21 @@ page {
 /* 游戏背景 */
 .game-bg {
     position: absolute;
-    width: 150%;
-    height: 150%;
-    top: -25%;
-    left: -25%;
-    background: url('/static/game/farm/nongchang.png') no-repeat;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
     background-size: cover;
     background-position: center;
+}
+
+.bg-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 /* 顶部控制栏 */

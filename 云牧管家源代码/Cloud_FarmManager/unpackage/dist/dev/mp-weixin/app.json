@@ -4,6 +4,7 @@
     "pages/shopping/shopping",
     "pages/farm/farm",
     "pages/farm/game",
+    "pages/farm/game2",
     "pages/farm/new",
     "pages/farm/my",
     "pages/farm/monitor",
@@ -12,7 +13,9 @@
     "pages/profile/profile",
     "pages/shopping/detail/detail",
     "pages/shopping/cart/cart",
-    "pages/shopping/detail/trace"
+    "pages/shopping/detail/trace",
+    "pages/shopping/checkout/checkout",
+    "pages/shopping/checkout/address"
   ],
   "window": {
     "navigationBarTextStyle": "white",

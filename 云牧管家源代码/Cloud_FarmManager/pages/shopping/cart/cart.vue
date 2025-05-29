@@ -30,31 +30,17 @@
 				</view>
 				
 				<!-- 购物车商品列表 -->
-				<view class="cart-item" v-for="(item, index) in cartItems" :key="index">
-					<view class="item-checkbox" @click="toggleItemSelect(index)">
-						<view class="custom-checkbox" :class="{ checked: item.selected }">
-							<view class="custom-checkbox">
-							  <image src="/static/icons/shopping icon/check.svg" v-if="item.selected"></image>
-							</view>
-						</view>
-					</view>
-					<image :src="item.image" :alt="item.name" class="item-image"></image>
-					<view class="item-info">
-						<text class="item-name">{{item.name}}</text>
-						<text class="item-specs">{{item.specs}}</text>
-						<view class="item-price-section">
-							<text class="item-price">¥{{item.price}}</text>
-							<view class="quantity-control">
-								<view class="quantity-btn" @click="decreaseQuantity(index)">-</view>
-								<input type="number" v-model="item.quantity" class="quantity-input" />
-								<view class="quantity-btn" @click="increaseQuantity(index)">+</view>
-							</view>
-						</view>
-					</view>
-					<view class="item-actions">
-						<image src="/static/icons/shopping icon/icon_trash_alt.svg" class="icon-svg" @click="removeItem(index)"></image>
-					</view>
-				</view>
+				<CartItem 
+					v-for="(item, index) in cartItems" 
+					:key="item.id + '_' + index"
+					:item="item"
+					:index="index"
+					@toggle-select="toggleItemSelect"
+					@decrease-quantity="decreaseQuantity"
+					@increase-quantity="increaseQuantity"
+					@quantity-change="onQuantityChange"
+					@remove-item="removeItem"
+				/>
 				
 				<!-- 猜你喜欢 -->
 				<view class="cart-recommendations">
@@ -94,174 +80,189 @@
 	</view>
 </template>
 
-<script>
-	export default {
-		data() {
-			return {
-				cartItems: [
-					{
-						id: 1,
-						name: '瑶族野生鸡蛋',
-						specs: '500g',
-						price: 12,
-						quantity: 1,
-						selected: true,
-						image: '/static/static2/hCSyEZ4ptM_small.jpg'
-					},
-					{
-						id: 2,
-						name: '香芋',
-						specs: '500g',
-						price: 12,
-						quantity: 2,
-						selected: true,
-						image: '/static/static2/ooYBAFcqrNSAZyqqAAOXFHCVQsE56.jpeg'
-					},
-					{
-						id: 3,
-						name: '瑶绣',
-						specs: '单个装',
-						price: 68,
-						quantity: 1,
-						selected: true,
-						image: '/static/static2/2121F888A69E6932BE26DF9029E_B6C725FA_128671.jpg'
-					}
-				],
-				recommendItems: [
-					{
-						id: 4,
-						name: '瑶山野生香菇',
-						price: 78,
-						image: '/static/static2/3944.jpg_wh860.jpg'
-					},
-					{
-						id: 5,
-						name: '瑶山古法山茶油',
-						price: 188,
-						image: '/static/static2/v2-a582c6ef03ee0473ff546458328c18b6_720w.png'
-					},
-					{
-						id: 6,
-						name: '瑶山有机稻米',
-						price: 128,
-						image: '/static/static2/photo-1515339760107-1952b7a08454.avif'
-					}
-				],
-				discount: 3
-			}
+<script setup>
+	import { ref, computed, onMounted, onUnmounted, getCurrentInstance, nextTick } from 'vue'
+	import { onShow } from '@dcloudio/uni-app'
+	import CartItem from '@/components/CartItem.vue'
+	
+	const { proxy } = getCurrentInstance()
+	
+	// 响应式数据
+	const cartItems = ref([])
+	const discount = ref(3)
+	
+	const recommendItems = ref([
+		{
+			id: 4,
+			name: '瑶山野生香菇',
+			price: 78,
+			image: '/static/static2/3944.jpg_wh860.jpg'
 		},
-		computed: {
-			// 计算选中的商品数量
-			selectedCount() {
-				return this.cartItems.filter(item => item.selected).reduce((total, item) => total + item.quantity, 0);
-			},
-			// 计算总价
-			totalPrice() {
-				return this.cartItems
-					.filter(item => item.selected)
-					.reduce((total, item) => total + item.price * item.quantity, 0);
-			},
-			// 是否全选
-			isAllSelected() {
-				return this.cartItems.length > 0 && this.cartItems.every(item => item.selected);
-			}
+		{
+			id: 5,
+			name: '瑶山古法山茶油',
+			price: 188,
+			image: '/static/static2/v2-a582c6ef03ee0473ff546458328c18b6_720w.png'
 		},
-		methods: {
-			// 切换商品选中状态
-			toggleItemSelect(index) {
-				this.cartItems[index].selected = !this.cartItems[index].selected;
-			},
-			// 切换全选
-			toggleSelectAll() {
-				const newStatus = !this.isAllSelected;
-				this.cartItems.forEach(item => {
-					item.selected = newStatus;
-				});
-			},
-			// 减少商品数量
-			decreaseQuantity(index) {
-				if (this.cartItems[index].quantity > 1) {
-					this.cartItems[index].quantity--;
-				} else {
-					uni.showModal({
-						title: '提示',
-						content: '确定要移除该商品吗？',
-						success: (res) => {
-							if (res.confirm) {
-								this.removeItem(index);
-							}
-						}
-					});
-				}
-			},
-			// 增加商品数量
-			increaseQuantity(index) {
-				this.cartItems[index].quantity++;
-			},
-			// 移除商品
-			removeItem(index) {
-				uni.showModal({
-					title: '提示',
-					content: '确定要移除该商品吗？',
-					success: (res) => {
-						if (res.confirm) {
-							this.cartItems.splice(index, 1);
-						}
+		{
+			id: 6,
+			name: '瑶山有机稻米',
+			price: 128,
+			image: '/static/static2/photo-1515339760107-1952b7a08454.avif'
+		}
+	])
+	
+	// 计算属性 - 基于本地响应式数据计算
+	const selectedCount = computed(() => {
+		return cartItems.value
+			.filter(item => item.selected)
+			.reduce((total, item) => total + item.quantity, 0)
+	})
+	
+	const totalPrice = computed(() => {
+		return cartItems.value
+			.filter(item => item.selected)
+			.reduce((total, item) => total + item.price * item.quantity, 0)
+	})
+	
+	const isAllSelected = computed(() => {
+		return cartItems.value.length > 0 && cartItems.value.every(item => item.selected)
+	})
+	
+	// 加载购物车数据
+	const loadCartData = async () => {
+		const newCartItems = proxy.$cartStore.getCartItems()
+		cartItems.value = JSON.parse(JSON.stringify(newCartItems)) // 深拷贝确保响应式
+		await nextTick() // 确保DOM更新
+	}
+	
+	// 处理购物车更新事件
+	const handleCartUpdate = async () => {
+		await loadCartData()
+	}
+	
+	// 切换商品选中状态
+	const toggleItemSelect = async (index) => {
+		proxy.$cartStore.toggleItemSelect(index)
+		await loadCartData() // 立即更新本地数据
+	}
+	
+	// 切换全选
+	const toggleSelectAll = async () => {
+		proxy.$cartStore.toggleSelectAll()
+		await loadCartData() // 立即更新本地数据
+	}
+	
+	// 减少商品数量
+	const decreaseQuantity = async (index) => {
+		const item = cartItems.value[index]
+		if (item.quantity > 1) {
+			proxy.$cartStore.updateQuantity(index, item.quantity - 1)
+			await loadCartData() // 立即更新本地数据
+		} else {
+			uni.showModal({
+				title: '提示',
+				content: '确定要移除该商品吗？',
+				success: async (res) => {
+					if (res.confirm) {
+						await removeItem(index)
 					}
-				});
-			},
-			// 从推荐添加商品
-			addToCartFromRecommend(item) {
-				// 检查购物车是否已有该商品
-				const existingItemIndex = this.cartItems.findIndex(cartItem => cartItem.id === item.id);
-				
-				if (existingItemIndex !== -1) {
-					// 如果已有则增加数量
-					this.cartItems[existingItemIndex].quantity++;
-				} else {
-					// 如果没有则添加新商品
-					this.cartItems.push({
-						id: item.id,
-						name: item.name,
-						specs: '默认规格',
-						price: item.price,
-						quantity: 1,
-						selected: true,
-						image: item.image
-					});
 				}
-				
-				uni.showToast({
-					title: '已加入购物车',
-					icon: 'success'
-				});
-			},
-			// 跳转到商城页面
-			goShopping() {
-				uni.switchTab({
-					url: '/pages/shopping/shopping'
-				});
-			},
-			// 结算
-			checkout() {
-				if (this.selectedCount === 0) {
-					uni.showToast({
-						title: '请选择商品',
-						icon: 'none'
-					});
-					return;
-				}
-				
-				// 获取选中的商品
-				const selectedItems = this.cartItems.filter(item => item.selected);
-				
-				// 跳转到确认订单页面
-				uni.navigateTo({
-					url: '/pages/shopping/order/confirm'
-				});
-			}
+			})
 		}
 	}
+	
+	// 增加商品数量
+	const increaseQuantity = async (index) => {
+		const item = cartItems.value[index]
+		proxy.$cartStore.updateQuantity(index, item.quantity + 1)
+		await loadCartData() // 立即更新本地数据
+	}
+	
+	// 处理数量输入框变化
+	const onQuantityChange = async (index, newQuantity) => {
+		if (newQuantity > 0) {
+			proxy.$cartStore.updateQuantity(index, newQuantity)
+			await loadCartData() // 立即更新本地数据
+		} else {
+			await removeItem(index)
+		}
+	}
+	
+	// 移除商品
+	const removeItem = async (index) => {
+		return new Promise((resolve) => {
+			uni.showModal({
+				title: '提示',
+				content: '确定要移除该商品吗？',
+				success: async (res) => {
+					if (res.confirm) {
+						proxy.$cartStore.removeItem(index)
+						await loadCartData() // 立即更新本地数据
+					}
+					resolve()
+				}
+			})
+		})
+	}
+	
+	// 从推荐添加商品
+	const addToCartFromRecommend = async (item) => {
+		const success = proxy.$cartStore.addToCart(item, 1)
+		if (success) {
+			await loadCartData() // 立即更新本地数据
+			uni.showToast({
+				title: '已加入购物车',
+				icon: 'success'
+			})
+		}
+	}
+	
+	// 跳转到商城页面
+	const goShopping = () => {
+		uni.switchTab({
+			url: '/pages/shopping/shopping'
+		})
+	}
+	
+	// 结算
+	const checkout = () => {
+		if (selectedCount.value === 0) {
+			uni.showToast({
+				title: '请选择商品',
+				icon: 'none'
+			})
+			return
+		}
+		
+		// 获取选中的商品
+		const selectedItems = proxy.$cartStore.getSelectedItems()
+		
+		// 将选中的商品数据传递到结算页面
+		uni.setStorageSync('checkout_items', selectedItems)
+		
+		// 跳转到确认订单页面
+		uni.navigateTo({
+			url: '/pages/shopping/checkout/checkout'
+		})
+	}
+	
+	// 生命周期
+	onMounted(async () => {
+		await loadCartData()
+		// 监听购物车更新事件
+		uni.$on('cartUpdated', handleCartUpdate)
+	})
+	
+	onUnmounted(() => {
+		// 移除事件监听
+		uni.$off('cartUpdated', handleCartUpdate)
+	})
+	
+	// 页面显示时刷新购物车数据
+	onShow(async () => {
+		await loadCartData()
+	})
 </script>
 
 <style lang="scss">
@@ -610,11 +611,13 @@
 		font-size: 30rpx;
 		font-weight: 500;
 	}
+	
 	.icon-svg {
-	  width: 40rpx;
-	  height: 40rpx;
+		width: 40rpx;
+		height: 40rpx;
 	}
+	
 	.back-icon {
-	  margin-left: -10rpx; // 或其他你需要的值
+		margin-left: -10rpx; // 或其他你需要的值
 	}
 </style> 

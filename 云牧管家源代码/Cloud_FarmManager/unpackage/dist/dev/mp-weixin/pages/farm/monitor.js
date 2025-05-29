@@ -12,7 +12,7 @@ const _sfc_main = {
           name: "散养鸡",
           fullName: "瑶山散养鸡 #A5831",
           icon: "/static/icons/monitor icon/kiwi-bird.svg",
-          liveImage: "/static2/3545.jpg_wh860.jpg",
+          liveImage: "/static/static2/3545.jpg_wh860.jpg",
           type: "poultry"
         },
         {
@@ -20,7 +20,7 @@ const _sfc_main = {
           name: "黑猪",
           fullName: "瑶山黑猪 #P3492",
           icon: "/static/icons/monitor icon/piggy-bank.svg",
-          liveImage: "/static2/1529152636_835789403.jpg",
+          liveImage: "/static/static2/1529152636_835789403.jpg",
           type: "poultry"
         },
         {
@@ -28,7 +28,7 @@ const _sfc_main = {
           name: "土鹅",
           fullName: "瑶山土鹅 #G1205",
           icon: "/static/icons/monitor icon/Swan.svg",
-          liveImage: "/static2/23674369667344d4b28456a20e2c41ab_th.jpg",
+          liveImage: "/static/static2/23674369667344d4b28456a20e2c41ab_th.jpg",
           type: "poultry"
         },
         {
@@ -36,7 +36,7 @@ const _sfc_main = {
           name: "有机玉米",
           fullName: "有机玉米 #C1001",
           icon: "/static/icons/monitor icon/玉米.svg",
-          liveImage: "/static2/67a2cfed4e91e1a411bbb1ff591cafdc.jpg",
+          liveImage: "/static/static2/67a2cfed4e91e1a411bbb1ff591cafdc.jpg",
           type: "crops"
         }
       ],
@@ -144,7 +144,7 @@ const _sfc_main = {
 };
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   return {
-    a: common_assets._imports_0$1,
+    a: common_assets._imports_0$4,
     b: $data.activeTab === "poultry" ? 1 : "",
     c: common_vendor.o(($event) => $data.activeTab = "poultry"),
     d: $data.activeTab === "crops" ? 1 : "",

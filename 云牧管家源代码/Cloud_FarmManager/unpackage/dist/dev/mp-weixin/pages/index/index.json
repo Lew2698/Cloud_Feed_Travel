@@ -1,4 +1,6 @@
 {
   "navigationBarTitleText": "云养智旅",
-  "usingComponents": {}
+  "usingComponents": {
+    "search-input-vue": "../../components/SearchInput"
+  }
 }

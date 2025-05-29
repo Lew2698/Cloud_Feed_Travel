@@ -1,0 +1,1 @@
+<view class="checkout-item"><view class="product-info"><image src="{{a}}" class="product-image" mode="aspectFill"></image><view class="product-details"><text class="product-name">{{b}}</text><text class="product-spec">{{c}}</text></view></view><view class="price-info"><text class="product-price">¥{{d}}</text><text class="product-quantity">×{{e}}</text></view></view>

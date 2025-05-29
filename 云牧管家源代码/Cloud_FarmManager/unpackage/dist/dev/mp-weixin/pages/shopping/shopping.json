@@ -1,4 +1,7 @@
 {
   "navigationBarTitleText": "购物",
-  "usingComponents": {}
+  "usingComponents": {
+    "search-input-vue": "../../components/SearchInput",
+    "product-card-vue": "../../components/ProductCard"
+  }
 }

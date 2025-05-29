@@ -94,22 +94,6 @@ page {
 .content {
   padding: 0 30rpx 30rpx;
 }
-/* 搜索栏 */
-.search-bar {
-  display: flex;
-  align-items: center;
-  background-color: #fff;
-  border-radius: 16rpx;
-  padding: 16rpx 30rpx;
-  margin-bottom: 30rpx;
-  box-shadow: 0 2px 5px rgba(56, 102, 65, 0.1);
-}
-.search-bar input {
-  border: none;
-  flex: 1;
-  padding: 10rpx;
-  font-size: 28rpx;
-}
 /* 分类标签 */
 .category-tabs {
   display: flex;
@@ -166,88 +150,6 @@ page {
   grid-template-columns: 1fr 1fr;
   gap: 30rpx;
   padding-bottom: 40rpx;
-}
-.product-wrapper {
-  position: relative;
-}
-.product-item {
-  background-color: white;
-  border-radius: 24rpx;
-  overflow: hidden;
-  box-shadow: 0 3px 10px rgba(94, 100, 114, 0.08);
-  transition: all 0.3s ease;
-}
-.product-item-image {
-  width: 100%;
-  height: 240rpx;
-  display: block;
-}
-.product-item-details {
-  padding: 24rpx;
-}
-.product-item-name {
-  font-size: 28rpx;
-  font-weight: 600;
-  margin-bottom: 10rpx;
-  line-height: 1.3;
-  color: #386641;
-  height: 72rpx;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
-  -webkit-box-orient: vertical;
-}
-.product-item-price {
-  font-size: 32rpx;
-  font-weight: 700;
-  color: #bc4749;
-  margin-bottom: 10rpx;
-  display: block;
-}
-.product-item-meta {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 24rpx;
-  color: #999;
-}
-.product-item-rating {
-  display: flex;
-  align-items: center;
-  margin-right: 60rpx;
-}
-.product-item-rating .iconfont {
-  color: #FFD700;
-  margin-right: 4rpx;
-  font-size: 22rpx;
-}
-.featured-badge {
-  position: absolute;
-  top: 20rpx;
-  right: 20rpx;
-  background-color: #bc4749;
-  color: white;
-  font-size: 20rpx;
-  padding: 6rpx 16rpx;
-  border-radius: 20rpx;
-  z-index: 2;
-}
-.add-to-cart {
-  width: 56rpx;
-  height: 56rpx;
-  background-color: #bc4749;
-  color: white;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24rpx;
-  position: absolute;
-  bottom: 20rpx;
-  right: 20rpx;
-  box-shadow: 0 2px 5px rgba(255, 166, 158, 0.3);
-  z-index: 2;
 }
 /* 购物车浮动按钮 */
 .cart-fab {

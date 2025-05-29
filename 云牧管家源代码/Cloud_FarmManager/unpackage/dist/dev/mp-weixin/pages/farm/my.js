@@ -24,7 +24,7 @@ const _sfc_main = {
           lastUpdateDate: "2023-05-10",
           milestoneTitle: "已完成疫苗接种",
           milestoneDesc: "完成了所有必要疫苗的接种，健康状况良好",
-          image: "/static2/3799.jpg_wh1200.jpg"
+          image: "/static/static2/3799.jpg_wh1200.jpg"
         },
         {
           id: "c2",
@@ -39,7 +39,7 @@ const _sfc_main = {
           lastUpdateDate: "2023-05-10",
           milestoneTitle: "已成熟",
           milestoneDesc: "玉米已成熟，随时可以收获",
-          image: "/static2/67a2cfed4e91e1a411bbb1ff591cafdc.jpg"
+          image: "/static/static2/67a2cfed4e91e1a411bbb1ff591cafdc.jpg"
         },
         {
           id: "c3",
@@ -54,7 +54,7 @@ const _sfc_main = {
           lastUpdateDate: "2023-05-10",
           milestoneTitle: "进入挂果期",
           milestoneDesc: "蜜桃已开始挂果，生长状况良好",
-          image: "/static2/3397.jpg_wh860.jpg"
+          image: "/static/static2/3397.jpg_wh860.jpg"
         }
       ]
     };
@@ -101,7 +101,7 @@ const _sfc_main = {
 };
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   return common_vendor.e({
-    a: common_assets._imports_0$1,
+    a: common_assets._imports_0$4,
     b: common_vendor.f($data.tabs, (tab, index, i0) => {
       return {
         a: common_vendor.t(tab.name),
@@ -138,14 +138,14 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
         t: common_assets._imports_3$3,
         v: common_vendor.o(($event) => $options.navigateTo("/pages/farm/data"), index)
       } : {
-        w: common_assets._imports_4$2,
+        w: common_assets._imports_4$4,
         x: common_vendor.o(($event) => $options.harvestProduct(item), index)
       }, {
         y: index
       });
     }),
-    e: common_assets._imports_1$3,
-    f: common_assets._imports_2$2
+    e: common_assets._imports_1$5,
+    f: common_assets._imports_2$3
   } : {
     g: common_vendor.o(($event) => $options.navigateTo("/pages/farm/new"))
   });
