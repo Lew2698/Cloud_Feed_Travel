@@ -325,11 +325,11 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
       } : {}, {
         k: plot.status !== "empty" && plot.status !== "seed" && plot.needsFertilizer
       }, plot.status !== "empty" && plot.status !== "seed" && plot.needsFertilizer ? {
-        l: common_assets._imports_3$4
+        l: common_assets._imports_3$5
       } : {}, {
         m: plot.status === "ready"
       }, plot.status === "ready" ? {
-        n: common_assets._imports_4$2
+        n: common_assets._imports_4$1
       } : {}, {
         o: common_vendor.t($options.getPlotInfoText(plot)),
         p: index,
@@ -342,7 +342,7 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     c: common_assets._imports_5$2,
     d: common_vendor.o((...args) => $options.goBack && $options.goBack(...args)),
     e: common_assets._imports_8,
-    f: common_assets._imports_7$3,
+    f: common_assets._imports_7$2,
     g: common_assets._imports_8,
     h: $data.currentTool === "seed" ? 1 : "",
     i: common_vendor.o(($event) => $options.selectTool("seed")),

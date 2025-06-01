@@ -14,33 +14,33 @@
 				
 				<view class="product-info">
 					<view class="product-header">
-						<image src="/static/static2/3545.jpg_wh860.jpg" class="product-image"></image>
+						<image :src="traceInfo.productImage" class="product-image"></image>
 						<view>
 							<view class="product-name">
-								瑶山散养鸡 
+								{{traceInfo.productName}}
 								<view class="verify-badge">
 									<image src="/static/icons/shopping icon/check-circle.svg" class="check-code"></image>
 									<text>已认证</text>
 								</view>
 							</view>
-							<text class="product-id">溯源ID: YSCK-A5831-2025</text>
+							<text class="product-id">溯源ID: {{traceInfo.traceId}}</text>
 						</view>
 					</view>
 					
 					<view class="blockchain-info">
 						<view class="info-row">
 							<text class="info-label">区块高度</text>
-							<text class="info-value">2,356,782</text>
+							<text class="info-value">{{traceInfo.blockHeight}}</text>
 						</view>
 						<view class="info-row">
 							<text class="info-label">上链时间</text>
-							<text class="info-value">2025-03-15 14:32:15</text>
+							<text class="info-value">{{traceInfo.chainTime}}</text>
 						</view>
 						<view class="info-row">
 							<text class="info-label">数据哈希值</text>
 						</view>
 						<view class="hash-value">
-							0xf7c8d9e1b3a5c7f9e1d3b5a7c9e1d3b5a7c9e1d3b5a7c9
+							{{traceInfo.hashValue}}
 						</view>
 					</view>
 				</view>
@@ -131,109 +131,83 @@
 	</view>
 </template>
 
-<script>
-	export default {
-		data() {
-			return {
-				productId: null,
-				traceEvents: [
-					{
-						date: '2025-03-15 08:30:25',
-						title: '完成出栏检测',
-						description: '由瑶山生态养殖基地认证兽医完成健康检测，各项指标达标。',
-						verified: true,
-						data: {
-							'体重': '2.3 kg',
-							'健康评分': '96/100',
-							'检测人': '李医师（证号: YS20250315）'
-						}
-					},
-					{
-						date: '2025-02-26 10:15:42',
-						title: '完成疫苗接种',
-						description: '完成第三次疫苗接种，增强免疫力。',
-						verified: true,
-						data: {
-							'疫苗名称': '家禽流感预防疫苗',
-							'批次号': 'FLU20250226-07',
-							'接种人': '王兽医（证号: YS20210532）'
-						}
-					},
-					{
-						date: '2025-01-10 16:22:08',
-						title: '饲料更换记录',
-						description: '根据生长阶段需求，更换为有机谷物混合饲料。',
-						verified: false,
-						data: {
-							'饲料名称': '有机谷物混合饲料',
-							'供应商': '瑶山有机农场',
-							'成分': '有机玉米、小麦、大豆（无抗生素）'
-						}
-					},
-					{
-						date: '2024-12-05 09:48:36',
-						title: '孵化记录',
-						description: '家禽育雏中心成功孵化，纳入养殖计划。',
-						verified: true,
-						data: {
-							'品种': '瑶山本地黑羽鸡',
-							'批次号': 'YS-CHK-2024-12-1257',
-							'孵化中心': '瑶山生态家禽孵化中心'
-						}
-					}
-				]
-			}
-		},
-		onLoad(options) {
-			if (options.id) {
-				this.productId = options.id;
-				// 实际应用中应该根据ID从后端获取产品溯源信息
-				// this.fetchTraceData(this.productId);
-			}
-		},
-		methods: {
-			// 扫描其他产品
-			scanOtherProduct() {
-				uni.scanCode({
-					success: (res) => {
-						// 解析扫描结果，获取产品ID
-						console.log('扫描结果：', res);
-						uni.showToast({
-							title: '扫描成功',
-							icon: 'success'
-						});
-					},
-					fail: () => {
-						uni.showToast({
-							title: '扫描失败',
-							icon: 'none'
-						});
-					}
-				});
-			},
-			// 显示筛选选项
-			showFilterOptions() {
-				uni.showActionSheet({
-					itemList: ['全部记录', '仅显示已认证', '按时间正序', '按时间倒序'],
-					success: (res) => {
-						// 根据用户选择筛选时间轴
-						console.log('用户选择：', res.tapIndex);
-					}
-				});
-			},
-			// 获取溯源数据
-			fetchTraceData(productId) {
-				uni.showLoading({
-					title: '加载中...'
-				});
-				
-				// 模拟API请求
-				setTimeout(() => {
-					// 实际应用中应该使用uni.request调用API
-					uni.hideLoading();
-				}, 500);
-			}
+<script setup>
+	import { ref, computed } from 'vue'
+	import { onLoad } from '@dcloudio/uni-app'
+	import { getProductById } from '../../../data/products.js'
+	
+	// 响应式数据
+	const productId = ref(null)
+	
+	// 默认溯源信息
+	const traceInfo = ref({
+		productName: '',
+		productImage: '',
+		traceId: '',
+		blockHeight: '',
+		chainTime: '',
+		hashValue: '',
+		events: []
+	})
+	
+	// 计算属性 - 溯源事件列表
+	const traceEvents = computed(() => {
+		return traceInfo.value.events || []
+	})
+	
+	// 页面加载时获取溯源信息
+	onLoad((options) => {
+		if (options.id) {
+			productId.value = parseInt(options.id)
+			loadTraceData()
 		}
+	})
+	
+	// 加载溯源数据
+	const loadTraceData = () => {
+		const productData = getProductById(productId.value)
+		if (productData && productData.traceInfo) {
+			traceInfo.value = productData.traceInfo
+		} else {
+			uni.showToast({
+				title: '溯源信息不存在',
+				icon: 'none'
+			})
+			setTimeout(() => {
+				uni.navigateBack()
+			}, 1500)
+		}
+	}
+	
+	// 扫描其他产品
+	const scanOtherProduct = () => {
+		uni.scanCode({
+			success: (res) => {
+				// 解析扫描结果，获取产品ID
+				console.log('扫描结果：', res)
+				uni.showToast({
+					title: '扫描成功',
+					icon: 'success'
+				})
+			},
+			fail: () => {
+				uni.showToast({
+					title: '扫描失败',
+					icon: 'none'
+				})
+			}
+		})
+	}
+	
+	// 显示筛选选项
+	const showFilterOptions = () => {
+		uni.showActionSheet({
+			itemList: ['全部记录', '仅显示已认证', '按时间正序', '按时间倒序'],
+			success: (res) => {
+				// 根据用户选择筛选时间轴
+				console.log('用户选择：', res.tapIndex)
+			}
+		})
 	}
 </script>
 

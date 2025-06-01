@@ -52,7 +52,7 @@ const _sfc_main = {
         k: __props.item.quantity,
         l: common_vendor.o(onQuantityInput),
         m: common_vendor.o(increaseQuantity),
-        n: common_assets._imports_1$12,
+        n: common_assets._imports_1$11,
         o: common_vendor.o(removeItem)
       });
     };

@@ -59,65 +59,13 @@
 	import SearchInputVue from '../../components/SearchInput.vue';
 	import ProductCardVue from '../../components/ProductCard.vue';
 	import { ref, onMounted, onUnmounted, getCurrentInstance } from 'vue';
+	import { getAllProducts } from '../../data/products.js';
 	
 	const { proxy } = getCurrentInstance();
 	const cartTotalCount = ref(0);
 	
-	const products = ref([{
-			id: 1,
-			name: '瑶族野生鸡蛋 500g',
-			price: 12,
-			image: '/static/static2/hCSyEZ4ptM_small.jpg',
-			sales: 586,
-			rating: 4.9,
-			badge: '热销'
-		},
-		{
-			id: 2,
-			name: '香芋 250g',
-			price: 6,
-			image: '/static/static2/ooYBAFcqrNSAZyqqAAOXFHCVQsE56.jpeg',
-			sales: 412,
-			rating: 4.8,
-			badge: ''
-		},
-		{
-			id: 3,
-			name: '瑶绣',
-			price: 68,
-			image: '/static/static2/2121F888A69E6932BE26DF9029E_B6C725FA_128671.jpg',
-			sales: 356,
-			rating: 4.7,
-			badge: ''
-		},
-		{
-			id: 4,
-			name: '马蹄 500g',
-			price: 12,
-			image: '/static/static2/90 (1).jpg',
-			sales: 289,
-			rating: 4.9,
-			badge: '有机'
-		},
-		{
-			id: 5,
-			name: '瑶族传统刺绣手帕',
-			price: 58,
-			image: '/static/static2/4250555339_919020146.jpg',
-			sales: 203,
-			rating: 4.6,
-			badge: '手工'
-		},
-		{
-			id: 6,
-			name: '瑶山野生香菇 200g',
-			price: 78,
-			image: '/static/static2/3944.jpg_wh860.jpg',
-			sales: 178,
-			rating: 4.8,
-			badge: ''
-		},
-	]);
+	// 使用新的商品数据管理系统
+	const products = ref(getAllProducts());
 
 	// 页面加载时初始化购物车数量
 	onMounted(() => {

@@ -1,103 +1,76 @@
 "use strict";
 const common_vendor = require("../../../common/vendor.js");
 const common_assets = require("../../../common/assets.js");
+const data_products = require("../../../data/products.js");
 const _sfc_main = {
-  data() {
-    return {
-      productId: null,
-      indicatorActiveColor: "#FFFFFF",
-      indicatorColor: "rgba(255, 255, 255, 0.5)",
-      currentTab: "intro",
-      detailTabs: [
-        { id: "intro", name: "商品详情" },
-        { id: "specs", name: "规格参数" },
-        { id: "reviews", name: "用户评价" }
-      ],
-      isFavorite: false,
-      cartCount: 3,
-      // 模拟产品数据
-      product: {
-        id: 1,
-        name: "瑶族野生鸡蛋 500g",
-        slogan: "采自瑶山深处鸡所下的蛋，天然无添加",
-        price: "12",
-        originalPrice: "15",
-        isNew: true,
-        isOrganic: true,
-        rating: "4.9",
-        sales: "586",
-        favorableRate: 98,
-        images: [
-          "/static/static2/hCSyEZ4ptM_small.jpg",
-          "/static/static2/UWwPfXP2yh_small.jpg",
-          "/static/static2/8380.jpg_wh860.jpg",
-          "/static/static2/yuan_af14c2ee4fda89819c3cd58a234b8b68.jpeg"
-        ],
-        description: [
-          "瑶族鸡蛋源自瑶族聚居的青山秀水间，瑶族同胞们在山林间散养当地特色土鸡。土鸡们自由穿梭于林间草地，啄食山间昆虫、草籽，饮用清冽山泉水。这些土鸡在天然生态环境中生长，所产鸡蛋完全遵循自然规律孕育。瑶族鸡蛋无激素、抗生素添加，外壳色泽温润，蛋黄紧实饱满、颜色橙红，富含蛋白质、多种维生素及矿物质等营养物质，以天然本真的品质，传递着瑶族聚居地独特的生态之美与自然馈赠 。",
-          "瑶族鸡蛋外壳泛着柔和的浅褐色光泽，个头匀称饱满。蛋黄颜色鲜艳橙红，质地紧实，蛋清浓稠透亮。轻轻煮熟后，剥开蛋壳，浓郁的蛋香便扑鼻而来，入口细腻绵密，口感醇香浓郁，余味中带着淡淡的自然清甜。其富含优质蛋白质、卵磷脂、钙、铁等多种人体所需营养元素，无论是自家烹饪滋养，还是作为伴手礼馈赠亲友，都是充满瑶族特色与健康心意的优质之选。"
-        ],
-        farmId: 1,
-        farmName: "瑶山养鸡合作社",
-        farmLogo: "/static/static2/4378.jpg_wh860.jpg",
-        farmLocation: "湘西瑶族自治县",
-        specs: [
-          { label: "品名", value: "瑶山野生鸡蛋" },
-          { label: "净含量", value: "500g" },
-          { label: "产地", value: "湘西瑶族自治县" },
-          { label: "保质期", value: "20天" },
-          { label: "储存方法", value: "常温密封保存，避免阳光直射" },
-          { label: "认证", value: "有机认证、绿色食品认证" }
-        ],
-        detailImages: [
-          "/static/static2/90.jpg",
-          "/static/static2/215116ec82444d536ffc9db9894bd298.jpg",
-          "https://img95.699pic.com/photo/50165/8380.jpg_wh860.jpg",
-          "https://pic.52112.com/180606/JPG-180606_129/UWwPfXP2yh_small.jpg",
-          "https://img95.699pic.com/photo/60014/8614.jpg_wh300.jpg!/fh/300/quality/90",
-          "https://bpic.588ku.com/element_origin_min_pic/19/07/19/215116ec82444d536ffc9db9894bd298.jpg"
-        ],
-        comments: [
-          {
-            username: "张*红",
-            avatar: "/static/static2/photo-1494790108377-be9c29b29330.avif",
-            date: "2025-04-15",
-            rating: 5,
-            content: "收到瑶族鸡蛋超惊喜！包装严实又精致，防震设计让每一颗鸡蛋都完好无损。打开包装，就能感受到天然的气息，鸡蛋外壳带着山林间的质朴质感。煮熟后品尝，蛋香浓郁醇厚，口感细腻嫩滑，完全没有腥味。卖家介绍说这是瑶族同胞山林散养土鸡所产，无激素添加，吃得安心又健康，下次还会回购！",
-            images: [
-              "https://img95.699pic.com/photo/60082/7816.jpg_wh860.jpg",
-              "https://pic.nximg.cn/file/20210520/21319742_210119474127_2.jpg"
-            ]
-          },
-          {
-            username: "王*生",
-            avatar: "/static/static2/photo-1599566150163-29194dcaad36.avif",
-            date: "2025-04-10",
-            rating: 5,
-            content: "第二次购买了，家里人都很喜欢。这个瑶山鸡蛋确实和超市里的不一样，有一种特别的香味，质量很好，而且通过App还可以查看鸡蛋的溯源信息，非常安心。"
-          }
-        ]
+  __name: "detail",
+  setup(__props) {
+    const { proxy } = common_vendor.getCurrentInstance();
+    const productId = common_vendor.ref(null);
+    const indicatorActiveColor = common_vendor.ref("#FFFFFF");
+    const indicatorColor = common_vendor.ref("rgba(255, 255, 255, 0.5)");
+    const currentTab = common_vendor.ref("intro");
+    const detailTabs = common_vendor.ref([
+      { id: "intro", name: "商品详情" },
+      { id: "specs", name: "规格参数" },
+      { id: "reviews", name: "用户评价" }
+    ]);
+    const isFavorite = common_vendor.ref(false);
+    const cartCount = common_vendor.ref(0);
+    const product = common_vendor.ref({
+      id: 0,
+      name: "",
+      slogan: "",
+      price: "0",
+      originalPrice: "",
+      isNew: false,
+      isOrganic: false,
+      rating: "0",
+      sales: "0",
+      favorableRate: 0,
+      images: [],
+      description: [],
+      farmId: 0,
+      farmName: "",
+      farmLogo: "",
+      farmLocation: "",
+      specs: [],
+      detailImages: [],
+      comments: []
+    });
+    common_vendor.onLoad((options) => {
+      if (options.id) {
+        productId.value = parseInt(options.id);
+        loadProductDetail();
+      }
+    });
+    common_vendor.onMounted(() => {
+      updateCartCount();
+    });
+    const loadProductDetail = () => {
+      const productData = data_products.getProductById(productId.value);
+      if (productData) {
+        product.value = productData;
+      } else {
+        common_vendor.index.showToast({
+          title: "商品不存在",
+          icon: "none"
+        });
+        setTimeout(() => {
+          common_vendor.index.navigateBack();
+        }, 1500);
       }
     };
-  },
-  onLoad(options) {
-    if (options.id) {
-      this.productId = options.id;
-    }
-  },
-  methods: {
-    navigateTo(url) {
-      common_vendor.index.navigateTo({
-        url
-      });
-    },
-    onSwiperChange(e) {
+    const updateCartCount = () => {
+      cartCount.value = proxy.$cartStore.getTotalCount();
+    };
+    const onSwiperChange = (e) => {
       const current = e.detail.current;
-      common_vendor.index.__f__("log", "at pages/shopping/detail/detail.vue:260", "当前索引:", current);
-    },
-    toggleFavorite() {
-      this.isFavorite = !this.isFavorite;
-      if (this.isFavorite) {
+      common_vendor.index.__f__("log", "at pages/shopping/detail/detail.vue:243", "当前索引:", current);
+    };
+    const toggleFavorite = () => {
+      isFavorite.value = !isFavorite.value;
+      if (isFavorite.value) {
         common_vendor.index.showToast({
           title: "已加入收藏",
           icon: "success"
@@ -108,20 +81,23 @@ const _sfc_main = {
           icon: "none"
         });
       }
-    },
-    addToCart() {
-      this.cartCount++;
-      common_vendor.index.showToast({
-        title: "已加入购物车",
-        icon: "success"
-      });
-    },
-    buyNow() {
+    };
+    const addToCart = () => {
+      const success = proxy.$cartStore.addToCart(product.value, 1);
+      if (success) {
+        updateCartCount();
+        common_vendor.index.showToast({
+          title: "已加入购物车",
+          icon: "success"
+        });
+      }
+    };
+    const buyNow = () => {
       common_vendor.index.navigateTo({
-        url: "/pages/shopping/order/confirm?productId=" + this.product.id + "&quantity=1"
+        url: `/pages/shopping/order/confirm?productId=${product.value.id}&quantity=1`
       });
-    },
-    shareProduct() {
+    };
+    const shareProduct = () => {
       common_vendor.index.showActionSheet({
         itemList: ["分享给朋友", "分享到朋友圈", "复制链接"],
         success: (res) => {
@@ -131,139 +107,145 @@ const _sfc_main = {
           });
         }
       });
-    },
-    previewImage(index) {
+    };
+    const previewImage = (index) => {
       common_vendor.index.previewImage({
         current: index,
-        urls: this.product.detailImages
+        urls: product.value.detailImages
       });
-    },
-    previewCommentImage(images, index) {
+    };
+    const previewCommentImage = (images, index) => {
       common_vendor.index.previewImage({
         current: index,
         urls: images
       });
-    },
-    fetchProductDetail() {
-      common_vendor.index.showLoading({
-        title: "加载中..."
+    };
+    const navigateToTrace = () => {
+      common_vendor.index.navigateTo({
+        url: `/pages/shopping/detail/trace?id=${productId.value}`
       });
-      setTimeout(() => {
-        common_vendor.index.hideLoading();
-      }, 500);
-    }
-  }
-};
-function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
-  return common_vendor.e({
-    a: common_assets._imports_0$6,
-    b: common_assets._imports_1$8,
-    c: common_vendor.o((...args) => $options.shareProduct && $options.shareProduct(...args)),
-    d: common_vendor.f($data.product.images, (image, index, i0) => {
-      return {
-        a: image,
-        b: index
-      };
-    }),
-    e: $data.indicatorActiveColor,
-    f: $data.indicatorColor,
-    g: common_vendor.o((...args) => $options.onSwiperChange && $options.onSwiperChange(...args)),
-    h: common_vendor.t($data.product.price),
-    i: $data.product.originalPrice
-  }, $data.product.originalPrice ? {
-    j: common_vendor.t($data.product.originalPrice)
-  } : {}, {
-    k: $data.product.isNew
-  }, $data.product.isNew ? {} : {}, {
-    l: $data.product.isOrganic
-  }, $data.product.isOrganic ? {} : {}, {
-    m: common_vendor.t($data.product.name),
-    n: common_vendor.t($data.product.slogan),
-    o: common_vendor.t($data.product.rating),
-    p: common_vendor.t($data.product.sales),
-    q: common_vendor.t($data.product.favorableRate),
-    r: common_assets._imports_2$5,
-    s: common_assets._imports_1$7,
-    t: common_vendor.o(($event) => $options.navigateTo("/pages/shopping/detail/trace")),
-    v: $data.product.farmLogo,
-    w: common_vendor.t($data.product.farmName),
-    x: common_assets._imports_1$7,
-    y: common_vendor.t($data.product.farmLocation),
-    z: common_vendor.o(($event) => $options.navigateTo("/pages/shopping/detail/farm?id=" + $data.product.farmId)),
-    A: common_vendor.f($data.detailTabs, (tab, index, i0) => {
-      return {
-        a: common_vendor.t(tab.name),
-        b: index,
-        c: $data.currentTab === tab.id ? 1 : "",
-        d: common_vendor.o(($event) => $data.currentTab = tab.id, index)
-      };
-    }),
-    B: $data.currentTab === "intro"
-  }, $data.currentTab === "intro" ? {
-    C: common_vendor.f($data.product.description, (desc, index, i0) => {
-      return {
-        a: common_vendor.t(desc),
-        b: index
-      };
-    })
-  } : {}, {
-    D: $data.currentTab === "specs"
-  }, $data.currentTab === "specs" ? {
-    E: common_vendor.f($data.product.specs, (spec, index, i0) => {
-      return {
-        a: common_vendor.t(spec.label),
-        b: common_vendor.t(spec.value),
-        c: index
-      };
-    }),
-    F: common_vendor.f($data.product.detailImages, (image, index, i0) => {
-      return {
-        a: image,
-        b: common_vendor.o(($event) => $options.previewImage(index), index),
-        c: index
-      };
-    })
-  } : {}, {
-    G: $data.currentTab === "reviews"
-  }, $data.currentTab === "reviews" ? {
-    H: common_vendor.t($data.product.comments.length),
-    I: common_vendor.f($data.product.comments, (comment, index, i0) => {
+    };
+    const navigateToFarm = () => {
+      common_vendor.index.navigateTo({
+        url: `/pages/shopping/detail/farm?id=${product.value.farmId}`
+      });
+    };
+    const navigateToCart = () => {
+      common_vendor.index.navigateTo({
+        url: "/pages/shopping/cart/cart"
+      });
+    };
+    return (_ctx, _cache) => {
       return common_vendor.e({
-        a: comment.avatar,
-        b: common_vendor.t(comment.username),
-        c: common_vendor.t(comment.date),
-        d: common_vendor.f(5, (i, k1, i1) => {
+        a: common_assets._imports_0$6,
+        b: common_assets._imports_1$8,
+        c: common_vendor.o(shareProduct),
+        d: common_vendor.f(product.value.images, (image, index, i0) => {
           return {
-            a: i,
-            b: i <= comment.rating ? 1 : ""
+            a: image,
+            b: index
           };
         }),
-        e: common_vendor.t(comment.content),
-        f: comment.images && comment.images.length
-      }, comment.images && comment.images.length ? {
-        g: common_vendor.f(comment.images, (img, imgIndex, i1) => {
+        e: indicatorActiveColor.value,
+        f: indicatorColor.value,
+        g: common_vendor.o(onSwiperChange),
+        h: common_vendor.t(product.value.price),
+        i: product.value.originalPrice
+      }, product.value.originalPrice ? {
+        j: common_vendor.t(product.value.originalPrice)
+      } : {}, {
+        k: product.value.isNew
+      }, product.value.isNew ? {} : {}, {
+        l: product.value.isOrganic
+      }, product.value.isOrganic ? {} : {}, {
+        m: common_vendor.t(product.value.name),
+        n: common_vendor.t(product.value.slogan),
+        o: common_vendor.t(product.value.rating),
+        p: common_vendor.t(product.value.sales),
+        q: common_vendor.t(product.value.favorableRate),
+        r: common_assets._imports_2$5,
+        s: common_assets._imports_1$7,
+        t: common_vendor.o(navigateToTrace),
+        v: product.value.farmLogo,
+        w: common_vendor.t(product.value.farmName),
+        x: common_assets._imports_1$7,
+        y: common_vendor.t(product.value.farmLocation),
+        z: common_vendor.o(navigateToFarm),
+        A: common_vendor.f(detailTabs.value, (tab, index, i0) => {
           return {
-            a: imgIndex,
-            b: img,
-            c: common_vendor.o(($event) => $options.previewCommentImage(comment.images, imgIndex), imgIndex)
+            a: common_vendor.t(tab.name),
+            b: index,
+            c: currentTab.value === tab.id ? 1 : "",
+            d: common_vendor.o(($event) => currentTab.value = tab.id, index)
+          };
+        }),
+        B: currentTab.value === "intro"
+      }, currentTab.value === "intro" ? {
+        C: common_vendor.f(product.value.description, (desc, index, i0) => {
+          return {
+            a: common_vendor.t(desc),
+            b: index
           };
         })
       } : {}, {
-        h: index
+        D: currentTab.value === "specs"
+      }, currentTab.value === "specs" ? {
+        E: common_vendor.f(product.value.specs, (spec, index, i0) => {
+          return {
+            a: common_vendor.t(spec.label),
+            b: common_vendor.t(spec.value),
+            c: index
+          };
+        }),
+        F: common_vendor.f(product.value.detailImages, (image, index, i0) => {
+          return {
+            a: image,
+            b: common_vendor.o(($event) => previewImage(index), index),
+            c: index
+          };
+        })
+      } : {}, {
+        G: currentTab.value === "reviews"
+      }, currentTab.value === "reviews" ? {
+        H: common_vendor.t(product.value.comments.length),
+        I: common_vendor.f(product.value.comments, (comment, index, i0) => {
+          return common_vendor.e({
+            a: comment.avatar,
+            b: common_vendor.t(comment.username),
+            c: common_vendor.t(comment.date),
+            d: common_vendor.f(5, (i, k1, i1) => {
+              return {
+                a: i,
+                b: i <= comment.rating ? 1 : ""
+              };
+            }),
+            e: common_vendor.t(comment.content),
+            f: comment.images && comment.images.length
+          }, comment.images && comment.images.length ? {
+            g: common_vendor.f(comment.images, (img, imgIndex, i1) => {
+              return {
+                a: imgIndex,
+                b: img,
+                c: common_vendor.o(($event) => previewCommentImage(comment.images, imgIndex), imgIndex)
+              };
+            })
+          } : {}, {
+            h: index
+          });
+        })
+      } : {}, {
+        J: common_vendor.n(isFavorite.value ? "icon-heart-solid" : "icon-heart"),
+        K: common_vendor.o(toggleFavorite),
+        L: cartCount.value > 0
+      }, cartCount.value > 0 ? {
+        M: common_vendor.t(cartCount.value)
+      } : {}, {
+        N: common_vendor.o(navigateToCart),
+        O: common_vendor.o(addToCart),
+        P: common_vendor.o(buyNow)
       });
-    })
-  } : {}, {
-    J: common_vendor.n($data.isFavorite ? "icon-heart-solid" : "icon-heart"),
-    K: common_vendor.o((...args) => $options.toggleFavorite && $options.toggleFavorite(...args)),
-    L: $data.cartCount > 0
-  }, $data.cartCount > 0 ? {
-    M: common_vendor.t($data.cartCount)
-  } : {}, {
-    N: common_vendor.o(($event) => $options.navigateTo("/pages/shopping/cart/cart")),
-    O: common_vendor.o((...args) => $options.addToCart && $options.addToCart(...args)),
-    P: common_vendor.o((...args) => $options.buyNow && $options.buyNow(...args))
-  });
-}
-const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render]]);
-wx.createPage(MiniProgramPage);
+    };
+  }
+};
+wx.createPage(_sfc_main);
 //# sourceMappingURL=../../../../.sourcemap/mp-weixin/pages/shopping/detail/detail.js.map

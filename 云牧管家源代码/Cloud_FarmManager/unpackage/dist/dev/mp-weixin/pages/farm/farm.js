@@ -14,19 +14,19 @@ const _sfc_main = { data() {
 } } };
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   return common_vendor.e({
-    a: common_assets._imports_7$1,
+    a: common_assets._imports_6$1,
     b: common_vendor.o((...args) => $options.showGameSelector && $options.showGameSelector(...args)),
     c: common_assets._imports_1$2,
     d: common_vendor.o(($event) => $options.navigateTo("/pages/farm/new")),
     e: common_assets._imports_2$1,
     f: common_vendor.o(($event) => $options.navigateTo("/pages/farm/my")),
-    g: common_assets._imports_3$2,
+    g: common_assets._imports_3$3,
     h: common_vendor.o(($event) => $options.navigateTo("/pages/farm/monitor")),
-    i: common_assets._imports_3$3,
+    i: common_assets._imports_3$4,
     j: common_vendor.o(($event) => $options.navigateTo("/pages/farm/data")),
     k: common_assets._imports_5$1,
     l: common_assets._imports_11,
-    m: common_assets._imports_7$2,
+    m: common_assets._imports_7$1,
     n: $data.showGameModeSelector
   }, $data.showGameModeSelector ? {
     o: common_vendor.o((...args) => $options.hideGameSelector && $options.hideGameSelector(...args)),

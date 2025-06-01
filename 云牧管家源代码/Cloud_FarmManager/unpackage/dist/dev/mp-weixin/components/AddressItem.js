@@ -55,7 +55,7 @@ const _sfc_main = {
       }, __props.showActions ? {
         i: common_assets._imports_0$12,
         j: common_vendor.o(handleEdit),
-        k: common_assets._imports_1$13,
+        k: common_assets._imports_1$12,
         l: common_vendor.o(handleDelete)
       } : {}, {
         m: __props.address.isDefault ? 1 : "",

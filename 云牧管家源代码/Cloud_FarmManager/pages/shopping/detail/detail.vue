@@ -50,7 +50,7 @@
 			</view>
 			
 			<!-- 区块链溯源 -->
-			<view class="blockchain-trace" @click="navigateTo('/pages/shopping/detail/trace')">
+			<view class="blockchain-trace" @click="navigateToTrace">
 			  <view class="blockchain-icon">
 				<image class="trace-icon" src="/static/icons/shopping icon/link.svg"></image>
 			  </view>
@@ -62,7 +62,7 @@
 			</view>
 			
 			<!-- 养殖户信息 -->
-			<view class="farm-info" @click="navigateTo('/pages/shopping/detail/farm?id=' + product.farmId)">
+			<view class="farm-info" @click="navigateToFarm">
 				<image :src="product.farmLogo" class="farm-logo"></image>
 				<view>
 					<text class="farm-name">{{product.farmName}}</text>
@@ -147,7 +147,7 @@
 				<text class="iconfont" :class="isFavorite ? 'icon-heart-solid' : 'icon-heart'"></text>
 				<text>收藏</text>
 			</view>
-			<view class="action-cart" @click="navigateTo('/pages/shopping/cart/cart')">
+			<view class="action-cart" @click="navigateToCart">
 				<text class="iconfont icon-shopping-cart"></text>
 				<text>购物车</text>
 				<text class="badge" v-if="cartCount > 0">{{cartCount}}</text>
@@ -160,172 +160,172 @@
 	</view>
 </template>
 
-<script>
-	export default {
-		data() {
-			return {
-				productId: null,
-				indicatorActiveColor: '#FFFFFF',
-				indicatorColor: 'rgba(255, 255, 255, 0.5)',
-				currentTab: 'intro',
-				detailTabs: [
-					{ id: 'intro', name: '商品详情' },
-					{ id: 'specs', name: '规格参数' },
-					{ id: 'reviews', name: '用户评价' }
-				],
-				isFavorite: false,
-				cartCount: 3,
-				// 模拟产品数据
-				product: {
-					id: 1,
-					name: '瑶族野生鸡蛋 500g',
-					slogan: '采自瑶山深处鸡所下的蛋，天然无添加',
-					price: '12',
-					originalPrice: '15',
-					isNew: true,
-					isOrganic: true,
-					rating: '4.9',
-					sales: '586',
-					favorableRate: 98,
-					images: [
-						'/static/static2/hCSyEZ4ptM_small.jpg',
-						'/static/static2/UWwPfXP2yh_small.jpg',
-						'/static/static2/8380.jpg_wh860.jpg',
-						'/static/static2/yuan_af14c2ee4fda89819c3cd58a234b8b68.jpeg'
-					],
-					description: [
-						'瑶族鸡蛋源自瑶族聚居的青山秀水间，瑶族同胞们在山林间散养当地特色土鸡。土鸡们自由穿梭于林间草地，啄食山间昆虫、草籽，饮用清冽山泉水。这些土鸡在天然生态环境中生长，所产鸡蛋完全遵循自然规律孕育。瑶族鸡蛋无激素、抗生素添加，外壳色泽温润，蛋黄紧实饱满、颜色橙红，富含蛋白质、多种维生素及矿物质等营养物质，以天然本真的品质，传递着瑶族聚居地独特的生态之美与自然馈赠 。',
-						'瑶族鸡蛋外壳泛着柔和的浅褐色光泽，个头匀称饱满。蛋黄颜色鲜艳橙红，质地紧实，蛋清浓稠透亮。轻轻煮熟后，剥开蛋壳，浓郁的蛋香便扑鼻而来，入口细腻绵密，口感醇香浓郁，余味中带着淡淡的自然清甜。其富含优质蛋白质、卵磷脂、钙、铁等多种人体所需营养元素，无论是自家烹饪滋养，还是作为伴手礼馈赠亲友，都是充满瑶族特色与健康心意的优质之选。'
-					],
-					farmId: 1,
-					farmName: '瑶山养鸡合作社',
-					farmLogo: '/static/static2/4378.jpg_wh860.jpg',
-					farmLocation: '湘西瑶族自治县',
-					specs: [
-						{ label: '品名', value: '瑶山野生鸡蛋' },
-						{ label: '净含量', value: '500g' },
-						{ label: '产地', value: '湘西瑶族自治县' },
-						{ label: '保质期', value: '20天' },
-						{ label: '储存方法', value: '常温密封保存，避免阳光直射' },
-						{ label: '认证', value: '有机认证、绿色食品认证' }
-					],
-					detailImages: [
-						'/static/static2/90.jpg',
-						'/static/static2/215116ec82444d536ffc9db9894bd298.jpg',
-						'https://img95.699pic.com/photo/50165/8380.jpg_wh860.jpg',
-						'https://pic.52112.com/180606/JPG-180606_129/UWwPfXP2yh_small.jpg',
-						'https://img95.699pic.com/photo/60014/8614.jpg_wh300.jpg!/fh/300/quality/90',
-						'https://bpic.588ku.com/element_origin_min_pic/19/07/19/215116ec82444d536ffc9db9894bd298.jpg'
-					],
-					comments: [
-						{
-							username: '张*红',
-							avatar: '/static/static2/photo-1494790108377-be9c29b29330.avif',
-							date: '2025-04-15',
-							rating: 5,
-							content: '收到瑶族鸡蛋超惊喜！包装严实又精致，防震设计让每一颗鸡蛋都完好无损。打开包装，就能感受到天然的气息，鸡蛋外壳带着山林间的质朴质感。煮熟后品尝，蛋香浓郁醇厚，口感细腻嫩滑，完全没有腥味。卖家介绍说这是瑶族同胞山林散养土鸡所产，无激素添加，吃得安心又健康，下次还会回购！',
-							images: [
-								'https://img95.699pic.com/photo/60082/7816.jpg_wh860.jpg',
-								'https://pic.nximg.cn/file/20210520/21319742_210119474127_2.jpg'
-							]
-						},
-						{
-							username: '王*生',
-							avatar: '/static/static2/photo-1599566150163-29194dcaad36.avif',
-							date: '2025-04-10',
-							rating: 5,
-							content: '第二次购买了，家里人都很喜欢。这个瑶山鸡蛋确实和超市里的不一样，有一种特别的香味，质量很好，而且通过App还可以查看鸡蛋的溯源信息，非常安心。'
-						}
-					]
-				}
-			}
-		},
-		onLoad(options) {
-			// 从URL参数获取产品ID
-			if (options.id) {
-				this.productId = options.id;
-				// 实际应用中应该根据ID从后端获取产品信息
-				// this.fetchProductDetail();
-			}
-		},
-		methods: {
-			navigateTo(url) {
-				uni.navigateTo({
-					url: url
-				});
-			},
-			onSwiperChange(e) {
-				// 轮播图切换事件
-				const current = e.detail.current;
-				console.log('当前索引:', current);
-			},
-			toggleFavorite() {
-				this.isFavorite = !this.isFavorite;
-				if (this.isFavorite) {
-					uni.showToast({
-						title: '已加入收藏',
-						icon: 'success'
-					});
-				} else {
-					uni.showToast({
-						title: '已取消收藏',
-						icon: 'none'
-					});
-				}
-			},
-			addToCart() {
-				// 加入购物车逻辑
-				this.cartCount++;
-				uni.showToast({
-					title: '已加入购物车',
-					icon: 'success'
-				});
-			},
-			buyNow() {
-				// 立即购买逻辑，跳转到确认订单页面
-				uni.navigateTo({
-					url: '/pages/shopping/order/confirm?productId=' + this.product.id + '&quantity=1'
-				});
-			},
-			shareProduct() {
-				// 分享产品
-				uni.showActionSheet({
-					itemList: ['分享给朋友', '分享到朋友圈', '复制链接'],
-					success: (res) => {
-						uni.showToast({
-							title: '分享成功',
-							icon: 'success'
-						});
-					}
-				});
-			},
-			previewImage(index) {
-				// 预览产品详情图片
-				uni.previewImage({
-					current: index,
-					urls: this.product.detailImages
-				});
-			},
-			previewCommentImage(images, index) {
-				// 预览评论图片
-				uni.previewImage({
-					current: index,
-					urls: images
-				});
-			},
-			fetchProductDetail() {
-				// 实际应用中应该调用API获取产品详情
-				uni.showLoading({
-					title: '加载中...'
-				});
-				
-				// 模拟API请求
-				setTimeout(() => {
-					// 实际应用中应该使用uni.request调用API
-					uni.hideLoading();
-				}, 500);
-			}
+<script setup>
+	import { ref, onMounted, getCurrentInstance } from 'vue'
+	import { onLoad } from '@dcloudio/uni-app'
+	import { getProductById } from '../../../data/products.js'
+	
+	const { proxy } = getCurrentInstance()
+	
+	// 响应式数据
+	const productId = ref(null)
+	const indicatorActiveColor = ref('#FFFFFF')
+	const indicatorColor = ref('rgba(255, 255, 255, 0.5)')
+	const currentTab = ref('intro')
+	const detailTabs = ref([
+		{ id: 'intro', name: '商品详情' },
+		{ id: 'specs', name: '规格参数' },
+		{ id: 'reviews', name: '用户评价' }
+	])
+	const isFavorite = ref(false)
+	const cartCount = ref(0)
+	
+	// 商品信息 - 默认空对象，避免模板渲染错误
+	const product = ref({
+		id: 0,
+		name: '',
+		slogan: '',
+		price: '0',
+		originalPrice: '',
+		isNew: false,
+		isOrganic: false,
+		rating: '0',
+		sales: '0',
+		favorableRate: 0,
+		images: [],
+		description: [],
+		farmId: 0,
+		farmName: '',
+		farmLogo: '',
+		farmLocation: '',
+		specs: [],
+		detailImages: [],
+		comments: []
+	})
+	
+	// 页面加载时获取商品信息
+	onLoad((options) => {
+		if (options.id) {
+			productId.value = parseInt(options.id)
+			loadProductDetail()
 		}
+	})
+	
+	// 页面显示时更新购物车数量
+	onMounted(() => {
+		updateCartCount()
+	})
+	
+	// 加载商品详情
+	const loadProductDetail = () => {
+		const productData = getProductById(productId.value)
+		if (productData) {
+			product.value = productData
+		} else {
+			uni.showToast({
+				title: '商品不存在',
+				icon: 'none'
+			})
+			setTimeout(() => {
+				uni.navigateBack()
+			}, 1500)
+		}
+	}
+	
+	// 更新购物车数量
+	const updateCartCount = () => {
+		cartCount.value = proxy.$cartStore.getTotalCount()
+	}
+	
+	// 轮播图切换事件
+	const onSwiperChange = (e) => {
+		const current = e.detail.current
+		console.log('当前索引:', current)
+	}
+	
+	// 切换收藏状态
+	const toggleFavorite = () => {
+		isFavorite.value = !isFavorite.value
+		if (isFavorite.value) {
+			uni.showToast({
+				title: '已加入收藏',
+				icon: 'success'
+			})
+		} else {
+			uni.showToast({
+				title: '已取消收藏',
+				icon: 'none'
+			})
+		}
+	}
+	
+	// 加入购物车
+	const addToCart = () => {
+		const success = proxy.$cartStore.addToCart(product.value, 1)
+		if (success) {
+			updateCartCount()
+			uni.showToast({
+				title: '已加入购物车',
+				icon: 'success'
+			})
+		}
+	}
+	
+	// 立即购买
+	const buyNow = () => {
+		uni.navigateTo({
+			url: `/pages/shopping/order/confirm?productId=${product.value.id}&quantity=1`
+		})
+	}
+	
+	// 分享产品
+	const shareProduct = () => {
+		uni.showActionSheet({
+			itemList: ['分享给朋友', '分享到朋友圈', '复制链接'],
+			success: (res) => {
+				uni.showToast({
+					title: '分享成功',
+					icon: 'success'
+				})
+			}
+		})
+	}
+	
+	// 预览产品详情图片
+	const previewImage = (index) => {
+		uni.previewImage({
+			current: index,
+			urls: product.value.detailImages
+		})
+	}
+	
+	// 预览评论图片
+	const previewCommentImage = (images, index) => {
+		uni.previewImage({
+			current: index,
+			urls: images
+		})
+	}
+	
+	// 跳转到区块链溯源页面
+	const navigateToTrace = () => {
+		uni.navigateTo({
+			url: `/pages/shopping/detail/trace?id=${productId.value}`
+		})
+	}
+	
+	// 跳转到养殖户页面
+	const navigateToFarm = () => {
+		uni.navigateTo({
+			url: `/pages/shopping/detail/farm?id=${product.value.farmId}`
+		})
+	}
+	
+	// 跳转到购物车
+	const navigateToCart = () => {
+		uni.navigateTo({
+			url: '/pages/shopping/cart/cart'
+		})
 	}
 </script>
 

@@ -92,24 +92,24 @@
 	const discount = ref(3)
 	
 	const recommendItems = ref([
-		{
-			id: 4,
-			name: '瑶山野生香菇',
-			price: 78,
-			image: '/static/static2/3944.jpg_wh860.jpg'
-		},
-		{
-			id: 5,
-			name: '瑶山古法山茶油',
-			price: 188,
-			image: '/static/static2/v2-a582c6ef03ee0473ff546458328c18b6_720w.png'
-		},
-		{
-			id: 6,
-			name: '瑶山有机稻米',
-			price: 128,
-			image: '/static/static2/photo-1515339760107-1952b7a08454.avif'
-		}
+					{
+						id: 4,
+						name: '瑶山野生香菇',
+						price: 78,
+						image: '/static/static2/3944.jpg_wh860.jpg'
+					},
+					{
+						id: 5,
+						name: '瑶山古法山茶油',
+						price: 188,
+						image: '/static/static2/v2-a582c6ef03ee0473ff546458328c18b6_720w.png'
+					},
+					{
+						id: 6,
+						name: '瑶山有机稻米',
+						price: 128,
+						image: '/static/static2/photo-1515339760107-1952b7a08454.avif'
+					}
 	])
 	
 	// 计算属性 - 基于本地响应式数据计算
@@ -121,7 +121,7 @@
 	
 	const totalPrice = computed(() => {
 		return cartItems.value
-			.filter(item => item.selected)
+					.filter(item => item.selected)
 			.reduce((total, item) => total + item.price * item.quantity, 0)
 	})
 	
@@ -141,38 +141,38 @@
 		await loadCartData()
 	}
 	
-	// 切换商品选中状态
+			// 切换商品选中状态
 	const toggleItemSelect = async (index) => {
 		proxy.$cartStore.toggleItemSelect(index)
 		await loadCartData() // 立即更新本地数据
 	}
 	
-	// 切换全选
+			// 切换全选
 	const toggleSelectAll = async () => {
 		proxy.$cartStore.toggleSelectAll()
 		await loadCartData() // 立即更新本地数据
 	}
 	
-	// 减少商品数量
+			// 减少商品数量
 	const decreaseQuantity = async (index) => {
 		const item = cartItems.value[index]
 		if (item.quantity > 1) {
 			proxy.$cartStore.updateQuantity(index, item.quantity - 1)
 			await loadCartData() // 立即更新本地数据
-		} else {
-			uni.showModal({
-				title: '提示',
-				content: '确定要移除该商品吗？',
+				} else {
+					uni.showModal({
+						title: '提示',
+						content: '确定要移除该商品吗？',
 				success: async (res) => {
-					if (res.confirm) {
+							if (res.confirm) {
 						await removeItem(index)
-					}
-				}
+							}
+						}
 			})
 		}
-	}
+				}
 	
-	// 增加商品数量
+			// 增加商品数量
 	const increaseQuantity = async (index) => {
 		const item = cartItems.value[index]
 		proxy.$cartStore.updateQuantity(index, item.quantity + 1)
@@ -189,63 +189,63 @@
 		}
 	}
 	
-	// 移除商品
+			// 移除商品
 	const removeItem = async (index) => {
 		return new Promise((resolve) => {
-			uni.showModal({
-				title: '提示',
-				content: '确定要移除该商品吗？',
+				uni.showModal({
+					title: '提示',
+					content: '确定要移除该商品吗？',
 				success: async (res) => {
-					if (res.confirm) {
+						if (res.confirm) {
 						proxy.$cartStore.removeItem(index)
 						await loadCartData() // 立即更新本地数据
-					}
+						}
 					resolve()
-				}
+					}
 			})
 		})
 	}
 	
-	// 从推荐添加商品
+			// 从推荐添加商品
 	const addToCartFromRecommend = async (item) => {
 		const success = proxy.$cartStore.addToCart(item, 1)
 		if (success) {
 			await loadCartData() // 立即更新本地数据
-			uni.showToast({
-				title: '已加入购物车',
-				icon: 'success'
+				uni.showToast({
+					title: '已加入购物车',
+					icon: 'success'
 			})
 		}
 	}
 	
-	// 跳转到商城页面
+			// 跳转到商城页面
 	const goShopping = () => {
-		uni.switchTab({
-			url: '/pages/shopping/shopping'
+				uni.switchTab({
+					url: '/pages/shopping/shopping'
 		})
 	}
 	
-	// 结算
+			// 结算
 	const checkout = () => {
 		if (selectedCount.value === 0) {
-			uni.showToast({
-				title: '请选择商品',
-				icon: 'none'
+					uni.showToast({
+						title: '请选择商品',
+						icon: 'none'
 			})
 			return
-		}
-		
-		// 获取选中的商品
+				}
+				
+				// 获取选中的商品
 		const selectedItems = proxy.$cartStore.getSelectedItems()
 		
 		// 将选中的商品数据传递到结算页面
 		uni.setStorageSync('checkout_items', selectedItems)
-		
-		// 跳转到确认订单页面
-		uni.navigateTo({
-			url: '/pages/shopping/checkout/checkout'
+				
+				// 跳转到确认订单页面
+				uni.navigateTo({
+					url: '/pages/shopping/checkout/checkout'
 		})
-	}
+			}
 	
 	// 生命周期
 	onMounted(async () => {
@@ -613,11 +613,11 @@
 	}
 	
 	.icon-svg {
-		width: 40rpx;
-		height: 40rpx;
+	  width: 40rpx;
+	  height: 40rpx;
 	}
 	
 	.back-icon {
-		margin-left: -10rpx; // 或其他你需要的值
+	  margin-left: -10rpx; // 或其他你需要的值
 	}
 </style> 

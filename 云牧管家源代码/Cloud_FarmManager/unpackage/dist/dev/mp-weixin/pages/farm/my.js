@@ -135,10 +135,10 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
         r: common_vendor.o(($event) => $options.navigateTo("/pages/farm/monitor"), index),
         s: item.status === "growing"
       }, item.status === "growing" ? {
-        t: common_assets._imports_3$3,
+        t: common_assets._imports_3$4,
         v: common_vendor.o(($event) => $options.navigateTo("/pages/farm/data"), index)
       } : {
-        w: common_assets._imports_4$4,
+        w: common_assets._imports_4$3,
         x: common_vendor.o(($event) => $options.harvestProduct(item), index)
       }, {
         y: index

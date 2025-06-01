@@ -207,14 +207,14 @@ const _sfc_main = {
           };
         })
       } : {
-        e: common_assets._imports_1$10
+        e: common_assets._imports_1$9
       }, {
         f: common_vendor.o(($event) => showAddressForm(null)),
         g: showForm.value
       }, showForm.value ? common_vendor.e({
         h: common_vendor.o(cancelForm),
         i: common_vendor.t(isEditMode.value ? "编辑地址" : "新增地址"),
-        j: common_assets._imports_2$7,
+        j: common_assets._imports_2$8,
         k: common_vendor.o(cancelForm),
         l: formData.name,
         m: common_vendor.o(($event) => formData.name = $event.detail.value),

@@ -1,6 +1,7 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
 const common_assets = require("../../common/assets.js");
+const data_products = require("../../data/products.js");
 if (!Array) {
   const _component_tab_bar = common_vendor.resolveComponent("tab-bar");
   _component_tab_bar();
@@ -15,62 +16,7 @@ const _sfc_main = {
   setup(__props) {
     const { proxy } = common_vendor.getCurrentInstance();
     const cartTotalCount = common_vendor.ref(0);
-    const products = common_vendor.ref([
-      {
-        id: 1,
-        name: "瑶族野生鸡蛋 500g",
-        price: 12,
-        image: "/static/static2/hCSyEZ4ptM_small.jpg",
-        sales: 586,
-        rating: 4.9,
-        badge: "热销"
-      },
-      {
-        id: 2,
-        name: "香芋 250g",
-        price: 6,
-        image: "/static/static2/ooYBAFcqrNSAZyqqAAOXFHCVQsE56.jpeg",
-        sales: 412,
-        rating: 4.8,
-        badge: ""
-      },
-      {
-        id: 3,
-        name: "瑶绣",
-        price: 68,
-        image: "/static/static2/2121F888A69E6932BE26DF9029E_B6C725FA_128671.jpg",
-        sales: 356,
-        rating: 4.7,
-        badge: ""
-      },
-      {
-        id: 4,
-        name: "马蹄 500g",
-        price: 12,
-        image: "/static/static2/90 (1).jpg",
-        sales: 289,
-        rating: 4.9,
-        badge: "有机"
-      },
-      {
-        id: 5,
-        name: "瑶族传统刺绣手帕",
-        price: 58,
-        image: "/static/static2/4250555339_919020146.jpg",
-        sales: 203,
-        rating: 4.6,
-        badge: "手工"
-      },
-      {
-        id: 6,
-        name: "瑶山野生香菇 200g",
-        price: 78,
-        image: "/static/static2/3944.jpg_wh860.jpg",
-        sales: 178,
-        rating: 4.8,
-        badge: ""
-      }
-    ]);
+    const products = common_vendor.ref(data_products.getAllProducts());
     common_vendor.onMounted(() => {
       updateCartCount();
       common_vendor.index.$on("cartUpdated", handleCartUpdate);
@@ -113,7 +59,7 @@ const _sfc_main = {
         }),
         b: common_assets._imports_1$1,
         c: common_assets._imports_1$1,
-        d: common_assets._imports_4$1,
+        d: common_assets._imports_3$1,
         e: common_vendor.f(products.value, (product, k0, i0) => {
           return {
             a: product.id,
@@ -125,7 +71,7 @@ const _sfc_main = {
             })
           };
         }),
-        f: common_assets._imports_3$1,
+        f: common_assets._imports_3$2,
         g: cartTotalCount.value > 0
       }, cartTotalCount.value > 0 ? {
         h: common_vendor.t(cartTotalCount.value)

@@ -6932,7 +6932,7 @@ function initOnError() {
 function initRuntimeSocketService() {
   const hosts = "192.168.201.47,127.0.0.1";
   const port = "8090";
-  const id = "mp-weixin_RgzOBr";
+  const id = "mp-weixin_KZLvXS";
   const lazy = typeof swan !== "undefined";
   let restoreError = lazy ? () => {
   } : initOnError();
@@ -7875,6 +7875,7 @@ const createHook = (lifecycle) => (hook, target = getCurrentInstance()) => {
   !isInSSRComponentSetup && injectHook(lifecycle, hook, target);
 };
 const onShow = /* @__PURE__ */ createHook(ON_SHOW);
+const onLoad = /* @__PURE__ */ createHook(ON_LOAD);
 exports._export_sfc = _export_sfc;
 exports.computed = computed;
 exports.createSSRApp = createSSRApp;
@@ -7885,6 +7886,7 @@ exports.index = index;
 exports.n = n;
 exports.nextTick$1 = nextTick$1;
 exports.o = o;
+exports.onLoad = onLoad;
 exports.onMounted = onMounted;
 exports.onShow = onShow;
 exports.onUnmounted = onUnmounted;
