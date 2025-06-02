@@ -1,6 +1,7 @@
 "use strict";
 const common_vendor = require("../../../common/vendor.js");
 const common_assets = require("../../../common/assets.js");
+const api_addressService = require("../../../api/addressService.js");
 if (!Math) {
   (AddressItem + CheckoutItem)();
 }
@@ -10,16 +11,8 @@ const _sfc_main = {
   __name: "checkout",
   setup(__props) {
     const orderItems = common_vendor.ref([]);
-    const selectedAddress = common_vendor.ref({
-      id: 1,
-      name: "张三",
-      phone: "13800138000",
-      province: "广东省",
-      city: "广州市",
-      district: "天河区",
-      detail: "瑶山农业科技园区A栋101",
-      isDefault: true
-    });
+    const selectedAddress = common_vendor.ref(null);
+    const addressLoading = common_vendor.ref(false);
     const paymentMethods = common_vendor.ref([
       {
         id: "wxpay",
@@ -34,6 +27,7 @@ const _sfc_main = {
     ]);
     const selectedPayment = common_vendor.ref("wxpay");
     const orderRemark = common_vendor.ref("");
+    const submitting = common_vendor.ref(false);
     const shippingFee = common_vendor.ref(10);
     const discountAmount = common_vendor.ref(5);
     const totalProductPrice = common_vendor.computed(() => {
@@ -42,9 +36,17 @@ const _sfc_main = {
     const totalAmount = common_vendor.computed(() => {
       return totalProductPrice.value + shippingFee.value - discountAmount.value;
     });
+    const handleAddressSelected = (address) => {
+      selectedAddress.value = address;
+      common_vendor.index.__f__("log", "at pages/shopping/checkout/checkout.vue:148", "地址已选择:", address);
+    };
     common_vendor.onMounted(() => {
       getCartItems();
-      getDefaultAddress();
+      loadDefaultAddress();
+      common_vendor.index.$on("addressSelected", handleAddressSelected);
+    });
+    common_vendor.onUnmounted(() => {
+      common_vendor.index.$off("addressSelected", handleAddressSelected);
     });
     const getCartItems = () => {
       try {
@@ -68,15 +70,47 @@ const _sfc_main = {
           }, 1500);
         }
       } catch (error) {
-        common_vendor.index.__f__("error", "at pages/shopping/checkout/checkout.vue:177", "获取结算商品失败:", error);
+        common_vendor.index.__f__("error", "at pages/shopping/checkout/checkout.vue:192", "获取结算商品失败:", error);
         common_vendor.index.showToast({
           title: "获取商品信息失败",
           icon: "none"
         });
       }
     };
-    const getDefaultAddress = () => {
-      common_vendor.index.__f__("log", "at pages/shopping/checkout/checkout.vue:188", "获取默认地址");
+    const loadDefaultAddress = async () => {
+      addressLoading.value = true;
+      try {
+        const result = await api_addressService.getDefaultAddress();
+        if (result.code === 200 && result.data) {
+          selectedAddress.value = result.data;
+          common_vendor.index.__f__("log", "at pages/shopping/checkout/checkout.vue:208", "默认地址已加载:", result.data);
+        } else if (result.code === 401) {
+          common_vendor.index.showModal({
+            title: "提示",
+            content: "请先登录后再进行结算",
+            confirmText: "去登录",
+            success: (res) => {
+              if (res.confirm) {
+                common_vendor.index.navigateTo({
+                  url: "/pages/login/login"
+                });
+              } else {
+                common_vendor.index.navigateBack();
+              }
+            }
+          });
+        } else {
+          common_vendor.index.__f__("log", "at pages/shopping/checkout/checkout.vue:227", "暂无默认地址");
+        }
+      } catch (error) {
+        common_vendor.index.__f__("error", "at pages/shopping/checkout/checkout.vue:230", "获取默认地址失败:", error);
+        common_vendor.index.showToast({
+          title: "获取地址失败",
+          icon: "none"
+        });
+      } finally {
+        addressLoading.value = false;
+      }
     };
     const navigateToAddress = () => {
       common_vendor.index.navigateTo({
@@ -89,11 +123,17 @@ const _sfc_main = {
     const onPaymentChange = (e) => {
       selectedPayment.value = e.detail.value;
     };
-    const submitOrder = () => {
-      if (!selectedAddress.value.id) {
-        common_vendor.index.showToast({
-          title: "请选择收货地址",
-          icon: "none"
+    const submitOrder = async () => {
+      if (!selectedAddress.value || !selectedAddress.value._id) {
+        common_vendor.index.showModal({
+          title: "提示",
+          content: "请选择收货地址",
+          confirmText: "去选择",
+          success: (res) => {
+            if (res.confirm) {
+              navigateToAddress();
+            }
+          }
         });
         return;
       }
@@ -111,15 +151,30 @@ const _sfc_main = {
         remark: orderRemark.value,
         totalAmount: totalAmount.value,
         shippingFee: shippingFee.value,
-        discountAmount: discountAmount.value
+        discountAmount: discountAmount.value,
+        createTime: (/* @__PURE__ */ new Date()).toISOString()
       };
-      common_vendor.index.__f__("log", "at pages/shopping/checkout/checkout.vue:238", "提交订单:", orderData);
+      common_vendor.index.__f__("log", "at pages/shopping/checkout/checkout.vue:294", "提交订单:", orderData);
+      submitting.value = true;
       common_vendor.index.showLoading({
         title: "提交中..."
       });
-      setTimeout(() => {
-        common_vendor.index.hideLoading();
+      try {
+        await new Promise((resolve) => setTimeout(resolve, 2e3));
+        const { proxy } = common_vendor.getCurrentInstance();
+        if (proxy && proxy.$cartStore) {
+          const cartItems = proxy.$cartStore.getCartItems();
+          orderItems.value.forEach((orderItem) => {
+            const cartIndex = cartItems.findIndex(
+              (cartItem) => cartItem.id === orderItem.id && cartItem.selected
+            );
+            if (cartIndex !== -1) {
+              proxy.$cartStore.removeItem(cartIndex);
+            }
+          });
+        }
         common_vendor.index.removeStorageSync("checkout_items");
+        common_vendor.index.hideLoading();
         common_vendor.index.showToast({
           title: "订单提交成功",
           icon: "success"
@@ -129,23 +184,33 @@ const _sfc_main = {
             url: "/pages/order/detail/detail?orderId=123456"
           });
         }, 1500);
-      }, 2e3);
+      } catch (error) {
+        common_vendor.index.__f__("error", "at pages/shopping/checkout/checkout.vue:340", "提交订单失败:", error);
+        common_vendor.index.hideLoading();
+        common_vendor.index.showToast({
+          title: "提交失败，请重试",
+          icon: "error"
+        });
+      } finally {
+        submitting.value = false;
+      }
     };
     return (_ctx, _cache) => {
       return common_vendor.e({
-        a: common_assets._imports_0$8,
+        a: common_assets._imports_0$9,
         b: common_vendor.o(goBack),
-        c: selectedAddress.value.id
-      }, selectedAddress.value.id ? {
+        c: selectedAddress.value && selectedAddress.value._id
+      }, selectedAddress.value && selectedAddress.value._id ? {
         d: common_vendor.p({
           address: selectedAddress.value,
           showActions: false
         })
       } : {
-        e: common_assets._imports_3$8
+        e: common_assets._imports_1$9,
+        f: common_assets._imports_3$8
       }, {
-        f: common_vendor.o(navigateToAddress),
-        g: common_vendor.f(orderItems.value, (item, index, i0) => {
+        g: common_vendor.o(navigateToAddress),
+        h: common_vendor.f(orderItems.value, (item, index, i0) => {
           return {
             a: index,
             b: "b56a58da-1-" + i0,
@@ -154,11 +219,11 @@ const _sfc_main = {
             })
           };
         }),
-        h: common_vendor.t(totalProductPrice.value.toFixed(2)),
-        i: common_vendor.t(shippingFee.value.toFixed(2)),
-        j: common_vendor.t(discountAmount.value.toFixed(2)),
-        k: common_vendor.t(totalAmount.value.toFixed(2)),
-        l: common_vendor.f(paymentMethods.value, (method, index, i0) => {
+        i: common_vendor.t(totalProductPrice.value.toFixed(2)),
+        j: common_vendor.t(shippingFee.value.toFixed(2)),
+        k: common_vendor.t(discountAmount.value.toFixed(2)),
+        l: common_vendor.t(totalAmount.value.toFixed(2)),
+        m: common_vendor.f(paymentMethods.value, (method, index, i0) => {
           return {
             a: method.icon,
             b: common_vendor.t(method.name),
@@ -167,12 +232,14 @@ const _sfc_main = {
             e: index
           };
         }),
-        m: common_vendor.o(onPaymentChange),
-        n: orderRemark.value,
-        o: common_vendor.o(($event) => orderRemark.value = $event.detail.value),
-        p: common_vendor.t(orderRemark.value.length),
-        q: common_vendor.t(totalAmount.value.toFixed(2)),
-        r: common_vendor.o(submitOrder)
+        n: common_vendor.o(onPaymentChange),
+        o: orderRemark.value,
+        p: common_vendor.o(($event) => orderRemark.value = $event.detail.value),
+        q: common_vendor.t(orderRemark.value.length),
+        r: common_vendor.t(totalAmount.value.toFixed(2)),
+        s: common_vendor.t(submitting.value ? "提交中..." : "提交订单"),
+        t: common_vendor.o(submitOrder),
+        v: submitting.value
       });
     };
   }

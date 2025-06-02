@@ -10,7 +10,7 @@ const _sfc_main = {
 };
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   return {
-    a: common_assets._imports_0$10,
+    a: common_assets._imports_0$11,
     b: $props.placeholderText
   };
 }

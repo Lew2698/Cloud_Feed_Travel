@@ -4,6 +4,7 @@ const common_vendor = require("./common/vendor.js");
 const store_cart = require("./store/cart.js");
 if (!Math) {
   "./pages/index/index.js";
+  "./pages/login/login.js";
   "./pages/shopping/shopping.js";
   "./pages/farm/farm.js";
   "./pages/farm/game.js";
@@ -19,6 +20,7 @@ if (!Math) {
   "./pages/shopping/detail/trace.js";
   "./pages/shopping/checkout/checkout.js";
   "./pages/shopping/checkout/address.js";
+  "./pages/test/cart-user-test.js";
 }
 const _sfc_main = {
   onLaunch: function() {

@@ -38,9 +38,19 @@
 
 			<!-- 商品列表 -->
 			<view class="product-grid">
+				<!-- 加载状态 -->
+				<view v-if="loading" class="loading-container">
+					<text class="loading-text">正在加载商品...</text>
+				</view>
+				
 				<!-- 商品 -->
 				<ProductCardVue v-for="product in products" :key="product.id" :product="product" @click="goToProductDetail"
 					@addToCart="addToCart"></ProductCardVue>
+				
+				<!-- 空状态 -->
+				<view v-if="!loading && products.length === 0" class="empty-container">
+					<text class="empty-text">暂无商品</text>
+				</view>
 
 				<!-- 购物车浮动按钮 -->
 				<view class="cart-fab" @click="goToCart()">
@@ -59,20 +69,43 @@
 	import SearchInputVue from '../../components/SearchInput.vue';
 	import ProductCardVue from '../../components/ProductCard.vue';
 	import { ref, onMounted, onUnmounted, getCurrentInstance } from 'vue';
-	import { getAllProducts } from '../../data/products.js';
+	import { getAllProducts } from '../../api/productService.js';
 	
 	const { proxy } = getCurrentInstance();
 	const cartTotalCount = ref(0);
 	
-	// 使用新的商品数据管理系统
-	const products = ref(getAllProducts());
+	// 使用新的商品数据管理系统 - 改为异步加载
+	const products = ref([]);
+	const loading = ref(true);
 
-	// 页面加载时初始化购物车数量
-	onMounted(() => {
+	// 页面加载时初始化购物车数量和商品数据
+	onMounted(async () => {
+		// 检查用户状态并切换购物车数据
+		proxy.$cartStore.switchUser();
 		updateCartCount();
 		// 监听购物车更新事件
 		uni.$on('cartUpdated', handleCartUpdate);
+		
+		// 异步加载商品数据
+		await loadProducts();
 	});
+
+	// 加载商品数据
+	const loadProducts = async () => {
+		try {
+			loading.value = true;
+			const productList = await getAllProducts();
+			products.value = productList;
+		} catch (error) {
+			console.error('加载商品数据失败:', error);
+			uni.showToast({
+				title: '加载商品失败',
+				icon: 'none'
+			});
+		} finally {
+			loading.value = false;
+		}
+	};
 
 	// 页面卸载时移除事件监听
 	onUnmounted(() => {
@@ -262,5 +295,31 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
+	}
+
+	/* 加载状态 */
+	.loading-container {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 100%;
+	}
+
+	.loading-text {
+		font-size: 28rpx;
+		color: $color-dark;
+	}
+
+	/* 空状态 */
+	.empty-container {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 100%;
+	}
+
+	.empty-text {
+		font-size: 28rpx;
+		color: $color-dark;
 	}
 </style>

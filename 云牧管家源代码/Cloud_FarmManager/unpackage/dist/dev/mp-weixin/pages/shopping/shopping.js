@@ -1,7 +1,7 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
 const common_assets = require("../../common/assets.js");
-const data_products = require("../../data/products.js");
+const api_productService = require("../../api/productService.js");
 if (!Array) {
   const _component_tab_bar = common_vendor.resolveComponent("tab-bar");
   _component_tab_bar();
@@ -16,11 +16,29 @@ const _sfc_main = {
   setup(__props) {
     const { proxy } = common_vendor.getCurrentInstance();
     const cartTotalCount = common_vendor.ref(0);
-    const products = common_vendor.ref(data_products.getAllProducts());
-    common_vendor.onMounted(() => {
+    const products = common_vendor.ref([]);
+    const loading = common_vendor.ref(true);
+    common_vendor.onMounted(async () => {
+      proxy.$cartStore.switchUser();
       updateCartCount();
       common_vendor.index.$on("cartUpdated", handleCartUpdate);
+      await loadProducts();
     });
+    const loadProducts = async () => {
+      try {
+        loading.value = true;
+        const productList = await api_productService.getAllProducts();
+        products.value = productList;
+      } catch (error) {
+        common_vendor.index.__f__("error", "at pages/shopping/shopping.vue:100", "加载商品数据失败:", error);
+        common_vendor.index.showToast({
+          title: "加载商品失败",
+          icon: "none"
+        });
+      } finally {
+        loading.value = false;
+      }
+    };
     common_vendor.onUnmounted(() => {
       common_vendor.index.$off("cartUpdated", handleCartUpdate);
     });
@@ -59,8 +77,10 @@ const _sfc_main = {
         }),
         b: common_assets._imports_1$1,
         c: common_assets._imports_1$1,
-        d: common_assets._imports_3$1,
-        e: common_vendor.f(products.value, (product, k0, i0) => {
+        d: common_assets._imports_3$2,
+        e: loading.value
+      }, loading.value ? {} : {}, {
+        f: common_vendor.f(products.value, (product, k0, i0) => {
           return {
             a: product.id,
             b: common_vendor.o(goToProductDetail, product.id),
@@ -71,13 +91,15 @@ const _sfc_main = {
             })
           };
         }),
-        f: common_assets._imports_3$2,
-        g: cartTotalCount.value > 0
+        g: !loading.value && products.value.length === 0
+      }, !loading.value && products.value.length === 0 ? {} : {}, {
+        h: common_assets._imports_3$1,
+        i: cartTotalCount.value > 0
       }, cartTotalCount.value > 0 ? {
-        h: common_vendor.t(cartTotalCount.value)
+        j: common_vendor.t(cartTotalCount.value)
       } : {}, {
-        i: common_vendor.o(($event) => goToCart()),
-        j: common_vendor.p({
+        k: common_vendor.o(($event) => goToCart()),
+        l: common_vendor.p({
           active: "shopping"
         })
       });

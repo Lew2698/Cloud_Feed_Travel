@@ -1,6 +1,7 @@
 {
   "pages": [
     "pages/index/index",
+    "pages/login/login",
     "pages/shopping/shopping",
     "pages/farm/farm",
     "pages/farm/game",
@@ -15,7 +16,8 @@
     "pages/shopping/cart/cart",
     "pages/shopping/detail/trace",
     "pages/shopping/checkout/checkout",
-    "pages/shopping/checkout/address"
+    "pages/shopping/checkout/address",
+    "pages/test/cart-user-test"
   ],
   "window": {
     "navigationBarTextStyle": "white",

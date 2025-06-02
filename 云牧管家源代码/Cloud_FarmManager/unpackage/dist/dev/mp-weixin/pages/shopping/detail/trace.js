@@ -1,11 +1,12 @@
 "use strict";
 const common_vendor = require("../../../common/vendor.js");
 const common_assets = require("../../../common/assets.js");
-const data_products = require("../../../data/products.js");
+const api_productService = require("../../../api/productService.js");
 const _sfc_main = {
   __name: "trace",
   setup(__props) {
     const productId = common_vendor.ref(null);
+    const loading = common_vendor.ref(true);
     const traceInfo = common_vendor.ref({
       productName: "",
       productImage: "",
@@ -20,28 +21,42 @@ const _sfc_main = {
     });
     common_vendor.onLoad((options) => {
       if (options.id) {
-        productId.value = parseInt(options.id);
+        productId.value = options.id;
         loadTraceData();
       }
     });
-    const loadTraceData = () => {
-      const productData = data_products.getProductById(productId.value);
-      if (productData && productData.traceInfo) {
-        traceInfo.value = productData.traceInfo;
-      } else {
+    const loadTraceData = async () => {
+      try {
+        loading.value = true;
+        const productData = await api_productService.getProductById(productId.value);
+        if (productData && productData.traceInfo) {
+          traceInfo.value = productData.traceInfo;
+        } else {
+          common_vendor.index.showToast({
+            title: "溯源信息不存在",
+            icon: "none"
+          });
+          setTimeout(() => {
+            common_vendor.index.navigateBack();
+          }, 1500);
+        }
+      } catch (error) {
+        common_vendor.index.__f__("error", "at pages/shopping/detail/trace.vue:184", "加载溯源数据失败:", error);
         common_vendor.index.showToast({
-          title: "溯源信息不存在",
+          title: "加载溯源失败",
           icon: "none"
         });
         setTimeout(() => {
           common_vendor.index.navigateBack();
         }, 1500);
+      } finally {
+        loading.value = false;
       }
     };
     const scanOtherProduct = () => {
       common_vendor.index.scanCode({
         success: (res) => {
-          common_vendor.index.__f__("log", "at pages/shopping/detail/trace.vue:187", "扫描结果：", res);
+          common_vendor.index.__f__("log", "at pages/shopping/detail/trace.vue:202", "扫描结果：", res);
           common_vendor.index.showToast({
             title: "扫描成功",
             icon: "success"
@@ -59,13 +74,13 @@ const _sfc_main = {
       common_vendor.index.showActionSheet({
         itemList: ["全部记录", "仅显示已认证", "按时间正序", "按时间倒序"],
         success: (res) => {
-          common_vendor.index.__f__("log", "at pages/shopping/detail/trace.vue:208", "用户选择：", res.tapIndex);
+          common_vendor.index.__f__("log", "at pages/shopping/detail/trace.vue:223", "用户选择：", res.tapIndex);
         }
       });
     };
     return (_ctx, _cache) => {
       return {
-        a: common_assets._imports_0$9,
+        a: common_assets._imports_0$10,
         b: traceInfo.value.productImage,
         c: common_vendor.t(traceInfo.value.productName),
         d: common_assets._imports_4$4,
@@ -75,7 +90,7 @@ const _sfc_main = {
         h: common_vendor.t(traceInfo.value.hashValue),
         i: common_assets._imports_2$7,
         j: common_vendor.o(scanOtherProduct),
-        k: common_assets._imports_3$1,
+        k: common_assets._imports_3$2,
         l: common_vendor.o(showFilterOptions),
         m: common_vendor.f(traceEvents.value, (event, index, i0) => {
           return common_vendor.e({

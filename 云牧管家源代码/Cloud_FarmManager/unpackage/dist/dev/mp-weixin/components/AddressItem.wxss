@@ -68,9 +68,15 @@
   box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
   display: flex;
   justify-content: space-between;
+  transition: all 0.3s ease;
+}
+.address-item:active {
+  transform: scale(0.98);
+  box-shadow: 0 1rpx 4rpx rgba(0, 0, 0, 0.1);
 }
 .address-content {
   flex: 1;
+  overflow: hidden;
 }
 .address-header {
   display: flex;
@@ -81,47 +87,82 @@
 .person-info {
   display: flex;
   align-items: center;
+  flex: 1;
+  overflow: hidden;
 }
 .person-name {
   font-size: 32rpx;
   font-weight: 600;
   color: #386641;
   margin-right: 20rpx;
+  white-space: nowrap;
 }
 .person-phone {
   font-size: 28rpx;
   color: #666;
+  white-space: nowrap;
 }
 .default-tag {
-  background-color: #bc4749;
+  background: linear-gradient(135deg, #bc4749, #6a994e);
   color: white;
-  font-size: 24rpx;
-  padding: 4rpx 16rpx;
+  font-size: 22rpx;
+  padding: 6rpx 12rpx;
   border-radius: 20rpx;
+  font-weight: 500;
+  box-shadow: 0 2rpx 6rpx rgba(188, 71, 73, 0.3);
 }
 .address-detail {
   font-size: 28rpx;
   color: #333;
-  line-height: 1.4;
+  line-height: 1.5;
+  word-break: break-all;
 }
 .address-actions {
   display: flex;
   flex-direction: column;
   justify-content: center;
   margin-left: 20rpx;
+  gap: 10rpx;
 }
 .action-btn {
-  width: 50rpx;
-  height: 50rpx;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: 8rpx 0;
+  padding: 8rpx;
+  border-radius: 8rpx;
+  min-width: 60rpx;
+  transition: background-color 0.2s ease;
+}
+.action-btn:active {
+  background-color: #f0f0f0;
 }
 .action-icon {
-  width: 32rpx;
-  height: 32rpx;
+  width: 28rpx;
+  height: 28rpx;
+  margin-bottom: 4rpx;
+}
+.action-text {
+  font-size: 20rpx;
+  color: #666;
+  white-space: nowrap;
+}
+.set-default-btn .action-icon {
+  filter: none;
+}
+.set-default-btn .action-text {
+  color: #bc4749;
+}
+.edit-btn .action-text {
+  color: #0066cc;
+}
+.delete-btn .action-text {
+  color: #ff4444;
 }
 .is-default {
   border-left: 6rpx solid #bc4749;
+  background: linear-gradient(90deg, rgba(188, 71, 73, 0.02), white);
+}
+.is-default .address-content {
+  margin-left: 10rpx;
 }

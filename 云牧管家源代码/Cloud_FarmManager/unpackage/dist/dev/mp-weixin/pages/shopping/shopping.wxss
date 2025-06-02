@@ -186,3 +186,25 @@ page {
   align-items: center;
   justify-content: center;
 }
+/* 加载状态 */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+.loading-text {
+  font-size: 28rpx;
+  color: #386641;
+}
+/* 空状态 */
+.empty-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+.empty-text {
+  font-size: 28rpx;
+  color: #386641;
+}

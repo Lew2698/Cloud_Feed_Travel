@@ -10,11 +10,12 @@
 
 		<!-- 收货地址 -->
 		<view class="address-section" @click="navigateToAddress">
-			<view class="section-content" v-if="selectedAddress.id">
+			<view class="section-content" v-if="selectedAddress && selectedAddress._id">
 				<AddressItem :address="selectedAddress" :showActions="false" />
 			</view>
 			<view class="section-content no-address" v-else>
-				<text class="add-address-text">添加收货地址</text>
+				<image src="/static/icons/shopping icon/location.svg" class="address-icon"></image>
+				<text class="add-address-text">请选择收货地址</text>
 				<image src="/static/icons/shopping icon/chevron-right.svg" class="icon-image"></image>
 			</view>
 		</view>
@@ -70,7 +71,7 @@
 		<view class="remark-section">
 			<view class="section-title">订单备注</view>
 			<view class="section-content">
-				<textarea class="remark-input" placeholder="请输入订单备注" v-model="orderRemark" maxlength="100" />
+				<textarea class="remark-input" placeholder="请输入订单备注（选填）" v-model="orderRemark" maxlength="100" />
 				<text class="remark-count">{{ orderRemark.length }}/100</text>
 			</view>
 		</view>
@@ -81,7 +82,9 @@
 				<text class="total-price-label">合计：</text>
 				<text class="total-price-value">¥{{ totalAmount.toFixed(2) }}</text>
 			</view>
-			<button class="checkout-btn" @click="submitOrder">提交订单</button>
+			<button class="checkout-btn" @click="submitOrder" :disabled="submitting">
+				{{ submitting ? '提交中...' : '提交订单' }}
+			</button>
 		</view>
 	</view>
 </template>
@@ -90,25 +93,20 @@
 	import {
 		ref,
 		computed,
-		onMounted
+		onMounted,
+		onUnmounted,
+		getCurrentInstance
 	} from 'vue';
 	import AddressItem from '../../../components/AddressItem.vue';
 	import CheckoutItem from '../../../components/CheckoutItem.vue';
+	import { getDefaultAddress } from '@/api/addressService.js';
 
 	// 订单商品数据 - 从购物车获取
 	const orderItems = ref([]);
 
 	// 收货地址
-	const selectedAddress = ref({
-		id: 1,
-		name: '张三',
-		phone: '13800138000',
-		province: '广东省',
-		city: '广州市',
-		district: '天河区',
-		detail: '瑶山农业科技园区A栋101',
-		isDefault: true
-	});
+	const selectedAddress = ref(null);
+	const addressLoading = ref(false);
 
 	// 支付方式
 	const paymentMethods = ref([{
@@ -127,6 +125,9 @@
 	// 订单备注
 	const orderRemark = ref('');
 
+	// 提交状态
+	const submitting = ref(false);
+
 	// 费用计算
 	const shippingFee = ref(10);
 	const discountAmount = ref(5);
@@ -141,11 +142,25 @@
 		return totalProductPrice.value + shippingFee.value - discountAmount.value;
 	});
 
+	// 地址选择事件监听
+	const handleAddressSelected = (address) => {
+		selectedAddress.value = address;
+		console.log('地址已选择:', address);
+	};
+
 	// 页面加载时执行
 	onMounted(() => {
 		// 获取购物车选中的商品和地址信息
 		getCartItems();
-		getDefaultAddress();
+		loadDefaultAddress();
+		
+		// 监听地址选择事件
+		uni.$on('addressSelected', handleAddressSelected);
+	});
+
+	// 页面卸载时清理监听
+	onUnmounted(() => {
+		uni.$off('addressSelected', handleAddressSelected);
 	});
 
 	// 获取购物车选中商品
@@ -182,10 +197,44 @@
 		}
 	};
 
-	// 获取默认地址（模拟）
-	const getDefaultAddress = () => {
-		// 实际项目中应从缓存或API获取
-		console.log('获取默认地址');
+	// 获取默认地址
+	const loadDefaultAddress = async () => {
+		addressLoading.value = true;
+		try {
+			const result = await getDefaultAddress();
+			
+			if (result.code === 200 && result.data) {
+				selectedAddress.value = result.data;
+				console.log('默认地址已加载:', result.data);
+			} else if (result.code === 401) {
+				// 未登录，提示用户登录
+				uni.showModal({
+					title: '提示',
+					content: '请先登录后再进行结算',
+					confirmText: '去登录',
+					success: (res) => {
+						if (res.confirm) {
+							uni.navigateTo({
+								url: '/pages/login/login'
+							});
+						} else {
+							uni.navigateBack();
+						}
+					}
+				});
+			} else {
+				// 没有默认地址，用户需要添加
+				console.log('暂无默认地址');
+			}
+		} catch (error) {
+			console.error('获取默认地址失败:', error);
+			uni.showToast({
+				title: '获取地址失败',
+				icon: 'none'
+			});
+		} finally {
+			addressLoading.value = false;
+		}
 	};
 
 	// 导航到地址管理页面
@@ -206,12 +255,18 @@
 	};
 
 	// 提交订单
-	const submitOrder = () => {
+	const submitOrder = async () => {
 		// 验证必填信息
-		if (!selectedAddress.value.id) {
-			uni.showToast({
-				title: '请选择收货地址',
-				icon: 'none'
+		if (!selectedAddress.value || !selectedAddress.value._id) {
+			uni.showModal({
+				title: '提示',
+				content: '请选择收货地址',
+				confirmText: '去选择',
+				success: (res) => {
+					if (res.confirm) {
+						navigateToAddress();
+					}
+				}
 			});
 			return;
 		}
@@ -232,22 +287,43 @@
 			remark: orderRemark.value,
 			totalAmount: totalAmount.value,
 			shippingFee: shippingFee.value,
-			discountAmount: discountAmount.value
+			discountAmount: discountAmount.value,
+			createTime: new Date().toISOString()
 		};
 
 		console.log('提交订单:', orderData);
 
-		// 模拟提交订单
+		// 提交订单
+		submitting.value = true;
 		uni.showLoading({
 			title: '提交中...'
 		});
 
-		setTimeout(() => {
-			uni.hideLoading();
+		try {
+			// 模拟提交订单 - 实际项目中应调用订单管理云函数
+			await new Promise(resolve => setTimeout(resolve, 2000));
+			
+			// 从购物车中移除已结算的商品
+			const { proxy } = getCurrentInstance();
+			if (proxy && proxy.$cartStore) {
+				// 获取当前购物车商品
+				const cartItems = proxy.$cartStore.getCartItems();
+				
+				// 找到已结算的商品并移除
+				orderItems.value.forEach(orderItem => {
+					const cartIndex = cartItems.findIndex(cartItem => 
+						cartItem.id === orderItem.id && cartItem.selected
+					);
+					if (cartIndex !== -1) {
+						proxy.$cartStore.removeItem(cartIndex);
+					}
+				});
+			}
 			
 			// 清除结算商品缓存
 			uni.removeStorageSync('checkout_items');
 			
+			uni.hideLoading();
 			uni.showToast({
 				title: '订单提交成功',
 				icon: 'success'
@@ -259,7 +335,17 @@
 					url: '/pages/order/detail/detail?orderId=123456'
 				});
 			}, 1500);
-		}, 2000);
+
+		} catch (error) {
+			console.error('提交订单失败:', error);
+			uni.hideLoading();
+			uni.showToast({
+				title: '提交失败，请重试',
+				icon: 'error'
+			});
+		} finally {
+			submitting.value = false;
+		}
 	};
 </script>
 
@@ -329,11 +415,23 @@
 		align-items: center;
 		justify-content: space-between;
 		padding: 20rpx 0;
+		border: 2rpx dashed #e0e0e0;
+		border-radius: 12rpx;
+		padding: 30rpx 20rpx;
+		background-color: #fafafa;
+	}
+
+	.address-icon {
+		width: 32rpx;
+		height: 32rpx;
+		margin-right: 15rpx;
+		opacity: 0.6;
 	}
 
 	.add-address-text {
 		font-size: 30rpx;
-		color: #999;
+		color: #666;
+		flex: 1;
 	}
 
 	/* 金额详情 */
@@ -410,6 +508,12 @@
 		font-size: 28rpx;
 		color: $color-dark;
 		box-sizing: border-box;
+		border: 1rpx solid #e0e0e0;
+	}
+
+	.remark-input:focus {
+		border-color: $color-primary;
+		background-color: white;
 	}
 
 	.remark-count {
@@ -450,7 +554,7 @@
 	}
 
 	.checkout-btn {
-		background-color: $color-primary;
+		background: linear-gradient(135deg, $color-primary, $color-highlight);
 		color: white;
 		border: none;
 		border-radius: 40rpx;
@@ -459,5 +563,11 @@
 		line-height: 72rpx;
 		font-size: 28rpx;
 		font-weight: 600;
+		box-shadow: 0 4rpx 12rpx rgba(188, 71, 73, 0.3);
+	}
+
+	.checkout-btn[disabled] {
+		opacity: 0.6;
+		box-shadow: none;
 	}
 </style>

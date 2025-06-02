@@ -303,7 +303,7 @@ const _sfc_main = {
 };
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   return {
-    a: common_assets._imports_0$3,
+    a: common_assets._imports_0$4,
     b: common_vendor.f($data.farmPlots, (plot, index, i0) => {
       return common_vendor.e({
         a: plot.status === "empty"

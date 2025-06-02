@@ -147,6 +147,57 @@ page {
 .content {
   padding: 0 30rpx;
 }
+/* 游客状态样式 */
+.guest-info {
+  opacity: 0.8;
+}
+.guest-avatar {
+  filter: grayscale(50%);
+}
+.login-button {
+  background: linear-gradient(135deg, #bc4749, #6a994e);
+  color: white;
+  border: none;
+  border-radius: 20rpx;
+  padding: 8rpx 20rpx;
+  font-size: 24rpx;
+  margin-top: 10rpx;
+}
+/* 登录提示卡片 */
+.login-prompt {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 24rpx;
+  margin-bottom: 40rpx;
+  padding: 30rpx;
+  box-shadow: 0 8rpx 20rpx rgba(102, 126, 234, 0.3);
+}
+.prompt-content {
+  color: white;
+}
+.prompt-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  margin-bottom: 20rpx;
+  display: block;
+}
+.prompt-desc {
+  font-size: 26rpx;
+  margin-bottom: 10rpx;
+  opacity: 0.9;
+  display: block;
+  line-height: 1.5;
+}
+.prompt-login-btn {
+  background-color: white;
+  color: #667eea;
+  border: none;
+  border-radius: 20rpx;
+  padding: 16rpx 40rpx;
+  font-size: 28rpx;
+  font-weight: 600;
+  margin-top: 20rpx;
+  width: 200rpx;
+}
 /* 会员卡 */
 .profile-vip {
   background: linear-gradient(135deg, #6a994e, #bc4749);

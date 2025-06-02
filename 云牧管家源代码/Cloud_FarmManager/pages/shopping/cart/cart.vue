@@ -249,6 +249,8 @@
 	
 	// 生命周期
 	onMounted(async () => {
+		// 检查用户状态并切换购物车数据
+		proxy.$cartStore.switchUser()
 		await loadCartData()
 		// 监听购物车更新事件
 		uni.$on('cartUpdated', handleCartUpdate)

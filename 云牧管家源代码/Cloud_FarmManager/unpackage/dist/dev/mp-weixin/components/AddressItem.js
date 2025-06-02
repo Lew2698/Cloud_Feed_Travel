@@ -8,7 +8,7 @@ const _sfc_main = {
       type: Object,
       required: true,
       default: () => ({
-        id: 0,
+        _id: "",
         name: "",
         phone: "",
         province: "",
@@ -23,7 +23,7 @@ const _sfc_main = {
       default: true
     }
   },
-  emits: ["select", "edit", "delete"],
+  emits: ["select", "edit", "delete", "setDefault"],
   setup(__props, { emit: __emit }) {
     const props = __props;
     const emit = __emit;
@@ -36,10 +36,27 @@ const _sfc_main = {
     const handleDelete = () => {
       emit("delete", props.address);
     };
+    const handleSetDefault = () => {
+      emit("setDefault", props.address);
+    };
     const formatPhone = (phone) => {
       if (!phone)
         return "";
       return phone.replace(/(\d{3})\d{4}(\d{4})/, "$1****$2");
+    };
+    const formatAddress = (address) => {
+      if (!address)
+        return "";
+      const parts = [];
+      if (address.province)
+        parts.push(address.province);
+      if (address.city && address.city !== address.province)
+        parts.push(address.city);
+      if (address.district && address.district !== address.city)
+        parts.push(address.district);
+      if (address.detail)
+        parts.push(address.detail);
+      return parts.join(" ");
     };
     return (_ctx, _cache) => {
       return common_vendor.e({
@@ -47,17 +64,19 @@ const _sfc_main = {
         b: common_vendor.t(formatPhone(__props.address.phone)),
         c: __props.address.isDefault
       }, __props.address.isDefault ? {} : {}, {
-        d: common_vendor.t(__props.address.province),
-        e: common_vendor.t(__props.address.city),
-        f: common_vendor.t(__props.address.district),
-        g: common_vendor.t(__props.address.detail),
-        h: __props.showActions
-      }, __props.showActions ? {
-        i: common_assets._imports_0$12,
-        j: common_vendor.o(handleEdit),
-        k: common_assets._imports_1$12,
-        l: common_vendor.o(handleDelete)
+        d: common_vendor.t(formatAddress(__props.address)),
+        e: __props.showActions
+      }, __props.showActions ? common_vendor.e({
+        f: !__props.address.isDefault
+      }, !__props.address.isDefault ? {
+        g: common_assets._imports_0$1,
+        h: common_vendor.o(handleSetDefault)
       } : {}, {
+        i: common_assets._imports_1$13,
+        j: common_vendor.o(handleEdit),
+        k: common_assets._imports_2$9,
+        l: common_vendor.o(handleDelete)
+      }) : {}, {
         m: __props.address.isDefault ? 1 : "",
         n: common_vendor.o(handleSelect)
       });

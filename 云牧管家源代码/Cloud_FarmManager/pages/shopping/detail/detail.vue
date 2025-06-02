@@ -163,7 +163,7 @@
 <script setup>
 	import { ref, onMounted, getCurrentInstance } from 'vue'
 	import { onLoad } from '@dcloudio/uni-app'
-	import { getProductById } from '../../../data/products.js'
+	import { getProductById } from '../../../api/productService.js'
 	
 	const { proxy } = getCurrentInstance()
 	
@@ -179,6 +179,7 @@
 	])
 	const isFavorite = ref(false)
 	const cartCount = ref(0)
+	const loading = ref(true)
 	
 	// 商品信息 - 默认空对象，避免模板渲染错误
 	const product = ref({
@@ -206,7 +207,7 @@
 	// 页面加载时获取商品信息
 	onLoad((options) => {
 		if (options.id) {
-			productId.value = parseInt(options.id)
+			productId.value = options.id // 云端ID是字符串，不需要parseInt
 			loadProductDetail()
 		}
 	})
@@ -217,18 +218,32 @@
 	})
 	
 	// 加载商品详情
-	const loadProductDetail = () => {
-		const productData = getProductById(productId.value)
-		if (productData) {
-			product.value = productData
-		} else {
+	const loadProductDetail = async () => {
+		try {
+			loading.value = true
+			const productData = await getProductById(productId.value)
+			if (productData) {
+				product.value = productData
+			} else {
+				uni.showToast({
+					title: '商品不存在',
+					icon: 'none'
+				})
+				setTimeout(() => {
+					uni.navigateBack()
+				}, 1500)
+			}
+		} catch (error) {
+			console.error('加载商品详情失败:', error)
 			uni.showToast({
-				title: '商品不存在',
+				title: '加载商品失败',
 				icon: 'none'
 			})
 			setTimeout(() => {
 				uni.navigateBack()
 			}, 1500)
+		} finally {
+			loading.value = false
 		}
 	}
 	

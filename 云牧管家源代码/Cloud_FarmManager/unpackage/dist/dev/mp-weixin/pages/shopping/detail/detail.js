@@ -1,7 +1,7 @@
 "use strict";
 const common_vendor = require("../../../common/vendor.js");
 const common_assets = require("../../../common/assets.js");
-const data_products = require("../../../data/products.js");
+const api_productService = require("../../../api/productService.js");
 const _sfc_main = {
   __name: "detail",
   setup(__props) {
@@ -17,6 +17,7 @@ const _sfc_main = {
     ]);
     const isFavorite = common_vendor.ref(false);
     const cartCount = common_vendor.ref(0);
+    const loading = common_vendor.ref(true);
     const product = common_vendor.ref({
       id: 0,
       name: "",
@@ -40,25 +41,39 @@ const _sfc_main = {
     });
     common_vendor.onLoad((options) => {
       if (options.id) {
-        productId.value = parseInt(options.id);
+        productId.value = options.id;
         loadProductDetail();
       }
     });
     common_vendor.onMounted(() => {
       updateCartCount();
     });
-    const loadProductDetail = () => {
-      const productData = data_products.getProductById(productId.value);
-      if (productData) {
-        product.value = productData;
-      } else {
+    const loadProductDetail = async () => {
+      try {
+        loading.value = true;
+        const productData = await api_productService.getProductById(productId.value);
+        if (productData) {
+          product.value = productData;
+        } else {
+          common_vendor.index.showToast({
+            title: "商品不存在",
+            icon: "none"
+          });
+          setTimeout(() => {
+            common_vendor.index.navigateBack();
+          }, 1500);
+        }
+      } catch (error) {
+        common_vendor.index.__f__("error", "at pages/shopping/detail/detail.vue:237", "加载商品详情失败:", error);
         common_vendor.index.showToast({
-          title: "商品不存在",
+          title: "加载商品失败",
           icon: "none"
         });
         setTimeout(() => {
           common_vendor.index.navigateBack();
         }, 1500);
+      } finally {
+        loading.value = false;
       }
     };
     const updateCartCount = () => {
@@ -66,7 +81,7 @@ const _sfc_main = {
     };
     const onSwiperChange = (e) => {
       const current = e.detail.current;
-      common_vendor.index.__f__("log", "at pages/shopping/detail/detail.vue:243", "当前索引:", current);
+      common_vendor.index.__f__("log", "at pages/shopping/detail/detail.vue:258", "当前索引:", current);
     };
     const toggleFavorite = () => {
       isFavorite.value = !isFavorite.value;
@@ -137,7 +152,7 @@ const _sfc_main = {
     };
     return (_ctx, _cache) => {
       return common_vendor.e({
-        a: common_assets._imports_0$6,
+        a: common_assets._imports_0$7,
         b: common_assets._imports_1$8,
         c: common_vendor.o(shareProduct),
         d: common_vendor.f(product.value.images, (image, index, i0) => {

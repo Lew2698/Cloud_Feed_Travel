@@ -6,6 +6,13 @@
 			}
 		},
 		{
+			"path": "pages/login/login",
+			"style": {
+				"navigationBarTitleText": "登录",
+				"navigationStyle": "custom"
+			}
+		},
+		{
 			"path": "pages/shopping/shopping",
 			"style": {
 				"navigationBarTitleText": "购物"
@@ -98,6 +105,12 @@
 			"style": {
 				"navigationBarTitleText": "收货地址",
 				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/test/cart-user-test",
+			"style": {
+				"navigationBarTitleText": "购物车用户隔离测试"
 			}
 		}
 	],

@@ -1,0 +1,102 @@
+
+.test-container.data-v-056262de {
+	padding: 30rpx;
+	background-color: #f5f5f5;
+	min-height: 100vh;
+}
+.test-header.data-v-056262de {
+	text-align: center;
+	margin-bottom: 40rpx;
+}
+.test-title.data-v-056262de {
+	font-size: 36rpx;
+	font-weight: bold;
+	color: #333;
+}
+.user-info-section.data-v-056262de,
+.user-switch-section.data-v-056262de,
+.cart-test-section.data-v-056262de,
+.cart-items-section.data-v-056262de,
+.test-result-section.data-v-056262de,
+.back-section.data-v-056262de {
+	background-color: white;
+	border-radius: 16rpx;
+	padding: 30rpx;
+	margin-bottom: 30rpx;
+}
+.section-title.data-v-056262de {
+	font-size: 32rpx;
+	font-weight: 600;
+	color: #333;
+	margin-bottom: 20rpx;
+	border-bottom: 2rpx solid #eee;
+	padding-bottom: 10rpx;
+}
+.info-item.data-v-056262de {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 10rpx 0;
+	border-bottom: 1rpx solid #f5f5f5;
+}
+.info-label.data-v-056262de {
+	font-size: 28rpx;
+	color: #666;
+}
+.info-value.data-v-056262de {
+	font-size: 28rpx;
+	color: #333;
+	font-weight: 500;
+}
+.test-button.data-v-056262de {
+	width: 100%;
+	height: 80rpx;
+	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+	color: white;
+	border: none;
+	border-radius: 10rpx;
+	font-size: 28rpx;
+	margin-bottom: 20rpx;
+}
+.cart-item.data-v-056262de {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 20rpx;
+	background-color: #f9f9f9;
+	border-radius: 10rpx;
+	margin-bottom: 10rpx;
+}
+.item-name.data-v-056262de {
+	font-size: 28rpx;
+	color: #333;
+	flex: 1;
+}
+.item-quantity.data-v-056262de {
+	font-size: 24rpx;
+	color: #666;
+	margin: 0 20rpx;
+}
+.item-price.data-v-056262de {
+	font-size: 28rpx;
+	color: #e74c3c;
+	font-weight: 600;
+}
+.test-result.data-v-056262de {
+	font-size: 28rpx;
+	color: #333;
+	line-height: 1.6;
+	padding: 20rpx;
+	background-color: #f0f8ff;
+	border-radius: 10rpx;
+	border-left: 4rpx solid #667eea;
+}
+.back-button.data-v-056262de {
+	width: 100%;
+	height: 80rpx;
+	background-color: #95a5a6;
+	color: white;
+	border: none;
+	border-radius: 10rpx;
+	font-size: 28rpx;
+}

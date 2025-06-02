@@ -45,7 +45,7 @@ const _sfc_main = {
       }, __props.product.badge ? {
         h: common_vendor.t(__props.product.badge)
       } : {}, {
-        i: common_assets._imports_1$10,
+        i: common_assets._imports_1$11,
         j: common_vendor.o(handleAddToCart),
         k: common_vendor.o(handleProductClick)
       });

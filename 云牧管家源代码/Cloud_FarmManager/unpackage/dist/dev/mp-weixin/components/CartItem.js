@@ -39,7 +39,7 @@ const _sfc_main = {
       return common_vendor.e({
         a: __props.item.selected
       }, __props.item.selected ? {
-        b: common_assets._imports_0$7
+        b: common_assets._imports_0$8
       } : {}, {
         c: __props.item.selected ? 1 : "",
         d: common_vendor.o(toggleSelect),
@@ -52,7 +52,7 @@ const _sfc_main = {
         k: __props.item.quantity,
         l: common_vendor.o(onQuantityInput),
         m: common_vendor.o(increaseQuantity),
-        n: common_assets._imports_1$11,
+        n: common_assets._imports_1$12,
         o: common_vendor.o(removeItem)
       });
     };

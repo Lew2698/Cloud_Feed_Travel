@@ -37,7 +37,7 @@ const _sfc_main = {
         c: __props.activity.image,
         d: __props.activity.title,
         e: common_vendor.t(__props.activity.title),
-        f: common_assets._imports_0$11,
+        f: common_assets._imports_0$12,
         g: common_vendor.t(__props.activity.date),
         h: common_assets._imports_1$7,
         i: common_vendor.t(__props.activity.location),

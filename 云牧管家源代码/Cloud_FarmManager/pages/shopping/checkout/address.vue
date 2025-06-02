@@ -8,16 +8,28 @@
 			<text class="page-title">收货地址</text>
 		</view>
 
+		<!-- 加载状态 -->
+		<view class="loading-container" v-if="loading">
+			<text class="loading-text">加载中...</text>
+		</view>
+
 		<!-- 地址列表 -->
-		<view class="address-list" v-if="addresses.length > 0">
-			<AddressItem v-for="(address, index) in addresses" :key="index" :address="address" @select="selectAddress"
-				@edit="editAddress" @delete="confirmDeleteAddress" />
+		<view class="address-list" v-else-if="addresses.length > 0">
+			<AddressItem 
+				v-for="(address, index) in addresses" 
+				:key="address._id || index" 
+				:address="address" 
+				@select="selectAddress"
+				@edit="editAddress" 
+				@delete="confirmDeleteAddress"
+				@setDefault="setDefaultAddress" />
 		</view>
 
 		<!-- 空状态 -->
-		<view class="empty-state" v-else>
+		<view class="empty-state" v-else-if="!loading">
 			<image src="/static/icons/shopping icon/address-empty.svg" class="empty-icon"></image>
 			<text class="empty-text">暂无收货地址</text>
+			<text class="empty-desc">点击下方按钮添加收货地址</text>
 		</view>
 
 		<!-- 新增地址按钮 -->
@@ -39,21 +51,34 @@
 				<view class="form-content">
 					<view class="form-item">
 						<text class="form-label">收货人</text>
-						<input type="text" class="form-input" placeholder="请输入收货人姓名" v-model="formData.name" />
+						<input 
+							type="text" 
+							class="form-input" 
+							placeholder="请输入收货人姓名" 
+							v-model="formData.name" 
+							maxlength="20" />
 					</view>
 
 					<view class="form-item">
 						<text class="form-label">手机号码</text>
-						<input type="number" class="form-input" placeholder="请输入手机号码" v-model="formData.phone" maxlength="11" />
+						<input 
+							type="tel" 
+							class="form-input" 
+							placeholder="请输入手机号码" 
+							v-model="formData.phone" 
+							maxlength="11" />
 					</view>
 
 					<view class="form-item">
 						<text class="form-label">所在地区</text>
-						<picker mode="region" @change="onRegionChange"
+						<picker 
+							mode="region" 
+							@change="onRegionChange"
 							:value="[formData.province, formData.city, formData.district]">
 							<view class="picker-view">
-								<text v-if="formData.province">{{ formData.province }} {{ formData.city }}
-									{{ formData.district }}</text>
+								<text v-if="formData.province">
+									{{ formData.province }} {{ formData.city }} {{ formData.district }}
+								</text>
 								<text v-else class="placeholder">请选择所在地区</text>
 								<image src="/static/icons/shopping icon/chevron-right.svg" class="icon-image"></image>
 							</view>
@@ -62,17 +87,30 @@
 
 					<view class="form-item">
 						<text class="form-label">详细地址</text>
-						<textarea class="form-textarea" placeholder="请输入详细地址" v-model="formData.detail" />
+						<textarea 
+							class="form-textarea" 
+							placeholder="街道、楼牌号等详细信息" 
+							v-model="formData.detail" 
+							maxlength="100" />
 					</view>
 
 					<view class="form-item switch-item">
 						<text class="form-label">设为默认地址</text>
 						<switch :checked="formData.isDefault" @change="onDefaultChange" color="#bc4749" />
 					</view>
+
+					<!-- 表单验证错误提示 -->
+					<view class="form-errors" v-if="formErrors.length > 0">
+						<text class="error-text" v-for="(error, index) in formErrors" :key="index">
+							{{ error }}
+						</text>
+					</view>
 				</view>
 
 				<view class="form-footer">
-					<button class="submit-btn" @click="saveAddress">保存</button>
+					<button class="submit-btn" @click="saveAddress" :disabled="saving">
+						{{ saving ? '保存中...' : '保存' }}
+					</button>
 				</view>
 			</view>
 		</view>
@@ -80,39 +118,28 @@
 </template>
 
 <script setup>
-	import {
-		ref,
-		reactive
-	} from 'vue';
+	import { ref, reactive, onMounted } from 'vue';
 	import AddressItem from '../../../components/AddressItem.vue';
+	import { 
+		getAddressList, 
+		addAddress, 
+		updateAddress, 
+		deleteAddress, 
+		setDefaultAddress as setDefault,
+		validateAddress 
+	} from '@/api/addressService.js';
 
-	// 地址列表
-	const addresses = ref([{
-			id: 1,
-			name: '张三',
-			phone: '13800138000',
-			province: '广东省',
-			city: '广州市',
-			district: '天河区',
-			detail: '瑶山农业科技园区A栋101',
-			isDefault: true
-		},
-		{
-			id: 2,
-			name: '李四',
-			phone: '13900139000',
-			province: '广东省',
-			city: '深圳市',
-			district: '南山区',
-			detail: '科技园南区B2栋3楼301',
-			isDefault: false
-		}
-	]);
-
+	// 响应式数据
+	const addresses = ref([]);
+	const loading = ref(false);
+	const saving = ref(false);
+	
 	// 表单相关状态
 	const showForm = ref(false);
 	const isEditMode = ref(false);
 	const currentEditId = ref(null);
+	const formErrors = ref([]);
+	
 	const formData = reactive({
 		name: '',
 		phone: '',
@@ -123,6 +150,52 @@
 		isDefault: false
 	});
 
+	// 页面加载时获取地址列表
+	onMounted(() => {
+		loadAddressList();
+	});
+
+	// 获取地址列表
+	const loadAddressList = async () => {
+		loading.value = true;
+		try {
+			const result = await getAddressList();
+			
+			if (result.code === 200) {
+				addresses.value = result.data.list;
+			} else if (result.code === 401) {
+				// 未登录
+				uni.showModal({
+					title: '提示',
+					content: '请先登录后再管理收货地址',
+					confirmText: '去登录',
+					success: (res) => {
+						if (res.confirm) {
+							uni.navigateTo({
+								url: '/pages/login/login'
+							});
+						} else {
+							uni.navigateBack();
+						}
+					}
+				});
+			} else {
+				uni.showToast({
+					title: result.message || '获取地址失败',
+					icon: 'error'
+				});
+			}
+		} catch (error) {
+			console.error('获取地址列表失败:', error);
+			uni.showToast({
+				title: '网络错误',
+				icon: 'error'
+			});
+		} finally {
+			loading.value = false;
+		}
+	};
+
 	// 返回上一页
 	const goBack = () => {
 		uni.navigateBack();
@@ -130,7 +203,15 @@
 
 	// 选择地址
 	const selectAddress = (address) => {
-		// 在实际项目中，应该将选中的地址保存到全局状态或本地存储
+		// 将选中的地址保存到页面参数或全局状态
+		const pages = getCurrentPages();
+		const prevPage = pages[pages.length - 2];
+		
+		if (prevPage) {
+			// 通过全局事件传递选中的地址
+			uni.$emit('addressSelected', address);
+		}
+
 		uni.showToast({
 			title: '已选择该地址',
 			icon: 'success'
@@ -139,15 +220,17 @@
 		// 返回上一页
 		setTimeout(() => {
 			uni.navigateBack();
-		}, 1000);
+		}, 800);
 	};
 
 	// 显示地址表单
 	const showAddressForm = (address) => {
+		formErrors.value = [];
+		
 		if (address) {
 			// 编辑模式
 			isEditMode.value = true;
-			currentEditId.value = address.id;
+			currentEditId.value = address._id;
 
 			// 填充表单数据
 			formData.name = address.name;
@@ -178,6 +261,7 @@
 	// 取消表单
 	const cancelForm = () => {
 		showForm.value = false;
+		formErrors.value = [];
 	};
 
 	// 编辑地址
@@ -185,122 +269,7 @@
 		showAddressForm(address);
 	};
 
-	// 确认删除地址
-	const confirmDeleteAddress = (address) => {
-		uni.showModal({
-			title: '删除地址',
-			content: '确定要删除该收货地址吗？',
-			success: (res) => {
-				if (res.confirm) {
-					deleteAddress(address.id);
-				}
-			}
-		});
-	};
-
-	// 删除地址
-	const deleteAddress = (id) => {
-		const index = addresses.value.findIndex(item => item.id === id);
-		if (index !== -1) {
-			addresses.value.splice(index, 1);
-			uni.showToast({
-				title: '删除成功',
-				icon: 'success'
-			});
-		}
-	};
-
-	// 保存地址
-	const saveAddress = () => {
-		// 表单验证
-		if (!formData.name) {
-			uni.showToast({
-				title: '请输入收货人姓名',
-				icon: 'none'
-			});
-			return;
-		}
-
-		if (!formData.phone) {
-			uni.showToast({
-				title: '请输入手机号码',
-				icon: 'none'
-			});
-			return;
-		}
-
-		if (!/^1\d{10}$/.test(formData.phone)) {
-			uni.showToast({
-				title: '手机号码格式不正确',
-				icon: 'none'
-			});
-			return;
-		}
-
-		if (!formData.province || !formData.city || !formData.district) {
-			uni.showToast({
-				title: '请选择所在地区',
-				icon: 'none'
-			});
-			return;
-		}
-
-		if (!formData.detail) {
-			uni.showToast({
-				title: '请输入详细地址',
-				icon: 'none'
-			});
-			return;
-		}
-
-		// 处理默认地址
-		if (formData.isDefault) {
-			addresses.value.forEach(item => {
-				item.isDefault = false;
-			});
-		}
-
-		if (isEditMode.value) {
-			// 编辑模式
-			const index = addresses.value.findIndex(item => item.id === currentEditId.value);
-			if (index !== -1) {
-				addresses.value[index] = {
-					...addresses.value[index],
-					name: formData.name,
-					phone: formData.phone,
-					province: formData.province,
-					city: formData.city,
-					district: formData.district,
-					detail: formData.detail,
-					isDefault: formData.isDefault
-				};
-			}
-		} else {
-			// 新增模式
-			const newId = addresses.value.length > 0 ? Math.max(...addresses.value.map(item => item.id)) + 1 : 1;
-			addresses.value.push({
-				id: newId,
-				name: formData.name,
-				phone: formData.phone,
-				province: formData.province,
-				city: formData.city,
-				district: formData.district,
-				detail: formData.detail,
-				isDefault: formData.isDefault
-			});
-		}
-
-		// 关闭表单
-		showForm.value = false;
-
-		// 提示成功
-		uni.showToast({
-			title: isEditMode.value ? '编辑成功' : '添加成功',
-			icon: 'success'
-		});
-	};
-
-	// 地区选择器变更
+	// 地区选择改变
 	const onRegionChange = (e) => {
 		const [province, city, district] = e.detail.value;
 		formData.province = province;
@@ -308,50 +277,181 @@
 		formData.district = district;
 	};
 
-	// 默认地址开关变更
+	// 默认地址开关改变
 	const onDefaultChange = (e) => {
 		formData.isDefault = e.detail.value;
+	};
+
+	// 保存地址
+	const saveAddress = async () => {
+		// 表单验证
+		const validation = validateAddress(formData);
+		if (!validation.isValid) {
+			formErrors.value = validation.errors;
+			return;
+		}
+
+		formErrors.value = [];
+		saving.value = true;
+
+		try {
+			let result;
+			
+			if (isEditMode.value) {
+				// 更新地址
+				result = await updateAddress(currentEditId.value, formData);
+			} else {
+				// 新增地址
+				result = await addAddress(formData);
+			}
+
+			if (result.code === 200) {
+				uni.showToast({
+					title: isEditMode.value ? '更新成功' : '添加成功',
+					icon: 'success'
+				});
+
+				showForm.value = false;
+				// 重新加载地址列表
+				await loadAddressList();
+			} else {
+				uni.showToast({
+					title: result.message || '操作失败',
+					icon: 'error'
+				});
+			}
+		} catch (error) {
+			console.error('保存地址失败:', error);
+			uni.showToast({
+				title: '网络错误',
+				icon: 'error'
+			});
+		} finally {
+			saving.value = false;
+		}
+	};
+
+	// 确认删除地址
+	const confirmDeleteAddress = (address) => {
+		uni.showModal({
+			title: '删除地址',
+			content: '确定要删除该收货地址吗？',
+			success: async (res) => {
+				if (res.confirm) {
+					await handleDeleteAddress(address._id);
+				}
+			}
+		});
+	};
+
+	// 删除地址
+	const handleDeleteAddress = async (addressId) => {
+		try {
+			const result = await deleteAddress(addressId);
+			
+			if (result.code === 200) {
+				uni.showToast({
+					title: '删除成功',
+					icon: 'success'
+				});
+				
+				// 重新加载地址列表
+				await loadAddressList();
+			} else {
+				uni.showToast({
+					title: result.message || '删除失败',
+					icon: 'error'
+				});
+			}
+		} catch (error) {
+			console.error('删除地址失败:', error);
+			uni.showToast({
+				title: '网络错误',
+				icon: 'error'
+			});
+		}
+	};
+
+	// 设置默认地址
+	const setDefaultAddress = async (address) => {
+		if (address.isDefault) {
+			return; // 已经是默认地址
+		}
+
+		try {
+			const result = await setDefault(address._id);
+			
+			if (result.code === 200) {
+				uni.showToast({
+					title: '设置成功',
+					icon: 'success'
+				});
+				
+				// 重新加载地址列表
+				await loadAddressList();
+			} else {
+				uni.showToast({
+					title: result.message || '设置失败',
+					icon: 'error'
+				});
+			}
+		} catch (error) {
+			console.error('设置默认地址失败:', error);
+			uni.showToast({
+				title: '网络错误',
+				icon: 'error'
+			});
+		}
 	};
 </script>
 
 <style lang="scss">
 	@import '@/uni.scss';
 
-	page {
-		background-color: $color-secondary;
-	}
-
 	.page-container {
 		padding-bottom: 160rpx;
+		background-color: $color-secondary;
+		min-height: 100vh;
 	}
 
 	/* 页面头部 */
 	.page-header {
-		position: relative;
-		height: 90rpx;
 		display: flex;
 		align-items: center;
-		justify-content: center;
+		padding: 30rpx;
 		background-color: white;
-		border-bottom: 1rpx solid #f5f5f5;
+		position: sticky;
+		top: 0;
+		z-index: 100;
+		box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.1);
 	}
 
 	.back-btn {
-		position: absolute;
-		left: 30rpx;
-		top: 50%;
-		transform: translateY(-50%);
+		margin-right: 20rpx;
+	}
+
+	.icon-image {
+		width: 40rpx;
+		height: 40rpx;
 	}
 
 	.page-title {
-		font-size: 32rpx;
+		font-size: 36rpx;
 		font-weight: 600;
 		color: $color-dark;
 	}
 
-	.icon-image {
-		width: 36rpx;
-		height: 36rpx;
+	/* 加载状态 */
+	.loading-container {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		padding: 100rpx 0;
+	}
+
+	.loading-text {
+		font-size: 28rpx;
+		color: #999;
 	}
 
 	/* 地址列表 */
@@ -364,37 +464,42 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		justify-content: center;
-		padding: 100rpx 0;
+		padding: 120rpx 30rpx;
 	}
 
 	.empty-icon {
-		width: 180rpx;
-		height: 180rpx;
+		width: 120rpx;
+		height: 120rpx;
 		margin-bottom: 30rpx;
+		opacity: 0.6;
 	}
 
 	.empty-text {
-		font-size: 28rpx;
+		font-size: 32rpx;
 		color: #999;
+		margin-bottom: 10rpx;
+	}
+
+	.empty-desc {
+		font-size: 26rpx;
+		color: #ccc;
 	}
 
 	/* 新增地址按钮 */
 	.add-address-btn {
 		position: fixed;
-		bottom: 30rpx;
+		bottom: 60rpx;
 		left: 30rpx;
 		right: 30rpx;
-		height: 90rpx;
-		background-color: $color-primary;
-		color: white;
-		border-radius: 45rpx;
-		display: flex;
-		align-items: center;
-		justify-content: center;
+		background: linear-gradient(135deg, $color-primary, $color-highlight);
+		border-radius: 20rpx;
+		padding: 32rpx;
+		text-align: center;
+		box-shadow: 0 8rpx 20rpx rgba(188, 71, 73, 0.3);
 	}
 
 	.btn-text {
+		color: white;
 		font-size: 32rpx;
 		font-weight: 600;
 	}
@@ -406,7 +511,9 @@
 		left: 0;
 		right: 0;
 		bottom: 0;
-		z-index: 100;
+		z-index: 1000;
+		display: flex;
+		align-items: flex-end;
 	}
 
 	.form-overlay {
@@ -416,19 +523,14 @@
 		right: 0;
 		bottom: 0;
 		background-color: rgba(0, 0, 0, 0.5);
-		z-index: 1;
 	}
 
 	.form-container {
-		position: absolute;
-		left: 0;
-		right: 0;
-		bottom: 0;
 		background-color: white;
-		border-radius: 40rpx 40rpx 0 0;
-		padding: 30rpx;
-		z-index: 2;
+		width: 100%;
 		max-height: 80vh;
+		border-radius: 30rpx 30rpx 0 0;
+		position: relative;
 		overflow-y: auto;
 	}
 
@@ -436,7 +538,8 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		margin-bottom: 30rpx;
+		padding: 40rpx 30rpx 20rpx;
+		border-bottom: 1px solid #f0f0f0;
 	}
 
 	.form-title {
@@ -450,45 +553,65 @@
 	}
 
 	.form-content {
-		margin-bottom: 30rpx;
+		padding: 30rpx;
 	}
 
 	.form-item {
-		margin-bottom: 30rpx;
+		margin-bottom: 40rpx;
 	}
 
 	.form-label {
-		font-size: 28rpx;
-		color: $color-dark;
-		margin-bottom: 16rpx;
 		display: block;
-	}
-
-	.form-input,
-	.form-textarea,
-	.picker-view {
-		background-color: #f8f8f8;
-		border-radius: 12rpx;
-		padding: 20rpx;
 		font-size: 28rpx;
 		color: $color-dark;
-		width: 100%;
-		box-sizing: border-box;
+		margin-bottom: 15rpx;
+		font-weight: 500;
 	}
 
-	.form-textarea {
-		height: 150rpx;
-		line-height: 1.5;
+	.form-input {
+		width: 100%;
+		padding: 24rpx;
+		border: 1px solid #e0e0e0;
+		border-radius: 12rpx;
+		font-size: 28rpx;
+		color: $color-dark;
+		background-color: #fafafa;
+	}
+
+	.form-input:focus {
+		border-color: $color-primary;
+		background-color: white;
 	}
 
 	.picker-view {
 		display: flex;
-		align-items: center;
 		justify-content: space-between;
+		align-items: center;
+		padding: 24rpx;
+		border: 1px solid #e0e0e0;
+		border-radius: 12rpx;
+		background-color: #fafafa;
 	}
 
 	.placeholder {
 		color: #999;
+	}
+
+	.form-textarea {
+		width: 100%;
+		min-height: 120rpx;
+		padding: 24rpx;
+		border: 1px solid #e0e0e0;
+		border-radius: 12rpx;
+		font-size: 28rpx;
+		color: $color-dark;
+		background-color: #fafafa;
+		resize: none;
+	}
+
+	.form-textarea:focus {
+		border-color: $color-primary;
+		background-color: white;
 	}
 
 	.switch-item {
@@ -501,18 +624,45 @@
 		margin-bottom: 0;
 	}
 
+	/* 表单验证错误 */
+	.form-errors {
+		margin-top: 20rpx;
+		padding: 20rpx;
+		background-color: #fef2f2;
+		border-radius: 12rpx;
+		border-left: 4rpx solid #ef4444;
+	}
+
+	.error-text {
+		display: block;
+		color: #ef4444;
+		font-size: 24rpx;
+		line-height: 1.5;
+		margin-bottom: 5rpx;
+	}
+
+	.error-text:last-child {
+		margin-bottom: 0;
+	}
+
+	/* 表单底部 */
 	.form-footer {
-		padding-top: 30rpx;
+		padding: 30rpx;
+		border-top: 1px solid #f0f0f0;
 	}
 
 	.submit-btn {
-		background-color: $color-primary;
+		width: 100%;
+		background: linear-gradient(135deg, $color-primary, $color-highlight);
 		color: white;
 		border: none;
-		border-radius: 40rpx;
-		height: 90rpx;
-		line-height: 90rpx;
+		border-radius: 16rpx;
+		padding: 32rpx;
 		font-size: 32rpx;
 		font-weight: 600;
+	}
+
+	.submit-btn[disabled] {
+		opacity: 0.6;
 	}
 </style>

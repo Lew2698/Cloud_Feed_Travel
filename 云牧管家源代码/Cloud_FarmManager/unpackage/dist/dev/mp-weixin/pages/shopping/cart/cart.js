@@ -131,6 +131,7 @@ const _sfc_main = {
       });
     };
     common_vendor.onMounted(async () => {
+      proxy.$cartStore.switchUser();
       await loadCartData();
       common_vendor.index.$on("cartUpdated", handleCartUpdate);
     });
@@ -142,7 +143,7 @@ const _sfc_main = {
     });
     return (_ctx, _cache) => {
       return common_vendor.e({
-        a: common_assets._imports_0$8,
+        a: common_assets._imports_0$9,
         b: common_assets._imports_2$6,
         c: cartItems.value.length > 0
       }, cartItems.value.length > 0 ? {
@@ -182,7 +183,7 @@ const _sfc_main = {
       }, cartItems.value.length > 0 ? common_vendor.e({
         k: isAllSelected.value
       }, isAllSelected.value ? {
-        l: common_assets._imports_0$7
+        l: common_assets._imports_0$8
       } : {}, {
         m: isAllSelected.value ? 1 : "",
         n: common_vendor.o(toggleSelectAll),

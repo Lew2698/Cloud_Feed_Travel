@@ -1,6 +1,7 @@
 "use strict";
 const common_vendor = require("../../../common/vendor.js");
 const common_assets = require("../../../common/assets.js");
+const api_addressService = require("../../../api/addressService.js");
 if (!Math) {
   AddressItem();
 }
@@ -8,31 +9,13 @@ const AddressItem = () => "../../../components/AddressItem.js";
 const _sfc_main = {
   __name: "address",
   setup(__props) {
-    const addresses = common_vendor.ref([
-      {
-        id: 1,
-        name: "张三",
-        phone: "13800138000",
-        province: "广东省",
-        city: "广州市",
-        district: "天河区",
-        detail: "瑶山农业科技园区A栋101",
-        isDefault: true
-      },
-      {
-        id: 2,
-        name: "李四",
-        phone: "13900139000",
-        province: "广东省",
-        city: "深圳市",
-        district: "南山区",
-        detail: "科技园南区B2栋3楼301",
-        isDefault: false
-      }
-    ]);
+    const addresses = common_vendor.ref([]);
+    const loading = common_vendor.ref(false);
+    const saving = common_vendor.ref(false);
     const showForm = common_vendor.ref(false);
     const isEditMode = common_vendor.ref(false);
     const currentEditId = common_vendor.ref(null);
+    const formErrors = common_vendor.ref([]);
     const formData = common_vendor.reactive({
       name: "",
       phone: "",
@@ -42,22 +25,68 @@ const _sfc_main = {
       detail: "",
       isDefault: false
     });
+    common_vendor.onMounted(() => {
+      loadAddressList();
+    });
+    const loadAddressList = async () => {
+      loading.value = true;
+      try {
+        const result = await api_addressService.getAddressList();
+        if (result.code === 200) {
+          addresses.value = result.data.list;
+        } else if (result.code === 401) {
+          common_vendor.index.showModal({
+            title: "提示",
+            content: "请先登录后再管理收货地址",
+            confirmText: "去登录",
+            success: (res) => {
+              if (res.confirm) {
+                common_vendor.index.navigateTo({
+                  url: "/pages/login/login"
+                });
+              } else {
+                common_vendor.index.navigateBack();
+              }
+            }
+          });
+        } else {
+          common_vendor.index.showToast({
+            title: result.message || "获取地址失败",
+            icon: "error"
+          });
+        }
+      } catch (error) {
+        common_vendor.index.__f__("error", "at pages/shopping/checkout/address.vue:189", "获取地址列表失败:", error);
+        common_vendor.index.showToast({
+          title: "网络错误",
+          icon: "error"
+        });
+      } finally {
+        loading.value = false;
+      }
+    };
     const goBack = () => {
       common_vendor.index.navigateBack();
     };
     const selectAddress = (address) => {
+      const pages = getCurrentPages();
+      const prevPage = pages[pages.length - 2];
+      if (prevPage) {
+        common_vendor.index.$emit("addressSelected", address);
+      }
       common_vendor.index.showToast({
         title: "已选择该地址",
         icon: "success"
       });
       setTimeout(() => {
         common_vendor.index.navigateBack();
-      }, 1e3);
+      }, 800);
     };
     const showAddressForm = (address) => {
+      formErrors.value = [];
       if (address) {
         isEditMode.value = true;
-        currentEditId.value = address.id;
+        currentEditId.value = address._id;
         formData.name = address.name;
         formData.phone = address.phone;
         formData.province = address.province;
@@ -80,104 +109,10 @@ const _sfc_main = {
     };
     const cancelForm = () => {
       showForm.value = false;
+      formErrors.value = [];
     };
     const editAddress = (address) => {
       showAddressForm(address);
-    };
-    const confirmDeleteAddress = (address) => {
-      common_vendor.index.showModal({
-        title: "删除地址",
-        content: "确定要删除该收货地址吗？",
-        success: (res) => {
-          if (res.confirm) {
-            deleteAddress(address.id);
-          }
-        }
-      });
-    };
-    const deleteAddress = (id) => {
-      const index = addresses.value.findIndex((item) => item.id === id);
-      if (index !== -1) {
-        addresses.value.splice(index, 1);
-        common_vendor.index.showToast({
-          title: "删除成功",
-          icon: "success"
-        });
-      }
-    };
-    const saveAddress = () => {
-      if (!formData.name) {
-        common_vendor.index.showToast({
-          title: "请输入收货人姓名",
-          icon: "none"
-        });
-        return;
-      }
-      if (!formData.phone) {
-        common_vendor.index.showToast({
-          title: "请输入手机号码",
-          icon: "none"
-        });
-        return;
-      }
-      if (!/^1\d{10}$/.test(formData.phone)) {
-        common_vendor.index.showToast({
-          title: "手机号码格式不正确",
-          icon: "none"
-        });
-        return;
-      }
-      if (!formData.province || !formData.city || !formData.district) {
-        common_vendor.index.showToast({
-          title: "请选择所在地区",
-          icon: "none"
-        });
-        return;
-      }
-      if (!formData.detail) {
-        common_vendor.index.showToast({
-          title: "请输入详细地址",
-          icon: "none"
-        });
-        return;
-      }
-      if (formData.isDefault) {
-        addresses.value.forEach((item) => {
-          item.isDefault = false;
-        });
-      }
-      if (isEditMode.value) {
-        const index = addresses.value.findIndex((item) => item.id === currentEditId.value);
-        if (index !== -1) {
-          addresses.value[index] = {
-            ...addresses.value[index],
-            name: formData.name,
-            phone: formData.phone,
-            province: formData.province,
-            city: formData.city,
-            district: formData.district,
-            detail: formData.detail,
-            isDefault: formData.isDefault
-          };
-        }
-      } else {
-        const newId = addresses.value.length > 0 ? Math.max(...addresses.value.map((item) => item.id)) + 1 : 1;
-        addresses.value.push({
-          id: newId,
-          name: formData.name,
-          phone: formData.phone,
-          province: formData.province,
-          city: formData.city,
-          district: formData.district,
-          detail: formData.detail,
-          isDefault: formData.isDefault
-        });
-      }
-      showForm.value = false;
-      common_vendor.index.showToast({
-        title: isEditMode.value ? "编辑成功" : "添加成功",
-        icon: "success"
-      });
     };
     const onRegionChange = (e) => {
       const [province, city, district] = e.detail.value;
@@ -188,52 +123,164 @@ const _sfc_main = {
     const onDefaultChange = (e) => {
       formData.isDefault = e.detail.value;
     };
+    const saveAddress = async () => {
+      const validation = api_addressService.validateAddress(formData);
+      if (!validation.isValid) {
+        formErrors.value = validation.errors;
+        return;
+      }
+      formErrors.value = [];
+      saving.value = true;
+      try {
+        let result;
+        if (isEditMode.value) {
+          result = await api_addressService.updateAddress(currentEditId.value, formData);
+        } else {
+          result = await api_addressService.addAddress(formData);
+        }
+        if (result.code === 200) {
+          common_vendor.index.showToast({
+            title: isEditMode.value ? "更新成功" : "添加成功",
+            icon: "success"
+          });
+          showForm.value = false;
+          await loadAddressList();
+        } else {
+          common_vendor.index.showToast({
+            title: result.message || "操作失败",
+            icon: "error"
+          });
+        }
+      } catch (error) {
+        common_vendor.index.__f__("error", "at pages/shopping/checkout/address.vue:324", "保存地址失败:", error);
+        common_vendor.index.showToast({
+          title: "网络错误",
+          icon: "error"
+        });
+      } finally {
+        saving.value = false;
+      }
+    };
+    const confirmDeleteAddress = (address) => {
+      common_vendor.index.showModal({
+        title: "删除地址",
+        content: "确定要删除该收货地址吗？",
+        success: async (res) => {
+          if (res.confirm) {
+            await handleDeleteAddress(address._id);
+          }
+        }
+      });
+    };
+    const handleDeleteAddress = async (addressId) => {
+      try {
+        const result = await api_addressService.deleteAddress(addressId);
+        if (result.code === 200) {
+          common_vendor.index.showToast({
+            title: "删除成功",
+            icon: "success"
+          });
+          await loadAddressList();
+        } else {
+          common_vendor.index.showToast({
+            title: result.message || "删除失败",
+            icon: "error"
+          });
+        }
+      } catch (error) {
+        common_vendor.index.__f__("error", "at pages/shopping/checkout/address.vue:367", "删除地址失败:", error);
+        common_vendor.index.showToast({
+          title: "网络错误",
+          icon: "error"
+        });
+      }
+    };
+    const setDefaultAddress = async (address) => {
+      if (address.isDefault) {
+        return;
+      }
+      try {
+        const result = await api_addressService.setDefaultAddress(address._id);
+        if (result.code === 200) {
+          common_vendor.index.showToast({
+            title: "设置成功",
+            icon: "success"
+          });
+          await loadAddressList();
+        } else {
+          common_vendor.index.showToast({
+            title: result.message || "设置失败",
+            icon: "error"
+          });
+        }
+      } catch (error) {
+        common_vendor.index.__f__("error", "at pages/shopping/checkout/address.vue:399", "设置默认地址失败:", error);
+        common_vendor.index.showToast({
+          title: "网络错误",
+          icon: "error"
+        });
+      }
+    };
     return (_ctx, _cache) => {
       return common_vendor.e({
-        a: common_assets._imports_0$8,
+        a: common_assets._imports_0$9,
         b: common_vendor.o(goBack),
-        c: addresses.value.length > 0
-      }, addresses.value.length > 0 ? {
-        d: common_vendor.f(addresses.value, (address, index, i0) => {
+        c: loading.value
+      }, loading.value ? {} : addresses.value.length > 0 ? {
+        e: common_vendor.f(addresses.value, (address, index, i0) => {
           return {
-            a: index,
-            b: common_vendor.o(selectAddress, index),
-            c: common_vendor.o(editAddress, index),
-            d: common_vendor.o(confirmDeleteAddress, index),
-            e: "5dc82337-0-" + i0,
-            f: common_vendor.p({
+            a: address._id || index,
+            b: common_vendor.o(selectAddress, address._id || index),
+            c: common_vendor.o(editAddress, address._id || index),
+            d: common_vendor.o(confirmDeleteAddress, address._id || index),
+            e: common_vendor.o(setDefaultAddress, address._id || index),
+            f: "5dc82337-0-" + i0,
+            g: common_vendor.p({
               address
             })
           };
         })
-      } : {
-        e: common_assets._imports_1$9
-      }, {
-        f: common_vendor.o(($event) => showAddressForm(null)),
-        g: showForm.value
-      }, showForm.value ? common_vendor.e({
-        h: common_vendor.o(cancelForm),
-        i: common_vendor.t(isEditMode.value ? "编辑地址" : "新增地址"),
-        j: common_assets._imports_2$8,
-        k: common_vendor.o(cancelForm),
-        l: formData.name,
-        m: common_vendor.o(($event) => formData.name = $event.detail.value),
-        n: formData.phone,
-        o: common_vendor.o(($event) => formData.phone = $event.detail.value),
-        p: formData.province
-      }, formData.province ? {
-        q: common_vendor.t(formData.province),
-        r: common_vendor.t(formData.city),
-        s: common_vendor.t(formData.district)
+      } : !loading.value ? {
+        g: common_assets._imports_1$10
       } : {}, {
-        t: common_assets._imports_3$8,
-        v: common_vendor.o(onRegionChange),
-        w: [formData.province, formData.city, formData.district],
-        x: formData.detail,
-        y: common_vendor.o(($event) => formData.detail = $event.detail.value),
-        z: formData.isDefault,
-        A: common_vendor.o(onDefaultChange),
-        B: common_vendor.o(saveAddress)
+        d: addresses.value.length > 0,
+        f: !loading.value,
+        h: common_vendor.o(($event) => showAddressForm(null)),
+        i: showForm.value
+      }, showForm.value ? common_vendor.e({
+        j: common_vendor.o(cancelForm),
+        k: common_vendor.t(isEditMode.value ? "编辑地址" : "新增地址"),
+        l: common_assets._imports_2$8,
+        m: common_vendor.o(cancelForm),
+        n: formData.name,
+        o: common_vendor.o(($event) => formData.name = $event.detail.value),
+        p: formData.phone,
+        q: common_vendor.o(($event) => formData.phone = $event.detail.value),
+        r: formData.province
+      }, formData.province ? {
+        s: common_vendor.t(formData.province),
+        t: common_vendor.t(formData.city),
+        v: common_vendor.t(formData.district)
+      } : {}, {
+        w: common_assets._imports_3$8,
+        x: common_vendor.o(onRegionChange),
+        y: [formData.province, formData.city, formData.district],
+        z: formData.detail,
+        A: common_vendor.o(($event) => formData.detail = $event.detail.value),
+        B: formData.isDefault,
+        C: common_vendor.o(onDefaultChange),
+        D: formErrors.value.length > 0
+      }, formErrors.value.length > 0 ? {
+        E: common_vendor.f(formErrors.value, (error, index, i0) => {
+          return {
+            a: common_vendor.t(error),
+            b: index
+          };
+        })
+      } : {}, {
+        F: common_vendor.t(saving.value ? "保存中..." : "保存"),
+        G: common_vendor.o(saveAddress),
+        H: saving.value
       }) : {});
     };
   }

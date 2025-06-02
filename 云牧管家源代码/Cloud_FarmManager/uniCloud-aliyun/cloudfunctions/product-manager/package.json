@@ -1,0 +1,10 @@
+{
+  "name": "product-manager",
+  "version": "1.0.0",
+  "description": "商品管理云函数",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {},
+  "author": "",
+  "license": "ISC"
+} 

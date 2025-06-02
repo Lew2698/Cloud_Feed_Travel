@@ -524,17 +524,5 @@ const productsData = {
 function getProductById(id) {
   return productsData[id] || null;
 }
-function getAllProducts() {
-  return Object.values(productsData).map((product) => ({
-    id: product.id,
-    name: product.name,
-    price: product.price,
-    image: product.images[0],
-    sales: product.sales,
-    rating: product.rating,
-    badge: product.isNew ? "新品" : product.isOrganic ? "有机" : ""
-  }));
-}
-exports.getAllProducts = getAllProducts;
 exports.getProductById = getProductById;
 //# sourceMappingURL=../../.sourcemap/mp-weixin/data/products.js.map

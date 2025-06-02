@@ -134,10 +134,11 @@
 <script setup>
 	import { ref, computed } from 'vue'
 	import { onLoad } from '@dcloudio/uni-app'
-	import { getProductById } from '../../../data/products.js'
+	import { getProductById } from '../../../api/productService.js'
 	
 	// 响应式数据
 	const productId = ref(null)
+	const loading = ref(true)
 	
 	// 默认溯源信息
 	const traceInfo = ref({
@@ -158,24 +159,38 @@
 	// 页面加载时获取溯源信息
 	onLoad((options) => {
 		if (options.id) {
-			productId.value = parseInt(options.id)
+			productId.value = options.id // 云端ID是字符串，不需要parseInt
 			loadTraceData()
 		}
 	})
 	
 	// 加载溯源数据
-	const loadTraceData = () => {
-		const productData = getProductById(productId.value)
-		if (productData && productData.traceInfo) {
-			traceInfo.value = productData.traceInfo
-		} else {
+	const loadTraceData = async () => {
+		try {
+			loading.value = true
+			const productData = await getProductById(productId.value)
+			if (productData && productData.traceInfo) {
+				traceInfo.value = productData.traceInfo
+			} else {
+				uni.showToast({
+					title: '溯源信息不存在',
+					icon: 'none'
+				})
+				setTimeout(() => {
+					uni.navigateBack()
+				}, 1500)
+			}
+		} catch (error) {
+			console.error('加载溯源数据失败:', error)
 			uni.showToast({
-				title: '溯源信息不存在',
+				title: '加载溯源失败',
 				icon: 'none'
 			})
 			setTimeout(() => {
 				uni.navigateBack()
 			}, 1500)
+		} finally {
+			loading.value = false
 		}
 	}
 	
