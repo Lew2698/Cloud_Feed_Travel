@@ -1,5 +1,6 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
+const common_assets = require("../../common/assets.js");
 const _sfc_main = {
   data() {
     return {
@@ -121,13 +122,14 @@ const _sfc_main = {
 };
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   return common_vendor.e({
-    a: $data.activeTab === "poultry" ? 1 : "",
-    b: common_vendor.o(($event) => $data.activeTab = "poultry"),
-    c: $data.activeTab === "crops" ? 1 : "",
-    d: common_vendor.o(($event) => $data.activeTab = "crops"),
-    e: $data.activeTab === "poultry"
+    a: common_assets._imports_0$5,
+    b: $data.activeTab === "poultry" ? 1 : "",
+    c: common_vendor.o(($event) => $data.activeTab = "poultry"),
+    d: $data.activeTab === "crops" ? 1 : "",
+    e: common_vendor.o(($event) => $data.activeTab = "crops"),
+    f: $data.activeTab === "poultry"
   }, $data.activeTab === "poultry" ? {
-    f: common_vendor.f($data.poultryTypes, (item, index, i0) => {
+    g: common_vendor.f($data.poultryTypes, (item, index, i0) => {
       return {
         a: common_vendor.t(item),
         b: index,
@@ -136,9 +138,9 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
       };
     })
   } : {}, {
-    g: $data.activeTab === "crops"
+    h: $data.activeTab === "crops"
   }, $data.activeTab === "crops" ? {
-    h: common_vendor.f($data.cropTypes, (item, index, i0) => {
+    i: common_vendor.f($data.cropTypes, (item, index, i0) => {
       return {
         a: common_vendor.t(item),
         b: index,
@@ -147,7 +149,7 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
       };
     })
   } : {}, {
-    i: common_vendor.f($options.activeProducts, (item, index, i0) => {
+    j: common_vendor.f($options.activeProducts, (item, index, i0) => {
       return common_vendor.e({
         a: item.isPopular
       }, item.isPopular ? {} : {}, {

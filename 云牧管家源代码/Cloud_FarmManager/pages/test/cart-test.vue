@@ -46,9 +46,11 @@
 </template>
 
 <script setup>
-	import { ref, computed, onMounted, onUnmounted, getCurrentInstance } from 'vue'
+	import { ref, computed, onMounted, onUnmounted } from 'vue'
+	import { useCartStore } from '@/stores/cart.js'
 	
-	const { proxy } = getCurrentInstance()
+	// 使用Pinia store
+	const cartStore = useCartStore()
 	
 	// 响应式数据
 	const cartTotalCount = ref(0)
@@ -82,9 +84,9 @@
 	
 	// 更新购物车状态显示
 	const updateCartStatus = () => {
-		cartTotalCount.value = proxy.$cartStore.getTotalCount()
-		selectedCount.value = proxy.$cartStore.getSelectedCount()
-		selectedTotalPrice.value = proxy.$cartStore.getSelectedTotalPrice()
+		cartTotalCount.value = cartStore.totalCount
+		selectedCount.value = cartStore.selectedCount
+		selectedTotalPrice.value = cartStore.selectedTotalPrice
 	}
 	
 	// 处理购物车更新事件
@@ -95,7 +97,7 @@
 	
 	// 添加商品到购物车
 	const addToCart = (product) => {
-		const success = proxy.$cartStore.addToCart(product, 1)
+		const success = cartStore.addToCart(product, 1)
 		if (success) {
 			addLog(`添加商品: ${product.name}`)
 			uni.showToast({
@@ -114,7 +116,7 @@
 	
 	// 清空购物车
 	const clearCart = () => {
-		proxy.$cartStore.clearCart()
+		cartStore.clearCart()
 		addLog('购物车已清空')
 		uni.showToast({
 			title: '购物车已清空',
@@ -127,25 +129,25 @@
 		addLog('开始运行测试...')
 		
 		// 清空购物车
-		proxy.$cartStore.clearCart()
+		cartStore.clearCart()
 		addLog('1. 清空购物车')
 		
 		// 添加商品
 		testProducts.value.forEach((product, index) => {
-			proxy.$cartStore.addToCart(product, index + 1)
+			cartStore.addToCart(product, index + 1)
 			addLog(`2.${index + 1} 添加商品: ${product.name} x${index + 1}`)
 		})
 		
 		// 测试选中状态
-		proxy.$cartStore.toggleItemSelect(0)
+		cartStore.toggleItemSelect(0)
 		addLog('3. 取消选中第一个商品')
 		
 		// 测试全选
-		proxy.$cartStore.toggleSelectAll()
+		cartStore.toggleSelectAll()
 		addLog('4. 执行全选操作')
 		
 		// 测试数量更新
-		proxy.$cartStore.updateQuantity(0, 5)
+		cartStore.updateQuantity(0, 5)
 		addLog('5. 更新第一个商品数量为5')
 		
 		addLog('测试完成!')
@@ -154,12 +156,16 @@
 	// 生命周期
 	onMounted(() => {
 		updateCartStatus()
-		uni.$on('cartUpdated', handleCartUpdate)
 		addLog('测试页面已加载')
 	})
 	
+	// 监听购物车状态变化
+	const unwatchCart = cartStore.$subscribe(() => {
+		updateCartStatus()
+	})
+	
 	onUnmounted(() => {
-		uni.$off('cartUpdated', handleCartUpdate)
+		unwatchCart()
 	})
 </script>
 
@@ -288,4 +294,4 @@
 		margin-bottom: 10rpx;
 		line-height: 1.4;
 	}
-</style> 
+</style>

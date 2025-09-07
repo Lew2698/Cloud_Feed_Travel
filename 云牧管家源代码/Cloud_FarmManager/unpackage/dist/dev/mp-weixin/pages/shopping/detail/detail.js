@@ -1,11 +1,12 @@
 "use strict";
 const common_vendor = require("../../../common/vendor.js");
 const common_assets = require("../../../common/assets.js");
+const stores_cart = require("../../../stores/cart.js");
 const api_productService = require("../../../api/productService.js");
 const _sfc_main = {
   __name: "detail",
   setup(__props) {
-    const { proxy } = common_vendor.getCurrentInstance();
+    const cartStore = stores_cart.useCartStore();
     const productId = common_vendor.ref(null);
     const indicatorActiveColor = common_vendor.ref("#FFFFFF");
     const indicatorColor = common_vendor.ref("rgba(255, 255, 255, 0.5)");
@@ -40,8 +41,10 @@ const _sfc_main = {
       comments: []
     });
     common_vendor.onLoad((options) => {
+      common_vendor.index.__f__("log", "at pages/shopping/detail/detail.vue:211", "onLoad options:", options);
       if (options.id) {
         productId.value = options.id;
+        common_vendor.index.__f__("log", "at pages/shopping/detail/detail.vue:214", "productId.value:", productId.value);
         loadProductDetail();
       }
     });
@@ -64,7 +67,7 @@ const _sfc_main = {
           }, 1500);
         }
       } catch (error) {
-        common_vendor.index.__f__("error", "at pages/shopping/detail/detail.vue:237", "加载商品详情失败:", error);
+        common_vendor.index.__f__("error", "at pages/shopping/detail/detail.vue:241", "加载商品详情失败:", error);
         common_vendor.index.showToast({
           title: "加载商品失败",
           icon: "none"
@@ -77,11 +80,11 @@ const _sfc_main = {
       }
     };
     const updateCartCount = () => {
-      cartCount.value = proxy.$cartStore.getTotalCount();
+      cartCount.value = cartStore.getTotalCount();
     };
     const onSwiperChange = (e) => {
       const current = e.detail.current;
-      common_vendor.index.__f__("log", "at pages/shopping/detail/detail.vue:258", "当前索引:", current);
+      common_vendor.index.__f__("log", "at pages/shopping/detail/detail.vue:262", "当前索引:", current);
     };
     const toggleFavorite = () => {
       isFavorite.value = !isFavorite.value;
@@ -98,7 +101,7 @@ const _sfc_main = {
       }
     };
     const addToCart = () => {
-      const success = proxy.$cartStore.addToCart(product.value, 1);
+      const success = cartStore.addToCart(product.value, 1);
       if (success) {
         updateCartCount();
         common_vendor.index.showToast({

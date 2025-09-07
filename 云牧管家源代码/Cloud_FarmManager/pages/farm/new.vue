@@ -3,7 +3,7 @@
 		<!-- 返回按钮和标题 -->
 		<view class="header">
 			<navigator open-type="navigateBack" class="back-btn">
-				<text class="iconfont icon-arrow-left"></text>
+				<image src="/static/icons/shopping icon/左箭头2.svg" class="arrow-icon"></image>
 			</navigator>
 			<text class="header-title">认领新的家禽/农作物</text>
 		</view>

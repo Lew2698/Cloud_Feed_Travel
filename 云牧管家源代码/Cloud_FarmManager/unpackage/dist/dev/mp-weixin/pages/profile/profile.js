@@ -1,6 +1,5 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
-const store_cart = require("../../store/cart.js");
 const common_assets = require("../../common/assets.js");
 const _sfc_main = {
   data() {
@@ -34,7 +33,7 @@ const _sfc_main = {
           this.currentUserInfo = {};
         }
       } catch (error) {
-        common_vendor.index.__f__("error", "at pages/profile/profile.vue:196", "检查登录状态失败:", error);
+        common_vendor.index.__f__("error", "at pages/profile/profile.vue:195", "检查登录状态失败:", error);
         this.isLoggedIn = false;
         this.currentUserInfo = {};
       }
@@ -174,7 +173,7 @@ const _sfc_main = {
               }
               common_vendor.index.removeStorageSync("userToken");
               common_vendor.index.removeStorageSync("userInfo");
-              store_cart.cartStore.switchUser();
+              cartStore.switchUser();
               this.isLoggedIn = false;
               this.currentUserInfo = {};
               common_vendor.index.showToast({
@@ -182,10 +181,10 @@ const _sfc_main = {
                 icon: "success"
               });
             } catch (error) {
-              common_vendor.index.__f__("error", "at pages/profile/profile.vue:368", "退出登录失败:", error);
+              common_vendor.index.__f__("error", "at pages/profile/profile.vue:367", "退出登录失败:", error);
               common_vendor.index.removeStorageSync("userToken");
               common_vendor.index.removeStorageSync("userInfo");
-              store_cart.cartStore.switchUser();
+              cartStore.switchUser();
               this.isLoggedIn = false;
               this.currentUserInfo = {};
               common_vendor.index.showToast({

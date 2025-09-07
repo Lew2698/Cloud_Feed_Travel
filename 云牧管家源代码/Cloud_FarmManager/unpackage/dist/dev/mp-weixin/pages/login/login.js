@@ -1,9 +1,10 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
-const store_cart = require("../../store/cart.js");
+const stores_cart = require("../../stores/cart.js");
 const common_assets = require("../../common/assets.js");
 const _sfc_main = {
   data() {
+    this.cartStore = stores_cart.useCartStore();
     return {
       currentTab: "login",
       loginForm: {
@@ -39,7 +40,7 @@ const _sfc_main = {
             password: this.loginForm.password
           }
         });
-        common_vendor.index.__f__("log", "at pages/login/login.vue:113", "登录云函数返回结果:", result.result);
+        common_vendor.index.__f__("log", "at pages/login/login.vue:116", "登录云函数返回结果:", result.result);
         if (result.result.errCode === 0) {
           common_vendor.index.setStorageSync("userToken", result.result.token);
           if (result.result.userInfo) {
@@ -50,7 +51,7 @@ const _sfc_main = {
               userId: result.result.userId || ""
             });
           }
-          store_cart.cartStore.switchUser();
+          this.cartStore.switchUser();
           common_vendor.index.showToast({
             title: "登录成功",
             icon: "success"
@@ -67,7 +68,7 @@ const _sfc_main = {
           });
         }
       } catch (error) {
-        common_vendor.index.__f__("error", "at pages/login/login.vue:147", "登录失败:", error);
+        common_vendor.index.__f__("error", "at pages/login/login.vue:150", "登录失败:", error);
         common_vendor.index.showToast({
           title: "登录失败，请重试",
           icon: "none"
@@ -128,7 +129,7 @@ const _sfc_main = {
           });
         }
       } catch (error) {
-        common_vendor.index.__f__("error", "at pages/login/login.vue:218", "注册失败:", error);
+        common_vendor.index.__f__("error", "at pages/login/login.vue:221", "注册失败:", error);
         common_vendor.index.showToast({
           title: "注册失败，请重试",
           icon: "none"

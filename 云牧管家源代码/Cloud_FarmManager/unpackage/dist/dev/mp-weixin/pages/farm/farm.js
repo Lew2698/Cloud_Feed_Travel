@@ -1,17 +1,25 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
 const common_assets = require("../../common/assets.js");
-const _sfc_main = { data() {
-  return { showGameModeSelector: false };
-}, methods: { navigateTo(url) {
-  common_vendor.index.navigateTo({ url });
-}, showGameSelector() {
-  this.showGameModeSelector = true;
-}, hideGameSelector() {
-  this.showGameModeSelector = false;
-}, showRanchComingSoon() {
-  common_vendor.index.showToast({ title: "牧场功能即将上线", icon: "none" });
-} } };
+const _sfc_main = {
+  data() {
+    return { showGameModeSelector: false };
+  },
+  methods: {
+    navigateTo(url) {
+      common_vendor.index.navigateTo({ url });
+    },
+    showGameSelector() {
+      this.showGameModeSelector = true;
+    },
+    hideGameSelector() {
+      this.showGameModeSelector = false;
+    },
+    showRanchComingSoon() {
+      common_vendor.index.showToast({ title: "牧场功能即将上线", icon: "none" });
+    }
+  }
+};
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   return common_vendor.e({
     a: common_assets._imports_6$1,

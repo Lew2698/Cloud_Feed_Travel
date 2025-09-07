@@ -1,0 +1,15 @@
+{
+  "name": "cloud_farmmanager",
+  "version": "1.0.0",
+  "description": "**云养智旅** - 集云养殖、农产品购物和农场管理于一体的移动应用，致力于连接城市用户与农村养殖/种植业，提供沉浸式的云养殖体验和优质农产品购买渠道。",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "pinia": "^3.0.3"
+  }
+}

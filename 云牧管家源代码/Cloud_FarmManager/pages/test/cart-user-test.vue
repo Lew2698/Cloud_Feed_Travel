@@ -61,9 +61,11 @@
 </template>
 
 <script setup>
-import { ref, onMounted, getCurrentInstance } from 'vue'
+import { ref, onMounted } from 'vue'
+import { useCartStore } from '@/stores/cart.js'
 
-const { proxy } = getCurrentInstance()
+// 使用Pinia store
+const cartStore = useCartStore()
 
 const currentUserInfo = ref({
 	userId: '',
@@ -76,9 +78,9 @@ const testResult = ref('等待测试...')
 
 // 更新用户信息显示
 const updateUserInfo = () => {
-	const userInfo = proxy.$cartStore.getCurrentUserInfo()
+	const userInfo = cartStore.getCurrentUserInfo()
 	currentUserInfo.value = userInfo
-	cartItems.value = proxy.$cartStore.getCartItems()
+	cartItems.value = cartStore.cartItems
 }
 
 // 模拟登录为用户1
@@ -90,7 +92,7 @@ const loginAsUser1 = () => {
 	})
 	uni.setStorageSync('userToken', 'token_user_001')
 	
-	proxy.$cartStore.switchUser()
+	cartStore.switchUser()
 	updateUserInfo()
 	testResult.value = '已切换到用户1'
 }
@@ -104,7 +106,7 @@ const loginAsUser2 = () => {
 	})
 	uni.setStorageSync('userToken', 'token_user_002')
 	
-	proxy.$cartStore.switchUser()
+	cartStore.switchUser()
 	updateUserInfo()
 	testResult.value = '已切换到用户2'
 }
@@ -114,7 +116,7 @@ const loginAsGuest = () => {
 	uni.removeStorageSync('userInfo')
 	uni.removeStorageSync('userToken')
 	
-	proxy.$cartStore.switchUser()
+	cartStore.switchUser()
 	updateUserInfo()
 	testResult.value = '已切换到游客模式'
 }
@@ -128,7 +130,7 @@ const addTestProduct = () => {
 		image: '/static/static2/3944.jpg_wh860.jpg'
 	}
 	
-	const success = proxy.$cartStore.addToCart(testProduct, 1)
+	const success = cartStore.addToCart(testProduct, 1)
 	if (success) {
 		updateUserInfo()
 		testResult.value = `已添加商品: ${testProduct.name}`
@@ -137,7 +139,7 @@ const addTestProduct = () => {
 
 // 清空当前购物车
 const clearCurrentCart = () => {
-	proxy.$cartStore.clearCart()
+	cartStore.clearCart()
 	updateUserInfo()
 	testResult.value = '已清空当前用户的购物车'
 }
@@ -274,4 +276,4 @@ onMounted(() => {
 	border-radius: 10rpx;
 	font-size: 28rpx;
 }
-</style> 
+</style>

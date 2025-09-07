@@ -68,10 +68,13 @@
 </template>
 
 <script>
-import cartStore from '@/store/cart.js'
+import { useCartStore } from '@/stores/cart.js'
 
 export default {
 	data() {
+		// 初始化购物车store
+		this.cartStore = useCartStore();
+		
 		return {
 			currentTab: 'login',
 			loginForm: {
@@ -125,7 +128,7 @@ export default {
 					}
 
 					// 通知购物车切换用户
-					cartStore.switchUser();
+			this.cartStore.switchUser();
 
 					uni.showToast({
 						title: '登录成功',
@@ -360,4 +363,4 @@ export default {
 	padding: 20rpx;
 	text-decoration: underline;
 }
-</style> 
+</style>

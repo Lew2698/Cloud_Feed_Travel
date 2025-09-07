@@ -89,7 +89,7 @@ const _sfc_main = {
           return {
             a: index,
             b: common_vendor.o(signupActivity, index),
-            c: "57c04458-0-" + i0,
+            c: "ba61204c-0-" + i0,
             d: common_vendor.p({
               activity: acti
             })

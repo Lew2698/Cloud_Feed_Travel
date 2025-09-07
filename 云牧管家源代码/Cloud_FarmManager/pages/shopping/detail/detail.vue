@@ -161,11 +161,13 @@
 </template>
 
 <script setup>
-	import { ref, onMounted, getCurrentInstance } from 'vue'
+	import { ref, onMounted } from 'vue'
 	import { onLoad } from '@dcloudio/uni-app'
+	import { useCartStore } from '@/stores/cart.js'
 	import { getProductById } from '../../../api/productService.js'
 	
-	const { proxy } = getCurrentInstance()
+	// 使用Pinia store
+	const cartStore = useCartStore()
 	
 	// 响应式数据
 	const productId = ref(null)
@@ -206,8 +208,10 @@
 	
 	// 页面加载时获取商品信息
 	onLoad((options) => {
+		console.log('onLoad options:', options)
 		if (options.id) {
 			productId.value = options.id // 云端ID是字符串，不需要parseInt
+			console.log('productId.value:', productId.value)
 			loadProductDetail()
 		}
 	})
@@ -249,7 +253,7 @@
 	
 	// 更新购物车数量
 	const updateCartCount = () => {
-		cartCount.value = proxy.$cartStore.getTotalCount()
+		cartCount.value = cartStore.getTotalCount()
 	}
 	
 	// 轮播图切换事件
@@ -276,7 +280,7 @@
 	
 	// 加入购物车
 	const addToCart = () => {
-		const success = proxy.$cartStore.addToCart(product.value, 1)
+		const success = cartStore.addToCart(product.value, 1)
 		if (success) {
 			updateCartCount()
 			uni.showToast({
@@ -862,4 +866,4 @@
 	  width: 30rpx;
 	  height: 30rpx;
 	}
-</style> 
+</style>

@@ -1,0 +1,1 @@
+{"_id":"String","username":"String","password":"String","mobile":"String","nickname":"String","status":"Number","register_date":"Date","register_ip":"String","last_login_date":"Date","last_login_ip":"String","token":"Array"}

@@ -1,6 +1,7 @@
 "use strict";
 const common_vendor = require("../../../common/vendor.js");
 const common_assets = require("../../../common/assets.js");
+const stores_cart = require("../../../stores/cart.js");
 const api_addressService = require("../../../api/addressService.js");
 if (!Math) {
   (AddressItem + CheckoutItem)();
@@ -10,6 +11,7 @@ const CheckoutItem = () => "../../../components/CheckoutItem.js";
 const _sfc_main = {
   __name: "checkout",
   setup(__props) {
+    const cartStore = stores_cart.useCartStore();
     const orderItems = common_vendor.ref([]);
     const selectedAddress = common_vendor.ref(null);
     const addressLoading = common_vendor.ref(false);
@@ -38,7 +40,7 @@ const _sfc_main = {
     });
     const handleAddressSelected = (address) => {
       selectedAddress.value = address;
-      common_vendor.index.__f__("log", "at pages/shopping/checkout/checkout.vue:148", "地址已选择:", address);
+      common_vendor.index.__f__("log", "at pages/shopping/checkout/checkout.vue:151", "地址已选择:", address);
     };
     common_vendor.onMounted(() => {
       getCartItems();
@@ -70,7 +72,7 @@ const _sfc_main = {
           }, 1500);
         }
       } catch (error) {
-        common_vendor.index.__f__("error", "at pages/shopping/checkout/checkout.vue:192", "获取结算商品失败:", error);
+        common_vendor.index.__f__("error", "at pages/shopping/checkout/checkout.vue:195", "获取结算商品失败:", error);
         common_vendor.index.showToast({
           title: "获取商品信息失败",
           icon: "none"
@@ -83,7 +85,7 @@ const _sfc_main = {
         const result = await api_addressService.getDefaultAddress();
         if (result.code === 200 && result.data) {
           selectedAddress.value = result.data;
-          common_vendor.index.__f__("log", "at pages/shopping/checkout/checkout.vue:208", "默认地址已加载:", result.data);
+          common_vendor.index.__f__("log", "at pages/shopping/checkout/checkout.vue:211", "默认地址已加载:", result.data);
         } else if (result.code === 401) {
           common_vendor.index.showModal({
             title: "提示",
@@ -100,10 +102,10 @@ const _sfc_main = {
             }
           });
         } else {
-          common_vendor.index.__f__("log", "at pages/shopping/checkout/checkout.vue:227", "暂无默认地址");
+          common_vendor.index.__f__("log", "at pages/shopping/checkout/checkout.vue:230", "暂无默认地址");
         }
       } catch (error) {
-        common_vendor.index.__f__("error", "at pages/shopping/checkout/checkout.vue:230", "获取默认地址失败:", error);
+        common_vendor.index.__f__("error", "at pages/shopping/checkout/checkout.vue:233", "获取默认地址失败:", error);
         common_vendor.index.showToast({
           title: "获取地址失败",
           icon: "none"
@@ -154,25 +156,22 @@ const _sfc_main = {
         discountAmount: discountAmount.value,
         createTime: (/* @__PURE__ */ new Date()).toISOString()
       };
-      common_vendor.index.__f__("log", "at pages/shopping/checkout/checkout.vue:294", "提交订单:", orderData);
+      common_vendor.index.__f__("log", "at pages/shopping/checkout/checkout.vue:297", "提交订单:", orderData);
       submitting.value = true;
       common_vendor.index.showLoading({
         title: "提交中..."
       });
       try {
         await new Promise((resolve) => setTimeout(resolve, 2e3));
-        const { proxy } = common_vendor.getCurrentInstance();
-        if (proxy && proxy.$cartStore) {
-          const cartItems = proxy.$cartStore.getCartItems();
-          orderItems.value.forEach((orderItem) => {
-            const cartIndex = cartItems.findIndex(
-              (cartItem) => cartItem.id === orderItem.id && cartItem.selected
-            );
-            if (cartIndex !== -1) {
-              proxy.$cartStore.removeItem(cartIndex);
-            }
-          });
-        }
+        const cartItems = cartStore.cartItems;
+        orderItems.value.forEach((orderItem) => {
+          const cartIndex = cartItems.findIndex(
+            (cartItem) => cartItem.id === orderItem.id && cartItem.selected
+          );
+          if (cartIndex !== -1) {
+            cartStore.removeItem(cartIndex);
+          }
+        });
         common_vendor.index.removeStorageSync("checkout_items");
         common_vendor.index.hideLoading();
         common_vendor.index.showToast({
@@ -213,7 +212,7 @@ const _sfc_main = {
         h: common_vendor.f(orderItems.value, (item, index, i0) => {
           return {
             a: index,
-            b: "b56a58da-1-" + i0,
+            b: "f08faf66-1-" + i0,
             c: common_vendor.p({
               item
             })

@@ -1,6 +1,7 @@
 "use strict";
 const common_vendor = require("../../../common/vendor.js");
 const common_assets = require("../../../common/assets.js");
+const stores_cart = require("../../../stores/cart.js");
 if (!Math) {
   CartItem();
 }
@@ -8,7 +9,7 @@ const CartItem = () => "../../../components/CartItem.js";
 const _sfc_main = {
   __name: "cart",
   setup(__props) {
-    const { proxy } = common_vendor.getCurrentInstance();
+    const cartStore = stores_cart.useCartStore();
     const cartItems = common_vendor.ref([]);
     const discount = common_vendor.ref(3);
     const recommendItems = common_vendor.ref([
@@ -41,25 +42,24 @@ const _sfc_main = {
       return cartItems.value.length > 0 && cartItems.value.every((item) => item.selected);
     });
     const loadCartData = async () => {
-      const newCartItems = proxy.$cartStore.getCartItems();
-      cartItems.value = JSON.parse(JSON.stringify(newCartItems));
+      cartItems.value = JSON.parse(JSON.stringify(cartStore.cartItems));
       await common_vendor.nextTick$1();
     };
     const handleCartUpdate = async () => {
       await loadCartData();
     };
     const toggleItemSelect = async (index) => {
-      proxy.$cartStore.toggleItemSelect(index);
+      cartStore.toggleItemSelect(index);
       await loadCartData();
     };
     const toggleSelectAll = async () => {
-      proxy.$cartStore.toggleSelectAll();
+      cartStore.toggleSelectAll();
       await loadCartData();
     };
     const decreaseQuantity = async (index) => {
       const item = cartItems.value[index];
       if (item.quantity > 1) {
-        proxy.$cartStore.updateQuantity(index, item.quantity - 1);
+        cartStore.updateQuantity(index, item.quantity - 1);
         await loadCartData();
       } else {
         common_vendor.index.showModal({
@@ -75,12 +75,12 @@ const _sfc_main = {
     };
     const increaseQuantity = async (index) => {
       const item = cartItems.value[index];
-      proxy.$cartStore.updateQuantity(index, item.quantity + 1);
+      cartStore.updateQuantity(index, item.quantity + 1);
       await loadCartData();
     };
     const onQuantityChange = async (index, newQuantity) => {
       if (newQuantity > 0) {
-        proxy.$cartStore.updateQuantity(index, newQuantity);
+        cartStore.updateQuantity(index, newQuantity);
         await loadCartData();
       } else {
         await removeItem(index);
@@ -93,7 +93,7 @@ const _sfc_main = {
           content: "确定要移除该商品吗？",
           success: async (res) => {
             if (res.confirm) {
-              proxy.$cartStore.removeItem(index);
+              cartStore.removeItem(index);
               await loadCartData();
             }
             resolve();
@@ -102,7 +102,7 @@ const _sfc_main = {
       });
     };
     const addToCartFromRecommend = async (item) => {
-      const success = proxy.$cartStore.addToCart(item, 1);
+      const success = cartStore.addToCart(item, 1);
       if (success) {
         await loadCartData();
         common_vendor.index.showToast({
@@ -124,14 +124,15 @@ const _sfc_main = {
         });
         return;
       }
-      const selectedItems = proxy.$cartStore.getSelectedItems();
+      const selectedItems = cartStore.selectedItems;
+      common_vendor.index.__f__("log", "at pages/shopping/cart/cart.vue:236", selectedItems);
       common_vendor.index.setStorageSync("checkout_items", selectedItems);
       common_vendor.index.navigateTo({
         url: "/pages/shopping/checkout/checkout"
       });
     };
     common_vendor.onMounted(async () => {
-      proxy.$cartStore.switchUser();
+      cartStore.switchUser();
       await loadCartData();
       common_vendor.index.$on("cartUpdated", handleCartUpdate);
     });
@@ -157,7 +158,7 @@ const _sfc_main = {
             d: common_vendor.o(increaseQuantity, item.id + "_" + index),
             e: common_vendor.o(onQuantityChange, item.id + "_" + index),
             f: common_vendor.o(removeItem, item.id + "_" + index),
-            g: "3227d75a-0-" + i0,
+            g: "23a279e6-0-" + i0,
             h: common_vendor.p({
               item,
               index

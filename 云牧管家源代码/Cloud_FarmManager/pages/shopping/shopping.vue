@@ -59,7 +59,7 @@
 				</view>
 
 				<!-- 底部导航栏 -->
-				<tab-bar active="shopping"></tab-bar>
+				<!-- <tab-bar active="shopping"></tab-bar> -->
 			</view>
 		</view>
 	</view>
@@ -68,11 +68,14 @@
 <script setup>
 	import SearchInputVue from '../../components/SearchInput.vue';
 	import ProductCardVue from '../../components/ProductCard.vue';
-	import { ref, onMounted, onUnmounted, getCurrentInstance } from 'vue';
+	import { ref, onMounted, onUnmounted, computed } from 'vue';
 	import { getAllProducts } from '../../api/productService.js';
+	import { useCartStore } from '../../stores/cart.js';
 	
-	const { proxy } = getCurrentInstance();
-	const cartTotalCount = ref(0);
+	// 使用Pinia购物车store
+	const cartStore = useCartStore();
+	// 使用计算属性获取购物车总数，自动响应式更新
+	const cartTotalCount = computed(() => cartStore.totalCount);
 	
 	// 使用新的商品数据管理系统 - 改为异步加载
 	const products = ref([]);
@@ -81,8 +84,7 @@
 	// 页面加载时初始化购物车数量和商品数据
 	onMounted(async () => {
 		// 检查用户状态并切换购物车数据
-		proxy.$cartStore.switchUser();
-		updateCartCount();
+		cartStore.switchUser();
 		// 监听购物车更新事件
 		uni.$on('cartUpdated', handleCartUpdate);
 		
@@ -114,12 +116,8 @@
 
 	// 处理购物车更新事件
 	const handleCartUpdate = (cartData) => {
-		cartTotalCount.value = cartData.totalCount;
-	};
-
-	// 更新购物车数量显示
-	const updateCartCount = () => {
-		cartTotalCount.value = proxy.$cartStore.getTotalCount();
+		// 由于使用了计算属性，这里不需要手动更新
+		// cartTotalCount会自动响应cartStore的变化
 	};
 
 	const goToProductDetail = (productId) => {
@@ -133,7 +131,7 @@
 		const product = products.value.find(p => p.id === productId);
 		if (product) {
 			// 添加到购物车
-			const success = proxy.$cartStore.addToCart(product, 1);
+			const success = cartStore.addToCart(product, 1);
 			if (success) {
 				uni.showToast({
 					title: '已加入购物车',

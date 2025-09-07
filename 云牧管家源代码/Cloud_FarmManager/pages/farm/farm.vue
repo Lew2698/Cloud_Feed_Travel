@@ -116,7 +116,27 @@
 		</view>
 	</view>
 </template>
-<script>export default { data() { return { showGameModeSelector: false } }, methods: { navigateTo(url) { uni.navigateTo({ url: url }); }, showGameSelector() { this.showGameModeSelector = true; }, hideGameSelector() { this.showGameModeSelector = false; }, showRanchComingSoon() { uni.showToast({ title: '牧场功能即将上线', icon: 'none' }); } } }</script>
+<script>
+export default {
+	data() {
+		return { showGameModeSelector: false }
+	},
+	methods: {
+		navigateTo(url) {
+			uni.navigateTo({ url: url });
+		},
+		showGameSelector() {
+			this.showGameModeSelector = true;
+		},
+		hideGameSelector() {
+			this.showGameModeSelector = false;
+		},
+		showRanchComingSoon() {
+			uni.showToast({ title: '牧场功能即将上线', icon: 'none' });
+		}
+	}
+}	
+</script>
 
 <style lang="scss">
 @import '@/uni.scss';

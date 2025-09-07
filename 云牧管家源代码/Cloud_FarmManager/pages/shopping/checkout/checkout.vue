@@ -94,12 +94,15 @@
 		ref,
 		computed,
 		onMounted,
-		onUnmounted,
-		getCurrentInstance
+		onUnmounted
 	} from 'vue';
+	import { useCartStore } from '@/stores/cart.js';
 	import AddressItem from '../../../components/AddressItem.vue';
 	import CheckoutItem from '../../../components/CheckoutItem.vue';
 	import { getDefaultAddress } from '@/api/addressService.js';
+	
+	// 使用Pinia store
+	const cartStore = useCartStore();
 
 	// 订单商品数据 - 从购物车获取
 	const orderItems = ref([]);
@@ -304,21 +307,18 @@
 			await new Promise(resolve => setTimeout(resolve, 2000));
 			
 			// 从购物车中移除已结算的商品
-			const { proxy } = getCurrentInstance();
-			if (proxy && proxy.$cartStore) {
-				// 获取当前购物车商品
-				const cartItems = proxy.$cartStore.getCartItems();
-				
-				// 找到已结算的商品并移除
-				orderItems.value.forEach(orderItem => {
-					const cartIndex = cartItems.findIndex(cartItem => 
-						cartItem.id === orderItem.id && cartItem.selected
-					);
-					if (cartIndex !== -1) {
-						proxy.$cartStore.removeItem(cartIndex);
-					}
-				});
-			}
+			// 获取当前购物车商品
+			const cartItems = cartStore.cartItems;
+			
+			// 找到已结算的商品并移除
+			orderItems.value.forEach(orderItem => {
+				const cartIndex = cartItems.findIndex(cartItem => 
+					cartItem.id === orderItem.id && cartItem.selected
+				);
+				if (cartIndex !== -1) {
+					cartStore.removeItem(cartIndex);
+				}
+			});
 			
 			// 清除结算商品缓存
 			uni.removeStorageSync('checkout_items');

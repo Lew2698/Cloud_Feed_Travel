@@ -1,9 +1,10 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
+const stores_cart = require("../../stores/cart.js");
 const _sfc_main = {
   __name: "cart-user-test",
   setup(__props) {
-    const { proxy } = common_vendor.getCurrentInstance();
+    const cartStore = stores_cart.useCartStore();
     const currentUserInfo = common_vendor.ref({
       userId: "",
       cartKey: "",
@@ -12,9 +13,9 @@ const _sfc_main = {
     const cartItems = common_vendor.ref([]);
     const testResult = common_vendor.ref("等待测试...");
     const updateUserInfo = () => {
-      const userInfo = proxy.$cartStore.getCurrentUserInfo();
+      const userInfo = cartStore.getCurrentUserInfo();
       currentUserInfo.value = userInfo;
-      cartItems.value = proxy.$cartStore.getCartItems();
+      cartItems.value = cartStore.cartItems;
     };
     const loginAsUser1 = () => {
       common_vendor.index.setStorageSync("userInfo", {
@@ -23,7 +24,7 @@ const _sfc_main = {
         nickname: "测试用户1"
       });
       common_vendor.index.setStorageSync("userToken", "token_user_001");
-      proxy.$cartStore.switchUser();
+      cartStore.switchUser();
       updateUserInfo();
       testResult.value = "已切换到用户1";
     };
@@ -34,14 +35,14 @@ const _sfc_main = {
         nickname: "测试用户2"
       });
       common_vendor.index.setStorageSync("userToken", "token_user_002");
-      proxy.$cartStore.switchUser();
+      cartStore.switchUser();
       updateUserInfo();
       testResult.value = "已切换到用户2";
     };
     const loginAsGuest = () => {
       common_vendor.index.removeStorageSync("userInfo");
       common_vendor.index.removeStorageSync("userToken");
-      proxy.$cartStore.switchUser();
+      cartStore.switchUser();
       updateUserInfo();
       testResult.value = "已切换到游客模式";
     };
@@ -52,14 +53,14 @@ const _sfc_main = {
         price: Math.floor(Math.random() * 100) + 10,
         image: "/static/static2/3944.jpg_wh860.jpg"
       };
-      const success = proxy.$cartStore.addToCart(testProduct, 1);
+      const success = cartStore.addToCart(testProduct, 1);
       if (success) {
         updateUserInfo();
         testResult.value = `已添加商品: ${testProduct.name}`;
       }
     };
     const clearCurrentCart = () => {
-      proxy.$cartStore.clearCart();
+      cartStore.clearCart();
       updateUserInfo();
       testResult.value = "已清空当前用户的购物车";
     };

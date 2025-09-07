@@ -156,7 +156,6 @@
 </template>
 
 <script>
-import cartStore from '@/store/cart.js'
 
 export default {
 	data() {
@@ -717,4 +716,4 @@ export default {
 	.iconfont.icon-chevron-right:before {
 		content: '\f054';
 	}
-</style> 
+</style>

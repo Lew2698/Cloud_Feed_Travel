@@ -234,7 +234,7 @@ const _sfc_main = {
             c: common_vendor.o(editAddress, address._id || index),
             d: common_vendor.o(confirmDeleteAddress, address._id || index),
             e: common_vendor.o(setDefaultAddress, address._id || index),
-            f: "5dc82337-0-" + i0,
+            f: "e33f6186-0-" + i0,
             g: common_vendor.p({
               address
             })

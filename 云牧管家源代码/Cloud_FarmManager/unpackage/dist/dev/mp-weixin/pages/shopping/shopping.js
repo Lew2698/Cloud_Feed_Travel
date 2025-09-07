@@ -2,10 +2,7 @@
 const common_vendor = require("../../common/vendor.js");
 const common_assets = require("../../common/assets.js");
 const api_productService = require("../../api/productService.js");
-if (!Array) {
-  const _component_tab_bar = common_vendor.resolveComponent("tab-bar");
-  _component_tab_bar();
-}
+const stores_cart = require("../../stores/cart.js");
 if (!Math) {
   (SearchInputVue + ProductCardVue)();
 }
@@ -14,13 +11,12 @@ const ProductCardVue = () => "../../components/ProductCard.js";
 const _sfc_main = {
   __name: "shopping",
   setup(__props) {
-    const { proxy } = common_vendor.getCurrentInstance();
-    const cartTotalCount = common_vendor.ref(0);
+    const cartStore = stores_cart.useCartStore();
+    const cartTotalCount = common_vendor.computed(() => cartStore.totalCount);
     const products = common_vendor.ref([]);
     const loading = common_vendor.ref(true);
     common_vendor.onMounted(async () => {
-      proxy.$cartStore.switchUser();
-      updateCartCount();
+      cartStore.switchUser();
       common_vendor.index.$on("cartUpdated", handleCartUpdate);
       await loadProducts();
     });
@@ -30,7 +26,7 @@ const _sfc_main = {
         const productList = await api_productService.getAllProducts();
         products.value = productList;
       } catch (error) {
-        common_vendor.index.__f__("error", "at pages/shopping/shopping.vue:100", "加载商品数据失败:", error);
+        common_vendor.index.__f__("error", "at pages/shopping/shopping.vue:102", "加载商品数据失败:", error);
         common_vendor.index.showToast({
           title: "加载商品失败",
           icon: "none"
@@ -43,10 +39,6 @@ const _sfc_main = {
       common_vendor.index.$off("cartUpdated", handleCartUpdate);
     });
     const handleCartUpdate = (cartData) => {
-      cartTotalCount.value = cartData.totalCount;
-    };
-    const updateCartCount = () => {
-      cartTotalCount.value = proxy.$cartStore.getTotalCount();
     };
     const goToProductDetail = (productId) => {
       common_vendor.index.navigateTo({
@@ -56,7 +48,7 @@ const _sfc_main = {
     const addToCart = (productId) => {
       const product = products.value.find((p) => p.id === productId);
       if (product) {
-        const success = proxy.$cartStore.addToCart(product, 1);
+        const success = cartStore.addToCart(product, 1);
         if (success) {
           common_vendor.index.showToast({
             title: "已加入购物车",
@@ -85,7 +77,7 @@ const _sfc_main = {
             a: product.id,
             b: common_vendor.o(goToProductDetail, product.id),
             c: common_vendor.o(addToCart, product.id),
-            d: "0e423c18-1-" + i0,
+            d: "70e3180c-1-" + i0,
             e: common_vendor.p({
               product
             })
@@ -98,10 +90,7 @@ const _sfc_main = {
       }, cartTotalCount.value > 0 ? {
         j: common_vendor.t(cartTotalCount.value)
       } : {}, {
-        k: common_vendor.o(($event) => goToCart()),
-        l: common_vendor.p({
-          active: "shopping"
-        })
+        k: common_vendor.o(($event) => goToCart())
       });
     };
   }
